@@ -1,0 +1,64 @@
+{
+  "birds": [
+    {
+      "id": "sparrow",
+      "name": "Sparrow",
+      "type": "bird",
+      "description": "A small grey city bird; fond of crumbs and grain."
+    },
+    {
+      "id": "tit",
+      "name": "Great tit",
+      "type": "bird",
+      "description": "Colourful bird with a black cap; often visits feeders in winter."
+    },
+    {
+      "id": "bullfinch",
+      "name": "Bullfinch",
+      "type": "bird",
+      "description": "Red-breasted winter visitor with a stout bill."
+    },
+    {
+      "id": "thrush",
+      "name": "Thrush",
+      "type": "bird",
+      "description": "Songbird that readily eats berries and worms."
+    },
+    {
+      "id": "nightingale",
+      "name": "Nightingale",
+      "type": "bird",
+      "description": "Famous night singer with a rich, bushy voice."
+    },
+    {
+      "id": "goldfinch",
+      "name": "Goldfinch",
+      "type": "bird",
+      "description": "Red-and-yellow finch that loves seeds."
+    },
+    {
+      "id": "skylark",
+      "name": "Skylark",
+      "type": "bird",
+      "description": "Rises singing over open fields and meadows."
+    },
+    {
+      "id": "swallow",
+      "name": "Swallow",
+      "type": "bird",
+      "description": "Fast aerial hunter of insects over water and fields."
+    },
+    {
+      "id": "woodpecker",
+      "name": "Woodpecker",
+      "type": "bird",
+      "description": "Drums on trunks to find insects under the bark."
+    },
+    {
+      "id": "magpie",
+      "name": "Magpie",
+      "type": "bird",
+      "description": "Smart black-and-white corvid, curious about everything."
+    }
+  ]
+}

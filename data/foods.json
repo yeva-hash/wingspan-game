@@ -1,0 +1,34 @@
+{
+  "foods": [
+    {
+      "id": "wheat",
+      "name": "Wheat",
+      "type": "food",
+      "description": "Grain — basic feed for many seed-eating birds."
+    },
+    {
+      "id": "berry",
+      "name": "Berry",
+      "type": "food",
+      "description": "Sweet berries, loved by thrushes and other songbirds."
+    },
+    {
+      "id": "worm",
+      "name": "Worm",
+      "type": "food",
+      "description": "Protein-rich treat from under the soil."
+    },
+    {
+      "id": "fish",
+      "name": "Fish",
+      "type": "food",
+      "description": "Small fish — prey from near the water."
+    },
+    {
+      "id": "mouse",
+      "name": "Mouse",
+      "type": "food",
+      "description": "Small rodent for larger predatory birds."
+    }
+  ]
+}

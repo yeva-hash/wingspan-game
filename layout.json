@@ -1,0 +1,119 @@
+{
+    "stage": {
+        "name": "game",
+        "type": "container",
+        "x": 0,
+        "y": 0,
+        "scale": {
+            "x": 1,
+            "y": 1
+        },
+        "children": [
+            {
+                "name":"game-field",
+                "type": "container",
+                "x": 0,
+                "y": 0,
+                "children": [
+                    {
+                        "name": "game-field-bg",
+                        "type": "sprite",
+                        "x": 836,
+                        "y": 410,
+                        "anchor": {
+                            "x": 0.5,
+                            "y": 0.5
+                        }, 
+                        "scale": {
+                            "x": 0.8,
+                            "y": 0.8
+                        },
+                        "texture": "assets/sprites/game-field.png"
+                    },
+                    {
+                        "name":"action-menu",
+                        "type": "container",
+                        "x": 0,
+                        "y": 0,
+                        "children": [
+                            {
+                                "name":"play-bird-text",
+                                "type": "text",
+                                "x": 400,
+                                "y": 77,
+                                "text": "Play Bird",
+                                "fontSize": 20,
+                                "color": "#000000"
+                            },
+                            {
+                                "name":"gain-food-text",
+                                "type": "text",
+                                "x": 400,
+                                "y": 179,
+                                "text": "Gain Food",
+                                "fontSize": 20,
+                                "color": "#000000"
+                            },
+                            {
+                                "name":"gain-eggs-text",
+                                "type": "text",
+                                "x": 400,
+                                "y": 385,
+                                "text": "Gain Eggs",
+                                "fontSize": 20,
+                                "color": "#000000"
+                            },
+                            {
+                                "name":"choose-bird-text",
+                                "type": "text",
+                                "x": 400,
+                                "y": 600,
+                                "text": "Choose Bird",
+                                "fontSize": 20,
+                                "color": "#000000"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name":"hand-field",
+                "type": "container",
+                "x": 0,
+                "y": 0,
+                "alpha": 0,
+                "children": [
+                    {
+                        "name": "hand-field-bg",
+                        "type": "sprite",
+                        "x": 836,
+                        "y": 410,
+                        "anchor": {
+                            "x": 0.5,
+                            "y": 0.5
+                        },
+                        "scale": {
+                            "x": 1,
+                            "y": 1
+                        },
+                        "texture": "assets/sprites/hand-field.png"
+                    },
+                    {
+                        "name":"birds-container",
+                        "type": "container",
+                        "x": 300,
+                        "y": 140,
+                        "children": []
+                    },
+                    {
+                        "name":"foods-container",
+                        "type": "container",
+                        "x": 330,
+                        "y": 400,
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    }
+}
