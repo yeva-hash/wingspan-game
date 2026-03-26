@@ -111,6 +111,15 @@
                         "x": 330,
                         "y": 400,
                         "children": []
+                    },
+                    {
+                        "name":"confirm-button",
+                        "type": "text",
+                        "x": 500,
+                        "y": 500,
+                        "text": "Confirm Selection",
+                        "fontSize": 20,
+                        "color": "#000000"
                     }
                 ]
             }

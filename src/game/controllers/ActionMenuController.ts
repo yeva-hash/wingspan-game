@@ -1,7 +1,3 @@
-import * as PIXI from "pixi.js";
-import { Text } from "pixi.js";
-import { createDeferred } from "../../utils/deferred";
-import { LayoutService } from "../../layout/layout-service";
 import { ActionMenuView } from "../views/ActionMenuView";
 
 export type ActionId = "playBird" | "gainFood" | "gainEggs" | "chooseBird";
@@ -9,7 +5,7 @@ export type ActionId = "playBird" | "gainFood" | "gainEggs" | "chooseBird";
 export class ActionMenuController {
   constructor(private readonly view: ActionMenuView) {}
 
-  chooseAction(): Promise<ActionId> {
+  async chooseAction(): Promise<ActionId> {
     return this.view.waitForAction();
   }
 

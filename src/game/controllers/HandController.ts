@@ -1,96 +1,134 @@
-// controllers/HandController.ts
-import * as PIXI from "pixi.js";
-import { BirdCardView } from "../views/BirdCardView";
-import { FoodTokenView } from "../views/FoodTokenView";
-import type { Bird } from "../models/Bird";
-import type { Food } from "../models/Food";
 import type { PlayerResourceStore } from "../../stores/PlayerResourceStore";
 import { createDeferred } from "../../utils/deferred";
+import { Bird } from "../models/Bird";
 import { HandView } from "../views/HandView";
 
+export type PlayBirdSelection = {
+  bird: Bird;
+  foodId: string;
+};
+
 export class HandController {
-  private cardViews = new Map<string, BirdCardView>(); // instanceId → view
-  private tokenViews = new Map<string, FoodTokenView>(); // foodId → view
+  private _selectedBirdId: string | null = null;
+  private readonly _selectedFoodCounts = new Map<string, number>();
 
-  onBirdClicked: ((bird: Bird) => void) | null = null;
-  onFoodClicked: ((food: Food) => void) | null = null;
+  constructor(
+    private readonly store: PlayerResourceStore,
+    private readonly view: HandView,
+  ) {
+    this.view.onBirdClicked = (birdId) => this.handleBirdClick(birdId);
+    this.view.onFoodClicked = (foodId) => this.handleFoodClick(foodId);
+  }
 
-  constructor(private readonly store: PlayerResourceStore, private readonly view: HandView ) {}
-
-  render(): void {
-    this.view.render(
+  async render(): Promise<void> {
+    await this.view.render(
       this.store.getBirds(),
       this.store.getFoods(),
     );
+
+    this.resetSelectionsState();
+    this.updateFoodAvailability();
+    this.updateConfirmState();
   }
 
-  // private renderBirds(): void {
-  //   this.store.getBirds().forEach((bird, index) => {
-  //     const view = new BirdCardView(bird);
-  //     view.position.set(index * 130, 0);
-  //     view.onClicked = () => this.onBirdClicked?.(bird);
-  //     this.cardViews.set(bird.instanceId, view);
-  //     this.container.addChild(view);
-  //   });
-  // }
+  async waitForConfirmClick(): Promise<PlayBirdSelection> {
+    const deferred = createDeferred<PlayBirdSelection>();
 
-  // private renderFoods(): void {
-  //   this.store.getFoods().forEach((food, index) => {
-  //     const view = new FoodTokenView(food);
-  //     view.position.set(index * 70, 200);
-  //     view.onClicked = () => this.onFoodClicked?.(food);
-  //     this.tokenViews.set(food.id, view);
-  //     this.container.addChild(view);
-  //   });
-  // }
+    const prev = this.view.onConfirmClicked;
+    this.view.onConfirmClicked = () => {
+      const bird = this.getSelectedBird();
+      const foodId = this.getSelectedFoodId();
 
-  // refreshFood(foodId: string): void {
-  //   const food = this.store.getFoodById(foodId);
-  //   const view = this.tokenViews.get(foodId);
-  //   if (food && view) view.updateQuantity(food.quantity);
-  // }
+      if (!bird || !foodId) return;
 
-  // removeBirdCard(instanceId: string): void {
-  //   const view = this.cardViews.get(instanceId);
-  //   if (view) {
-  //     this.container.removeChild(view);
-  //     this.cardViews.delete(instanceId);
-  //   }
-  // }
-
-  // setBirdSelected(instanceId: string, selected: boolean): void {
-  //   const view = this.cardViews.get(instanceId);
-  //   view?.setSelected(selected);
-  // }
-
-  // setFoodSelected(foodId: string, selected: boolean): void {
-  //   const view = this.tokenViews.get(foodId);
-  //   view?.setSelected(selected);
-  // }
-
-  async waitForBirdClick(): Promise<Bird> {
-    const deferred = createDeferred<Bird>();
-
-    const prev = this.onBirdClicked;
-    this.onBirdClicked = (bird) => deferred.resolve(bird);
+      deferred.resolve({ bird, foodId });
+    };
 
     try {
       return await deferred.promise;
     } finally {
-      this.onBirdClicked = prev;
+      this.view.onConfirmClicked = prev;
     }
   }
 
-  // async waitForFoodClick(): Promise<Food> {
-  //   const deferred = createDeferred<Food>();
+  private getSelectedFoodId(): string | null {
+    for (const [foodId, count] of this._selectedFoodCounts) {
+      if (count > 0) {
+        return foodId;
+      }
+    }
 
-  //   const prev = this.onFoodClicked;
-  //   this.onFoodClicked = (food) => deferred.resolve(food);
+    return null;
+  }
 
-  //   try {
-  //     return await deferred.promise;
-  //   } finally {
-  //     this.onFoodClicked = prev;
-  //   }
-  // }
+  private handleBirdClick(birdId: string): void {
+    if (this._selectedBirdId) {
+      this.view.setBirdSelected(this._selectedBirdId, false);
+    }
+
+    this._selectedBirdId = birdId;
+    this.view.setBirdSelected(birdId, true);
+
+    this.resetSelectedFoods();
+    this.updateFoodAvailability();
+    this.updateConfirmState();
+  }
+
+  private resetSelectedFoods(): void {
+    for (const [foodId, count] of this._selectedFoodCounts) {
+      if (count > 0) {
+        this.view.setFoodSelectedCount(foodId, 0);
+      }
+    }
+
+    this._selectedFoodCounts.clear();
+  }
+
+  private updateFoodAvailability(): void {
+    const selectedBird = this.getSelectedBird();
+
+    for (const food of this.store.getFoods()) {
+      const enabled = !!selectedBird && selectedBird.allowedFoods.includes(food.id);
+      this.view.setFoodEnabled(food.id, enabled);
+    }
+  }
+
+  private handleFoodClick(foodId: string): void {
+    const selectedBird = this.getSelectedBird();
+    if (!selectedBird) return;
+
+    const food = this.store.getFoodById(foodId);
+    if (!food) return;
+
+    if (!selectedBird.allowedFoods.includes(food.id)) return;
+
+    const isSelected = (this._selectedFoodCounts.get(foodId) ?? 0) > 0;
+
+    this.resetSelectedFoods();
+
+    if (!isSelected) {
+      this._selectedFoodCounts.set(foodId, 1);
+      this.view.setFoodSelectedCount(foodId, 1);
+    }
+
+    this.updateConfirmState();
+  }
+
+  private updateConfirmState(): void {
+    const hasBird = this._selectedBirdId !== null;
+    const hasFood = [...this._selectedFoodCounts.values()].some((count) => count > 0);
+
+    this.view.setConfirmEnabled(hasBird && hasFood);
+  }
+
+  private getSelectedBird(): Bird | null {
+    if (!this._selectedBirdId) return null;
+
+    return this.store.getBirdById(this._selectedBirdId) ?? null;
+  }
+
+  private resetSelectionsState(): void {
+    this._selectedBirdId = null;
+    this._selectedFoodCounts.clear();
+  }
 }

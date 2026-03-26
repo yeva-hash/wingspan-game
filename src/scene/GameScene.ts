@@ -1,4 +1,3 @@
-import type { GameApp } from "../app/game-app";
 import { FlowManager } from "../flow/FlowManager";
 import type { FlowContext } from "../flow/FlowTypes";
 import { StartGameFlow } from "../flow/StartGameFlow";
@@ -7,6 +6,7 @@ import { ActionMenuController } from "../game/controllers/ActionMenuController";
 import { PlayerResourceStore } from "../stores/PlayerResourceStore";
 import { ActionMenuView } from "../game/views/ActionMenuView";
 import { HandView } from "../game/views/HandView";
+import { GameApp } from "../app/gameApp";
 
 export class GameScene {
   private isRunning = false;
@@ -24,9 +24,9 @@ export class GameScene {
     const playerResources = new PlayerResourceStore();
     playerResources.setInitialDeal(
       [
-        { id: "sparrow", name: "Sparrow", type: "bird", description: "..." },
-        { id: "tit", name: "Great tit", type: "bird", description: "..." },
-        { id: "bullfinch", name: "Bullfinch", type: "bird", description: "..." }
+        { id: "sparrow", name: "Sparrow", type: "bird", description: "..." , allowedFoods: ["seed", "worm"] },
+        { id: "tit", name: "Great tit", type: "bird", description: "..." , allowedFoods: ["seed"] },
+        { id: "bullfinch", name: "Bullfinch", type: "bird", description: "..." , allowedFoods: ["seed", "worm"] },
       ],
       [
         { id: "seed", name: "Seed", type: "food" },

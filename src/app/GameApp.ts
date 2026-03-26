@@ -1,7 +1,7 @@
 import { Application } from "pixi.js";
-import { LayoutBuilder } from "../layout/layout-builder";
-import type { LayoutConfig } from "../layout/layout-builder";
-import { LayoutService } from "../layout/layout-service";
+import { LayoutBuilder } from "../layout/LayoutBuilder";
+import type { LayoutConfig } from "../layout/LayoutBuilder";
+import { LayoutService } from "../layout/LayoutService";
 
 type GameAppOptions = {
   mountId?: string;

@@ -5,6 +5,7 @@ import { Food } from '../models/Food';
 export class FoodTokenView extends PIXI.Container {
   private bg: PIXI.Graphics;
   onClicked: (() => void) | null = null;
+  private selectedCountText: PIXI.Text;
 
   private quantityText: PIXI.Text;
 
@@ -25,14 +26,32 @@ export class FoodTokenView extends PIXI.Container {
     this.eventMode = 'static';
     this.cursor = 'pointer';
     this.on('pointerdown', () => this.onClicked?.());
+
+    this.selectedCountText = new PIXI.Text({ 
+      text: "", 
+      style: { fontSize: 16, fill: 0xffffff } 
+    });
+    this.selectedCountText.anchor.set(0.5);
+    this.selectedCountText.position.set(0, 0);
+    this.addChild(this.selectedCountText);
   }
 
-  // вызывается контроллером когда quantity изменился
   updateQuantity(quantity: number) {
     this.quantityText.text = `${quantity}`;
   }
 
-  setSelected(selected: boolean) {
+  setEnabled(enabled: boolean): void {
+    this.eventMode = enabled ? "static" : "none";
+    this.cursor = enabled ? "pointer" : "default";
+    this.alpha = enabled ? 1 : 0.3;
+  }
+
+  setSelectedCount(count: number): void {
+    this.selectedCountText.text = count > 0 ? `x${count}` : "";
+    this.bg.alpha = count > 0 ? 0.5 : 1;
+  }
+
+  setSelected(selected: boolean): void {
     this.bg.alpha = selected ? 0.5 : 1;
   }
 }

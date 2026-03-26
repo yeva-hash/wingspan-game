@@ -1,5 +1,5 @@
 import { Assets, Container, Sprite, Text, Texture } from "pixi.js";
-import type { LayoutService } from "./layout-service";
+import type { LayoutService } from "./LayoutService";
 
 type PointLike = {
   x?: number;

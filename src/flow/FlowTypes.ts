@@ -1,4 +1,4 @@
-import type { GameApp } from "../app/game-app";
+import { GameApp } from "../app/gameApp";
 import { ActionMenuController } from "../game/controllers/ActionMenuController";
 import type { HandController } from "../game/controllers/HandController";
 import type { PlayerResourceStore } from "../stores/PlayerResourceStore";

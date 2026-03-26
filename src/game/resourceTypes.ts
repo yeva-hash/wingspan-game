@@ -5,12 +5,15 @@ export type BirdDefinition = {
   type: "bird";
   description?: string;
   texture?: string;
+  allowedFoods: FoodType[];
 };
 
 export type FoodDefinition = {
-  id: string;
+  id: FoodType;
   name: string;
   type: "food";
   description?: string;
   texture?: string;
 };
+
+export type FoodType = "seed" | "worm" | "berry";

@@ -1,4 +1,4 @@
-import type { FoodDefinition } from "../resourceTypes";
+import type { FoodDefinition, FoodType } from "../resourceTypes";
 
 /**
  * Food in the player's inventory: catalog entry + quantity.
@@ -12,7 +12,7 @@ export class Food {
     this._quantity = initialQuantity;
   }
 
-  get id(): string {
+  get id(): FoodType {
     return this.definition.id;
   }
 

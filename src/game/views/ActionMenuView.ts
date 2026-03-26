@@ -1,6 +1,6 @@
 import { Text } from "pixi.js";
 import { createDeferred } from "../../utils/deferred";
-import type { LayoutService } from "../../layout/layout-service";
+import type { LayoutService } from "../../layout/LayoutService";
 import type { ActionId } from "../controllers/ActionMenuController";
 
 type ActionTextMap = Record<ActionId, Text>;

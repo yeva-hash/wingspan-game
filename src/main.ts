@@ -1,7 +1,7 @@
 import layoutJson from "../layout.json";
-import { GameApp } from "./app/game-app";
-import type { LayoutConfig } from "./layout/layout-builder";
-import { GameScene } from "./scene/game-scene";
+import { GameApp } from "./app/gameApp";
+import type { LayoutConfig } from "./layout/LayoutBuilder";
+import { GameScene } from "./scene/GameScene";
 
 async function main() {
   const gameApp = new GameApp();

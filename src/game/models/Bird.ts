@@ -8,6 +8,10 @@ export class Bird {
   readonly instanceId: string;
   readonly definition: BirdDefinition;
 
+  get allowedFoods() {
+    return this.definition.allowedFoods;
+  }
+
   constructor(definition: BirdDefinition, instanceId?: string) {
     this.definition = definition;
     this.instanceId = instanceId ?? crypto.randomUUID();

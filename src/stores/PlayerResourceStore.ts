@@ -47,5 +47,11 @@ export class PlayerResourceStore {
     if (!food) return false;
     return food.take(amount);
   }
+
+  getBirdById(id: string): Bird {
+    const bird = this.birds.find((b) => b.instanceId === id);
+    if(!bird) throw new Error(`Can't find bird with id ${id}`);
+    return bird;
+  }
 }
 
