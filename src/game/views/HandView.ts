@@ -8,13 +8,13 @@ import { alphaTo } from "../../utils/viewUtils";
 
 export class HandView {
   onBirdClicked: ((birdId: string) => void) | null = null;
-  onFoodClicked: ((foodId: string) => void) | null = null;
   onConfirmClicked: (() => void) | null = null;
 
   private readonly _container: PIXI.Container;
   private readonly _birdsContainer: PIXI.Container;
   private readonly _foodsContainer: PIXI.Container;
   private readonly _confirmButton: PIXI.Container;
+  private readonly _messageText: PIXI.Text;
 
   private readonly _birdViewsById = new Map<string, BirdCardView>();
   private readonly _foodViewsById = new Map<string, FoodTokenView>();
@@ -24,6 +24,7 @@ export class HandView {
     this._birdsContainer = layoutService.get("birds-container");
     this._foodsContainer = layoutService.get("foods-container");
     this._confirmButton = layoutService.get("confirm-button");
+    this._messageText = layoutService.get("hand-message-text");
 
     this._confirmButton.eventMode = "static";
     this._confirmButton.cursor = "pointer";
@@ -44,6 +45,7 @@ export class HandView {
     this._foodsContainer.removeChildren();
     this._birdViewsById.clear();
     this._foodViewsById.clear();
+    this.setMessage("");
   }
 
   private renderBirds(birds: readonly Bird[]): void {
@@ -61,7 +63,6 @@ export class HandView {
     foods.forEach((food, index) => {
       const view = new FoodTokenView(food);
       view.position.set(index * 70, 0);
-      view.onClicked = () => this.onFoodClicked?.(food.id);
 
       this._foodViewsById.set(food.id, view);
       this._foodsContainer.addChild(view);
@@ -72,21 +73,18 @@ export class HandView {
     this._birdViewsById.get(instanceId)?.setSelected(selected);
   }
 
-  setFoodSelected(foodId: string, selected: boolean): void {
-    this._foodViewsById.get(foodId)?.setSelected(selected);
-  }
-
-  setFoodSelectedCount(foodId: string, count: number): void {
-    this._foodViewsById.get(foodId)?.setSelectedCount(count);
-  }
-
-  setFoodEnabled(foodId: string, enabled: boolean): void {
-    this._foodViewsById.get(foodId)?.setEnabled(enabled);
+  setFoodHighlighted(foodId: string, highlighted: boolean): void {
+    this._foodViewsById.get(foodId)?.setHighlighted(highlighted);
   }
 
   setConfirmEnabled(enabled: boolean): void {
     this._confirmButton.eventMode = enabled ? "static" : "none";
     this._confirmButton.alpha = enabled ? 1 : 0.5;
     this._confirmButton.cursor = enabled ? "pointer" : "default";
+  }
+
+  setMessage(message: string): void {
+    this._messageText.text = message;
+    this._messageText.visible = message.length > 0;
   }
 }

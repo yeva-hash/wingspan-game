@@ -113,6 +113,15 @@
                         "children": []
                     },
                     {
+                        "name":"hand-message-text",
+                        "type": "text",
+                        "x": 100,
+                        "y": 100,
+                        "text": "",
+                        "fontSize": 20,
+                        "color": "#000000"
+                    },
+                    {
                         "name":"confirm-button",
                         "type": "text",
                         "x": 500,

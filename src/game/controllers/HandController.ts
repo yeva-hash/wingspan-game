@@ -5,19 +5,16 @@ import { HandView } from "../views/HandView";
 
 export type PlayBirdSelection = {
   bird: Bird;
-  foodId: string;
 };
 
 export class HandController {
   private _selectedBirdId: string | null = null;
-  private readonly _selectedFoodCounts = new Map<string, number>();
 
   constructor(
     private readonly store: PlayerResourceStore,
     private readonly view: HandView,
   ) {
     this.view.onBirdClicked = (birdId) => this.handleBirdClick(birdId);
-    this.view.onFoodClicked = (foodId) => this.handleFoodClick(foodId);
   }
 
   async render(): Promise<void> {
@@ -27,8 +24,9 @@ export class HandController {
     );
 
     this.resetSelectionsState();
-    this.updateFoodAvailability();
-    this.updateConfirmState();
+    this.clearFoodHighlights();
+    this.view.setConfirmEnabled(false);
+    this.view.setMessage("");
   }
 
   async waitForConfirmClick(): Promise<PlayBirdSelection> {
@@ -37,11 +35,11 @@ export class HandController {
     const prev = this.view.onConfirmClicked;
     this.view.onConfirmClicked = () => {
       const bird = this.getSelectedBird();
-      const foodId = this.getSelectedFoodId();
+      if (!bird) return;
 
-      if (!bird || !foodId) return;
+      if (!this.canPayBirdCost(bird)) return;
 
-      deferred.resolve({ bird, foodId });
+      deferred.resolve({ bird });
     };
 
     try {
@@ -49,16 +47,6 @@ export class HandController {
     } finally {
       this.view.onConfirmClicked = prev;
     }
-  }
-
-  private getSelectedFoodId(): string | null {
-    for (const [foodId, count] of this._selectedFoodCounts) {
-      if (count > 0) {
-        return foodId;
-      }
-    }
-
-    return null;
   }
 
   private handleBirdClick(birdId: string): void {
@@ -69,66 +57,70 @@ export class HandController {
     this._selectedBirdId = birdId;
     this.view.setBirdSelected(birdId, true);
 
-    this.resetSelectedFoods();
-    this.updateFoodAvailability();
+    this.updateFoodHighlights();
     this.updateConfirmState();
   }
 
-  private resetSelectedFoods(): void {
-    for (const [foodId, count] of this._selectedFoodCounts) {
-      if (count > 0) {
-        this.view.setFoodSelectedCount(foodId, 0);
-      }
+  private updateFoodHighlights(): void {
+    this.clearFoodHighlights();
+
+    const bird = this.getSelectedBird();
+    if (!bird) {
+      return;
     }
-
-    this._selectedFoodCounts.clear();
-  }
-
-  private updateFoodAvailability(): void {
-    const selectedBird = this.getSelectedBird();
 
     for (const food of this.store.getFoods()) {
-      const enabled = !!selectedBird && selectedBird.allowedFoods.includes(food.id);
-      this.view.setFoodEnabled(food.id, enabled);
+      const isAllowed = bird.allowedFoods.includes(food.id);
+      this.view.setFoodHighlighted(food.id, isAllowed);
     }
   }
 
-  private handleFoodClick(foodId: string): void {
-    const selectedBird = this.getSelectedBird();
-    if (!selectedBird) return;
-
-    const food = this.store.getFoodById(foodId);
-    if (!food) return;
-
-    if (!selectedBird.allowedFoods.includes(food.id)) return;
-
-    const isSelected = (this._selectedFoodCounts.get(foodId) ?? 0) > 0;
-
-    this.resetSelectedFoods();
-
-    if (!isSelected) {
-      this._selectedFoodCounts.set(foodId, 1);
-      this.view.setFoodSelectedCount(foodId, 1);
+  private clearFoodHighlights(): void {
+    for (const food of this.store.getFoods()) {
+      this.view.setFoodHighlighted(food.id, false);
     }
-
-    this.updateConfirmState();
   }
 
   private updateConfirmState(): void {
-    const hasBird = this._selectedBirdId !== null;
-    const hasFood = [...this._selectedFoodCounts.values()].some((count) => count > 0);
+    const bird = this.getSelectedBird();
 
-    this.view.setConfirmEnabled(hasBird && hasFood);
+    if (!bird) {
+      this.view.setConfirmEnabled(false);
+      this.view.setMessage("");
+      return;
+    }
+
+    const canPay = this.canPayBirdCost(bird);
+    this.view.setConfirmEnabled(canPay);
+
+    if (canPay) {
+      this.view.setMessage("");
+    } else {
+      this.view.setMessage(this.getMissingFoodMessage(bird));
+    }
+  }
+
+  private canPayBirdCost(bird: Bird): boolean {
+    return bird.allowedFoods.some((foodId) => {
+      const food = this.store.getFoodById(foodId);
+      return !!food;
+    });
+  }
+
+  private getMissingFoodMessage(bird: Bird): string {
+    if (bird.allowedFoods.length === 0) {
+      return "This bird doesn't need food";
+    }
+
+    return `Not enough food: ${bird.allowedFoods.join(", ")}`;
   }
 
   private getSelectedBird(): Bird | null {
     if (!this._selectedBirdId) return null;
-
     return this.store.getBirdById(this._selectedBirdId) ?? null;
   }
 
   private resetSelectionsState(): void {
     this._selectedBirdId = null;
-    this._selectedFoodCounts.clear();
   }
 }
