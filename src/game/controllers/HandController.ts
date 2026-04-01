@@ -1,20 +1,23 @@
 import type { PlayerResourceStore } from "../../stores/PlayerResourceStore";
 import { createDeferred } from "../../utils/deferred";
+import { HandSelectionManager } from "../managers/HandSelectionManager";
 import { Bird } from "../models/Bird";
+import type { Area } from "../resourceTypes";
 import { HandView } from "../views/HandView";
 
 export type PlayBirdSelection = {
   bird: Bird;
+  area: Area;
 };
 
 export class HandController {
-  private _selectedBirdId: string | null = null;
-
   constructor(
     private readonly store: PlayerResourceStore,
     private readonly view: HandView,
+    private readonly selectionManager: HandSelectionManager,
   ) {
     this.view.onBirdClicked = (birdId) => this.handleBirdClick(birdId);
+    this.view.onAreaClicked = (area) => this.handleAreaClick(area);
   }
 
   async render(): Promise<void> {
@@ -23,10 +26,12 @@ export class HandController {
       this.store.getFoods(),
     );
 
-    this.resetSelectionsState();
-    this.clearFoodHighlights();
-    this.view.setConfirmEnabled(false);
-    this.view.setMessage("");
+    this.selectionManager.reset();
+    this.syncView();
+  }
+
+  renderAreas(areas: readonly Area[]): void {
+    this.view.setAreas(areas);
   }
 
   async waitForConfirmClick(): Promise<PlayBirdSelection> {
@@ -34,12 +39,14 @@ export class HandController {
 
     const prev = this.view.onConfirmClicked;
     this.view.onConfirmClicked = () => {
-      const bird = this.getSelectedBird();
-      if (!bird) return;
+      const bird = this.selectionManager.getSelectedBird();
+      const area = this.selectionManager.getSelectedArea();
 
-      if (!this.canPayBirdCost(bird)) return;
+      if (!bird || !area || !this.selectionManager.canConfirm()) {
+        return;
+      }
 
-      deferred.resolve({ bird });
+      deferred.resolve({ bird, area });
     };
 
     try {
@@ -50,77 +57,51 @@ export class HandController {
   }
 
   private handleBirdClick(birdId: string): void {
-    if (this._selectedBirdId) {
-      this.view.setBirdSelected(this._selectedBirdId, false);
-    }
-
-    this._selectedBirdId = birdId;
-    this.view.setBirdSelected(birdId, true);
-
-    this.updateFoodHighlights();
-    this.updateConfirmState();
+    this.selectionManager.selectBird(birdId);
+    this.syncView();
   }
 
-  private updateFoodHighlights(): void {
-    this.clearFoodHighlights();
+  private syncView(): void {
+    this.syncBirdSelection();
+    this.syncFoodHighlights();
+    this.syncAreaSelection();
+    this.syncConfirmState();
+  }
 
-    const bird = this.getSelectedBird();
-    if (!bird) {
-      return;
+  private syncBirdSelection(): void {
+    const selectedBirdId = this.selectionManager.selectedBirdId;
+
+    for (const bird of this.store.getBirds()) {
+      this.view.setBirdSelected(bird.name, bird.name === selectedBirdId);
     }
+  }
+
+  private syncFoodHighlights(): void {
+    const highlightedFoodIds = new Set(
+      this.selectionManager.getHighlightedFoodIds(),
+    );
 
     for (const food of this.store.getFoods()) {
-      const isAllowed = bird.allowedFoods.includes(food.id);
-      this.view.setFoodHighlighted(food.id, isAllowed);
+      this.view.setFoodHighlighted(food.id, highlightedFoodIds.has(food.id));
     }
   }
 
-  private clearFoodHighlights(): void {
-    for (const food of this.store.getFoods()) {
-      this.view.setFoodHighlighted(food.id, false);
-    }
+  private handleAreaClick(area: Area): void {
+    this.selectionManager.selectArea(area);
+    this.view.setAreaSelected(area);
+    this.syncConfirmState();
   }
 
-  private updateConfirmState(): void {
-    const bird = this.getSelectedBird();
+  private syncConfirmState(): void {
+    this.view.setConfirmEnabled(this.selectionManager.canConfirm());
+    this.view.setMessage(this.selectionManager.getMessage());
+  }
 
-    if (!bird) {
-      this.view.setConfirmEnabled(false);
-      this.view.setMessage("");
+  private syncAreaSelection(): void {
+    const selectedBird = this.selectionManager.getSelectedBird();
+    if (!selectedBird) {
       return;
     }
-
-    const canPay = this.canPayBirdCost(bird);
-    this.view.setConfirmEnabled(canPay);
-
-    if (canPay) {
-      this.view.setMessage("");
-    } else {
-      this.view.setMessage(this.getMissingFoodMessage(bird));
-    }
-  }
-
-  private canPayBirdCost(bird: Bird): boolean {
-    return bird.allowedFoods.some((foodId) => {
-      const food = this.store.getFoodById(foodId);
-      return !!food;
-    });
-  }
-
-  private getMissingFoodMessage(bird: Bird): string {
-    if (bird.allowedFoods.length === 0) {
-      return "This bird doesn't need food";
-    }
-
-    return `Not enough food: ${bird.allowedFoods.join(", ")}`;
-  }
-
-  private getSelectedBird(): Bird | null {
-    if (!this._selectedBirdId) return null;
-    return this.store.getBirdById(this._selectedBirdId) ?? null;
-  }
-
-  private resetSelectionsState(): void {
-    this._selectedBirdId = null;
+    this.view.enableAreaSelection(selectedBird.allowedAreas);
   }
 }

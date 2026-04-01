@@ -23,29 +23,12 @@ export class PlayerResourceStore {
     return this.birds;
   }
 
-  removeBird(instanceId: string): void {
-    this.birds = this.birds.filter((b) => b.instanceId !== instanceId);
-  }
-
   getFoods(): readonly Food[] {
     return [...this.foodsById.values()];
   }
 
   getFoodById(id: string): Food | undefined {
     return this.foodsById.get(id);
-  }
-
-  addFood(id: string, amount: number): boolean {
-    const food = this.foodsById.get(id);
-    if (!food) return false;
-    food.add(amount);
-    return true;
-  }
-
-  takeFood(id: string, amount: number): boolean {
-    const food = this.foodsById.get(id);
-    if (!food) return false;
-    return food.take(amount);
   }
 
   getBirdById(id: string): Bird {

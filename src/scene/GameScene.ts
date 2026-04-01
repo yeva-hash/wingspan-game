@@ -7,6 +7,14 @@ import { PlayerResourceStore } from "../stores/PlayerResourceStore";
 import { ActionMenuView } from "../game/views/ActionMenuView";
 import { HandView } from "../game/views/HandView";
 import { GameApp } from "../app/gameApp";
+import { GameStore } from "../stores/GameStore";
+import { HandSelectionManager } from "../game/managers/HandSelectionManager";
+import birdsJson from "../../data/birds.json";
+import foodsJson from "../../data/foods.json";
+import type { BirdDefinition, FoodDefinition } from "../game/resourceTypes";
+
+const birds = (birdsJson as { birds: BirdDefinition[] }).birds;
+const foods = (foodsJson as { foods: FoodDefinition[] }).foods;
 
 export class GameScene {
   private isRunning = false;
@@ -21,24 +29,25 @@ export class GameScene {
 
     const { layoutService } = this.gameApp;
 
+    const gameStore = new GameStore();
     const playerResources = new PlayerResourceStore();
     playerResources.setInitialDeal(
-      [
-        { id: "sparrow", name: "Sparrow", type: "bird", description: "..." , allowedFoods: ["seed", "worm"] },
-        { id: "tit", name: "Great tit", type: "bird", description: "..." , allowedFoods: ["seed"] },
-        { id: "bullfinch", name: "Bullfinch", type: "bird", description: "..." , allowedFoods: ["seed", "worm"] },
-      ],
-      [
-        { id: "seed", name: "Seed", type: "food" },
-        { id: "worm", name: "Worm", type: "food" }
-      ]
+      [birds[0], birds[3], birds[4]],
+      [foods[0], foods[1], foods[2]]
     );
+    gameStore.addArea("forest");
+    gameStore.addArea("steppe");    
+    gameStore.addArea("swamp");
+
+    const handSelectionManager = new HandSelectionManager(playerResources);
 
     const actionMenuView = new ActionMenuView(layoutService);
     const handView = new HandView(layoutService);
 
-    const handController = new HandController(playerResources, handView);
+    const handController = new HandController(playerResources, handView, handSelectionManager);
     const actionMenuController = new ActionMenuController(actionMenuView);
+
+    handController.renderAreas(gameStore.getAreas());
 
     // this.gameApp.app.stage.addChild(handController.container);
     // this.gameApp.app.stage.addChild(actionMenuController.container);

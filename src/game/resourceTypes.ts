@@ -2,18 +2,17 @@
 export type BirdDefinition = {
   id: string;
   name: string;
-  type: "bird";
   description?: string;
   texture?: string;
   allowedFoods: FoodType[];
+  allowedAreas: Area[];
 };
 
 export type FoodDefinition = {
   id: FoodType;
-  name: string;
-  type: "food";
-  description?: string;
   texture?: string;
 };
 
-export type FoodType = "seed" | "worm" | "berry";
+export type FoodType = "seed" | "worm" | "berry" | "fish" | "mouse";
+
+export type Area = "forest" | "steppe" | "swamp";;

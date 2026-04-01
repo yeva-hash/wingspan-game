@@ -1,14 +1,17 @@
 import * as PIXI from "pixi.js";
 import { BirdCardView } from "./BirdCardView";
-import { FoodTokenView } from "./FoodTokenView";
+import { FoodTokenView } from "./food/FoodTokenView";
 import type { Bird } from "../models/Bird";
 import type { Food } from "../models/Food";
 import { LayoutService } from "../../layout/LayoutService";
 import { alphaTo } from "../../utils/viewUtils";
+import { QuantifiedFoodTokenView } from "./food/QuantifiedFoodTokenView";
+import { Area } from "../resourceTypes";
 
 export class HandView {
   onBirdClicked: ((birdId: string) => void) | null = null;
   onConfirmClicked: (() => void) | null = null;
+  onAreaClicked: ((areaId: Area) => void) | null = null;
 
   private readonly _container: PIXI.Container;
   private readonly _birdsContainer: PIXI.Container;
@@ -17,14 +20,16 @@ export class HandView {
   private readonly _messageText: PIXI.Text;
 
   private readonly _birdViewsById = new Map<string, BirdCardView>();
-  private readonly _foodViewsById = new Map<string, FoodTokenView>();
+  private readonly _foodViewsById = new Map<string, QuantifiedFoodTokenView>();
 
-  constructor(layoutService: LayoutService) {
-    this._container = layoutService.get("hand-field");
-    this._birdsContainer = layoutService.get("birds-container");
-    this._foodsContainer = layoutService.get("foods-container");
-    this._confirmButton = layoutService.get("confirm-button");
-    this._messageText = layoutService.get("hand-message-text");
+  private readonly _areaSelections = new Map<Area, PIXI.Text>();
+
+  constructor(private _layoutService: LayoutService) {
+    this._container = this._layoutService.get("hand-field");
+    this._birdsContainer = this._layoutService.get("birds-container");
+    this._foodsContainer = this._layoutService.get("foods-container");
+    this._confirmButton = this._layoutService.get("confirm-button");
+    this._messageText = this._layoutService.get("hand-message-text");
 
     this._confirmButton.eventMode = "static";
     this._confirmButton.cursor = "pointer";
@@ -46,6 +51,7 @@ export class HandView {
     this._birdViewsById.clear();
     this._foodViewsById.clear();
     this.setMessage("");
+    // this._areaSelections.forEach((_, id) => this.setAreaSelected(id, false));
   }
 
   private renderBirds(birds: readonly Bird[]): void {
@@ -61,7 +67,13 @@ export class HandView {
 
   private renderFoods(foods: readonly Food[]): void {
     foods.forEach((food, index) => {
-      const view = new FoodTokenView(food);
+      if (this._foodViewsById.has(food.id)) {
+        const view = this._foodViewsById.get(food.id);
+        //TODO
+        view!.quantity = view!.quantity + 1;
+        return;
+      }
+      const view = new QuantifiedFoodTokenView(food, 1);
       view.position.set(index * 70, 0);
 
       this._foodViewsById.set(food.id, view);
@@ -86,5 +98,34 @@ export class HandView {
   setMessage(message: string): void {
     this._messageText.text = message;
     this._messageText.visible = message.length > 0;
+  }
+
+  setAreas(areas: readonly Area[]): void {
+    areas.forEach((area) => {
+      if (this._areaSelections.has(area)) {
+        return;
+      }
+
+      const text = this._layoutService.get(`${area}-text`) as PIXI.Text;
+      text.eventMode = "static";
+      text.cursor = "pointer";
+      this._areaSelections.set(area, text);
+      text.visible = false;
+      // this.setAreaSelected(area, false);
+      text.on("pointerdown", () => this.onAreaClicked?.(area));
+    });
+  }
+
+  setAreaSelected(areaId: Area): void {
+    this._areaSelections.forEach((text, area) => {
+      text.alpha = area === areaId ? 1 : 0.5;
+    });
+  }
+
+  enableAreaSelection(allowedAreas: readonly Area[]): void {
+    this._areaSelections.forEach((text, areaId) => {
+      text.visible = allowedAreas.includes(areaId);
+      text.interactive = allowedAreas.includes(areaId);
+    });
   }
 }

@@ -9,6 +9,10 @@ export class ActionMenuController {
     return this.view.waitForAction();
   }
 
+  // async chooseArea(): Promise<string> {
+  //   return this.view.waitForArea();
+  // }
+
   // async chooseAction() {
   //   const deferred = createDeferred<ActionId>();
 

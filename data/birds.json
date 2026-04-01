@@ -3,62 +3,72 @@
     {
       "id": "sparrow",
       "name": "Sparrow",
-      "type": "bird",
-      "description": "A small grey city bird; fond of crumbs and grain."
+      "description": "A small grey city bird; fond of crumbs and grain.",
+      "allowedAreas": ["forest", "steppe"],
+      "allowedFoods": ["seed", "worm"]
     },
     {
       "id": "tit",
       "name": "Great tit",
-      "type": "bird",
-      "description": "Colourful bird with a black cap; often visits feeders in winter."
+      "description": "Colourful bird with a black cap; often visits feeders in winter.",
+      "allowedAreas": ["forest"],
+      "allowedFoods": ["seed"]
     },
     {
       "id": "bullfinch",
       "name": "Bullfinch",
-      "type": "bird",
-      "description": "Red-breasted winter visitor with a stout bill."
+      "description": "Red-breasted winter visitor with a stout bill.",
+      "allowedAreas": ["steppe"],
+      "allowedFoods": ["seed", "worm"]
     },
     {
       "id": "thrush",
       "name": "Thrush",
-      "type": "bird",
-      "description": "Songbird that readily eats berries and worms."
+      "description": "Songbird that readily eats berries and worms.",
+      "allowedAreas": ["swamp", "steppe"],
+      "allowedFoods": ["worm", "berry"]
     },
     {
       "id": "nightingale",
       "name": "Nightingale",
-      "type": "bird",
-      "description": "Famous night singer with a rich, bushy voice."
+      "description": "Famous night singer with a rich, bushy voice.",
+      "allowedAreas": ["swamp"],
+      "allowedFoods": ["worm", "berry"]
     },
     {
       "id": "goldfinch",
       "name": "Goldfinch",
-      "type": "bird",
-      "description": "Red-and-yellow finch that loves seeds."
+      "description": "Red-and-yellow finch that loves seeds.",
+      "allowedAreas": ["forest"],
+      "allowedFoods": ["seed"]
     },
     {
       "id": "skylark",
       "name": "Skylark",
-      "type": "bird",
-      "description": "Rises singing over open fields and meadows."
+      "description": "Rises singing over open fields and meadows.",
+      "allowedAreas": ["steppe"],
+      "allowedFoods": ["seed", "worm"]
     },
     {
       "id": "swallow",
       "name": "Swallow",
-      "type": "bird",
-      "description": "Fast aerial hunter of insects over water and fields."
+      "description": "Fast aerial hunter of insects over water and fields.",
+      "allowedAreas": ["swamp", "steppe"],
+      "allowedFoods": ["worm", "berry"]
     },
     {
       "id": "woodpecker",
       "name": "Woodpecker",
-      "type": "bird",
-      "description": "Drums on trunks to find insects under the bark."
+      "description": "Drums on trunks to find insects under the bark.",
+      "allowedAreas": ["forest"],
+      "allowedFoods": ["worm", "berry"]
     },
     {
       "id": "magpie",
       "name": "Magpie",
-      "type": "bird",
-      "description": "Smart black-and-white corvid, curious about everything."
+      "description": "Smart black-and-white corvid, curious about everything.",
+      "allowedAreas": ["forest"],
+      "allowedFoods": ["worm", "berry"]
     }
   ]
 }

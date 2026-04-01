@@ -16,10 +16,6 @@ export class Food {
     return this.definition.id;
   }
 
-  get name(): string {
-    return this.definition.name;
-  }
-
   get quantity(): number {
     return this._quantity;
   }

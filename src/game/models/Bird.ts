@@ -12,9 +12,13 @@ export class Bird {
     return this.definition.allowedFoods;
   }
 
+  get allowedAreas() {
+    return this.definition.allowedAreas;
+  }
+
   constructor(definition: BirdDefinition, instanceId?: string) {
     this.definition = definition;
-    this.instanceId = instanceId ?? crypto.randomUUID();
+    this.instanceId = definition.name;
   }
 
   /** Species id from catalog (sparrow, tit, …). */

@@ -129,6 +129,42 @@
                         "text": "Confirm Selection",
                         "fontSize": 20,
                         "color": "#000000"
+                    },
+                    {
+                        "name":"area-selection",
+                        "type": "container",
+                        "x": 1000,
+                        "y": 500,
+                        "alpha": 1,
+                        "children": [
+                            {
+                                "name":"forest-text",
+                                "type": "text",
+                                "x": 0,
+                                "y": 0,
+                                "text": "Forest",
+                                "fontSize": 20,
+                                "color": "#000000"
+                            },
+                            {
+                                "name":"steppe-text",
+                                "type": "text",
+                                "x": 0,
+                                "y": 20,
+                                "text": "Steppe",
+                                "fontSize": 20,
+                                "color": "#000000"
+                            },
+                            {
+                                "name":"swamp-text",
+                                "type": "text",
+                                "x": 0,
+                                "y": 40,
+                                "text": "Swamp",
+                                "fontSize": 20,
+                                "color": "#000000"
+                            }
+                        ]
                     }
                 ]
             }
