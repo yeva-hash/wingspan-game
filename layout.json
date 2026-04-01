@@ -165,6 +165,15 @@
                                 "color": "#000000"
                             }
                         ]
+                    },
+                    {
+                        "name":"minimize-button",
+                        "type": "text",
+                        "x": 1300,
+                        "y": 0,
+                        "text": "_",
+                        "fontSize": 100,
+                        "color": "#000000"
                     }
                 ]
             }

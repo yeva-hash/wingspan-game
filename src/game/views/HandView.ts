@@ -7,6 +7,13 @@ import { LayoutService } from "../../layout/LayoutService";
 import { alphaTo } from "../../utils/viewUtils";
 import { QuantifiedFoodTokenView } from "./food/QuantifiedFoodTokenView";
 import { Area } from "../resourceTypes";
+import gsap from "gsap";
+
+enum HandViewState {
+  Hidden,
+  Visible,
+  Minimized,
+}
 
 export class HandView {
   onBirdClicked: ((birdId: string) => void) | null = null;
@@ -24,17 +31,38 @@ export class HandView {
 
   private readonly _areaSelections = new Map<Area, PIXI.Text>();
 
+  private readonly _minimizeButton: PIXI.Text;
+
+  private _state = HandViewState.Hidden;
+
   constructor(private _layoutService: LayoutService) {
     this._container = this._layoutService.get("hand-field");
     this._birdsContainer = this._layoutService.get("birds-container");
     this._foodsContainer = this._layoutService.get("foods-container");
     this._confirmButton = this._layoutService.get("confirm-button");
     this._messageText = this._layoutService.get("hand-message-text");
+    this._minimizeButton = this._layoutService.get("minimize-button");
 
     this._confirmButton.eventMode = "static";
     this._confirmButton.cursor = "pointer";
     this._confirmButton.on("pointerdown", () => {
       this.onConfirmClicked?.();
+    });
+
+    this._minimizeButton.eventMode = "static";
+    this._minimizeButton.cursor = "pointer";
+    this._minimizeButton.on("pointerdown", () => {
+      this.onMinimizeClicked?.();
+    });
+  }
+
+  private onMinimizeClicked(): void {
+    const isVisible = this._state === HandViewState.Visible;
+    const YPos = isVisible ? 675 : 0;
+    gsap.to(this._container, { y: YPos, duration: 1, ease: "power1.inOut",
+       onComplete: () => {
+        this._state = isVisible ? HandViewState.Minimized : HandViewState.Visible; 
+      }
     });
   }
 
@@ -43,6 +71,7 @@ export class HandView {
     this.renderBirds(birds);
     this.renderFoods(foods);
     await alphaTo(this._container, 0.75, 1);
+    this._state = HandViewState.Visible;
   }
 
   clear(): void {
@@ -111,7 +140,6 @@ export class HandView {
       text.cursor = "pointer";
       this._areaSelections.set(area, text);
       text.visible = false;
-      // this.setAreaSelected(area, false);
       text.on("pointerdown", () => this.onAreaClicked?.(area));
     });
   }
@@ -124,6 +152,7 @@ export class HandView {
 
   enableAreaSelection(allowedAreas: readonly Area[]): void {
     this._areaSelections.forEach((text, areaId) => {
+      text.alpha = 1;
       text.visible = allowedAreas.includes(areaId);
       text.interactive = allowedAreas.includes(areaId);
     });
