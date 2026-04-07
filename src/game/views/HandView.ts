@@ -1,12 +1,10 @@
 import * as PIXI from "pixi.js";
 import { BirdCardView } from "./BirdCardView";
-import { FoodTokenView } from "./food/FoodTokenView";
-import type { Bird } from "../models/Bird";
 import type { Food } from "../models/Food";
 import { LayoutService } from "../../layout/LayoutService";
 import { alphaTo } from "../../utils/viewUtils";
 import { QuantifiedFoodTokenView } from "./food/QuantifiedFoodTokenView";
-import { Area } from "../types/resourceTypes";
+import { Area, BirdDefinition } from "../types/resourceTypes";
 import gsap from "gsap";
 
 enum HandViewState {
@@ -66,7 +64,7 @@ export class HandView {
     });
   }
 
-  async render(birds: readonly Bird[], foods: readonly Food[]): Promise<void> {
+  async render(birds: readonly BirdDefinition[], foods: readonly Food[]): Promise<void> {
     this.clear();
     this.renderBirds(birds);
     this.renderFoods(foods);
@@ -83,13 +81,13 @@ export class HandView {
     // this._areaSelections.forEach((_, id) => this.setAreaSelected(id, false));
   }
 
-  private renderBirds(birds: readonly Bird[]): void {
+  private renderBirds(birds: readonly BirdDefinition[]): void {
     birds.forEach((bird, index) => {
       const view = new BirdCardView(bird);
       view.position.set(index * 130, 0);
-      view.onClicked = () => this.onBirdClicked?.(bird.instanceId);
+      view.onClicked = () => this.onBirdClicked?.(bird.name);
 
-      this._birdViewsById.set(bird.instanceId, view);
+      this._birdViewsById.set(bird.name, view);
       this._birdsContainer.addChild(view);
     });
   }

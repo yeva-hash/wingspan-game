@@ -15,7 +15,8 @@ import type { BirdDefinition, FoodDefinition } from "../game/types/resourceTypes
 import { BirdOfferView } from "../game/views/BirdOfferView";
 import { BirdsOfferedStore } from "../stores/BirdsOfferedStore";
 import { BirdOfferedController } from "../game/controllers/BirdOfferedController";
-import { BirdSelectionManager } from "../game/managers/ChooseBirdStrategy";
+import { ChooseActionFlow } from "../flow/ChooseActionFlow";
+import { ChooseBirdStrategy } from "../game/managers/ChooseBirdStrategy";
 
 const birds = (birdsJson as { birds: BirdDefinition[] }).birds;
 const foods = (foodsJson as { foods: FoodDefinition[] }).foods;
@@ -43,7 +44,6 @@ export class GameScene {
 
     //TODO
     const handSelectionManager = new HandSelectionManager(playerResources);
-    const birdSelectionManager = new BirdSelectionManager();
 
     const actionMenuView = new ActionMenuView(layoutService);
     const handView = new HandView(layoutService);
@@ -51,7 +51,7 @@ export class GameScene {
 
     const handController = new HandController(playerResources, handView, handSelectionManager);
     const actionMenuController = new ActionMenuController(actionMenuView);
-    const birdOfferedController = new BirdOfferedController(birdOfferView, birdsOfferedStore, birdSelectionManager);
+    const birdOfferedController = new BirdOfferedController(birdOfferView, birdsOfferedStore);
 
     handController.renderAreas(gameStore.getAreas());
     birdOfferedController.render();

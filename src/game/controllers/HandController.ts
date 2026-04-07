@@ -1,12 +1,11 @@
 import type { PlayerResourceStore } from "../../stores/PlayerResourceStore";
 import { createDeferred } from "../../utils/deferred";
 import { HandSelectionManager } from "../managers/HandSelectionManager";
-import { Bird } from "../models/Bird";
-import type { Area } from "../types/resourceTypes";
+import type { Area, BirdDefinition } from "../types/resourceTypes";
 import { HandView } from "../views/HandView";
 
 export type PlayBirdSelection = {
-  bird: Bird;
+  bird: BirdDefinition;
   area: Area;
 };
 

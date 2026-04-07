@@ -1,4 +1,3 @@
-import { Bird } from "../game/models/Bird";
 import { Food } from "../game/models/Food";
 import type { BirdDefinition, FoodDefinition } from "../game/types/resourceTypes";
 
@@ -7,11 +6,11 @@ import type { BirdDefinition, FoodDefinition } from "../game/types/resourceTypes
  * Mutated by commands.
  */
 export class PlayerResourceStore {
-  private birds: Bird[] = [];
+  private birds: BirdDefinition[] = [];
   private foodsById = new Map<string, Food>();
 
   setInitialDeal(birdDefs: BirdDefinition[], foodDefs: FoodDefinition[]): void {
-    this.birds = birdDefs.map((def) => new Bird(def));
+    this.birds = [...birdDefs];
 
     this.foodsById = new Map<string, Food>();
     for (const def of foodDefs) {
@@ -19,7 +18,7 @@ export class PlayerResourceStore {
     }
   }
 
-  getBirds(): readonly Bird[] {
+  getBirds(): readonly BirdDefinition[] {
     return this.birds;
   }
 
@@ -31,13 +30,13 @@ export class PlayerResourceStore {
     return this.foodsById.get(id);
   }
 
-  getBirdById(id: string): Bird {
-    const bird = this.birds.find((b) => b.instanceId === id);
-    if(!bird) throw new Error(`Can't find bird with id ${id}`);
+  getBirdById(name: string): BirdDefinition {
+    const bird = this.birds.find((b) => b.name === name);
+    if(!bird) throw new Error(`Can't find bird with id ${name}`);
     return bird;
   }
 
-  addBird(bird: Bird): void {
+  addBird(bird: BirdDefinition): void {
     this.birds.push(bird);
   }
 }

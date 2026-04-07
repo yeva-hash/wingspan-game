@@ -1,6 +1,5 @@
 import type { PlayerResourceStore } from "../../stores/PlayerResourceStore";
-import { Bird } from "../models/Bird";
-import { Area } from "../types/resourceTypes";
+import { Area, BirdDefinition } from "../types/resourceTypes";
 
 export class HandSelectionManager {
   private _selectedBirdId: string | null = null;
@@ -31,7 +30,7 @@ export class HandSelectionManager {
     this._selectedArea = null;
   }
 
-  getSelectedBird(): Bird | null {
+  getSelectedBird(): BirdDefinition | null {
     if (!this._selectedBirdId) {
       return null;
     }
@@ -78,14 +77,14 @@ export class HandSelectionManager {
     return this.getMissingFoodMessage(bird);
   }
 
-  private canPayBirdCost(bird: Bird): boolean {
+  private canPayBirdCost(bird: BirdDefinition): boolean {
     return bird.allowedFoods.every((foodId) => {
       const food = this.store.getFoodById(foodId);
       return !!food;
     });
   }
 
-  private getMissingFoodMessage(bird: Bird): string {
+  private getMissingFoodMessage(bird: BirdDefinition): string {
     if (bird.allowedFoods.length === 0) {
       return "This bird doesn't need food";
     }

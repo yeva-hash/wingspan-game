@@ -1,10 +1,6 @@
-import { random } from "gsap";
 import { BirdsOfferedStore } from "../../stores/BirdsOfferedStore";
-import { GameStore } from "../../stores/GameStore";
-import { Bird } from "../models/Bird";
 import { BirdDefinition } from "../types/resourceTypes";
 import { BirdOfferView } from "../views/BirdOfferView";
-import { randomInt } from "../../utils/general";
 import { createDeferred } from "../../utils/deferred";
 import { SelectionStrategy } from "../types/selectionTypes";
 import { ChooseBirdStrategy } from "../managers/ChooseBirdStrategy";
