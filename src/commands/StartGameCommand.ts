@@ -1,6 +1,6 @@
 // import birdsJson from "../../data/birds.json";
 // import foodsJson from "../../data/foods.json";
-import type { BirdDefinition, FoodDefinition } from "../game/resourceTypes";
+import type { BirdDefinition, FoodDefinition } from "../game/types/resourceTypes";
 import type { PlayerResourceStore } from "../stores/PlayerResourceStore";
 
 type BirdsFile = { birds: BirdDefinition[] };

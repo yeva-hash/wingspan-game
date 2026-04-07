@@ -1,4 +1,4 @@
-import type { FoodDefinition, FoodType } from "../resourceTypes";
+import type { FoodDefinition, FoodType } from "../types/resourceTypes";
 
 /**
  * Food in the player's inventory: catalog entry + quantity.

@@ -1,5 +1,5 @@
 import foodsJson from "../../data/foods.json";
-import type { FoodDefinition } from "../game/resourceTypes";
+import type { FoodDefinition } from "../game/types/resourceTypes";
 
 type FoodsFile = {
   foods: FoodDefinition[];

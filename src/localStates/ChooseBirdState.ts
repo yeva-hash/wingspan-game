@@ -1,28 +1,23 @@
 import type { LocalState } from "./LocalState";
 import type { FlowContext } from "../flow/FlowTypes";
 import { Bird } from "../game/models/Bird";
+import { ChooseBirdStrategy } from "../game/managers/ChooseBirdStrategy";
 
 export class ChooseBirdState implements LocalState {
   async run(ctx: FlowContext): Promise<void> {
-    const { birdOffered } = ctx.controllers;
+    const { birdOffered: birdOfferedController } = ctx.controllers;
     const { birdsOffered: birdsOfferedStore, playerResources } = ctx.stores;
     // Step 1 Highlight birds offered area
-    const selectedCount = 1;
+    const selectedCount = 2;
+    birdOfferedController.setStrategy(new ChooseBirdStrategy(selectedCount));
 
-    await birdOffered.prepareView(selectedCount);
-    // Step 2 wait for bird Choosing
-    const selectedBirds = await birdOffered.waitForConfirmClick();
-    // Step 3 Choose bird
+    await birdOfferedController.prepareView(selectedCount);
+    const selectedBirds = await birdOfferedController.waitForConfirmClick();
 
-    //TODO command 
     for (const bird of selectedBirds) {
-      playerResources.addBird(new Bird(bird));
-      
+        birdsOfferedStore.removeFromAvailable(bird);
+        playerResources.addBird(new Bird(bird));
     }
-    // change offered bird store 
-    // change playerresources store
-
-    // Step 4 add to resource store 
   }
 }
 

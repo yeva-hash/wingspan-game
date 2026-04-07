@@ -1,6 +1,6 @@
 import type { PlayerResourceStore } from "../../stores/PlayerResourceStore";
 import { Bird } from "../models/Bird";
-import { Area } from "../resourceTypes";
+import { Area } from "../types/resourceTypes";
 
 export class HandSelectionManager {
   private _selectedBirdId: string | null = null;

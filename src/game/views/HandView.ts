@@ -6,7 +6,7 @@ import type { Food } from "../models/Food";
 import { LayoutService } from "../../layout/LayoutService";
 import { alphaTo } from "../../utils/viewUtils";
 import { QuantifiedFoodTokenView } from "./food/QuantifiedFoodTokenView";
-import { Area } from "../resourceTypes";
+import { Area } from "../types/resourceTypes";
 import gsap from "gsap";
 
 enum HandViewState {

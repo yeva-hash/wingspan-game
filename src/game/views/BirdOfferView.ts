@@ -2,7 +2,7 @@ import { LayoutService } from "../../layout/LayoutService";
 import { BirdsOfferedStore } from "../../stores/BirdsOfferedStore";
 import { alphaTo, setButtonInteractive } from "../../utils/viewUtils";
 import { Bird } from "../models/Bird";
-import { BirdDefinition } from "../resourceTypes";
+import { BirdDefinition } from "../types/resourceTypes";
 import { BirdCardView } from "./BirdCardView";
 import * as PIXI from "pixi.js";
 

@@ -1,6 +1,6 @@
 import { Bird } from "../game/models/Bird";
 import { Food } from "../game/models/Food";
-import type { BirdDefinition, FoodDefinition } from "../game/resourceTypes";
+import type { BirdDefinition, FoodDefinition } from "../game/types/resourceTypes";
 
 /**
  * Store = single source of truth for gameplay data.

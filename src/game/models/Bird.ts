@@ -1,4 +1,4 @@
-import type { BirdDefinition } from "../resourceTypes";
+import type { BirdDefinition } from "../types/resourceTypes";
 
 /**
  * A bird instance in the current session (hand / board).

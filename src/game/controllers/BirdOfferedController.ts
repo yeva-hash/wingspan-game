@@ -2,40 +2,38 @@ import { random } from "gsap";
 import { BirdsOfferedStore } from "../../stores/BirdsOfferedStore";
 import { GameStore } from "../../stores/GameStore";
 import { Bird } from "../models/Bird";
-import { BirdDefinition } from "../resourceTypes";
+import { BirdDefinition } from "../types/resourceTypes";
 import { BirdOfferView } from "../views/BirdOfferView";
 import { randomInt } from "../../utils/general";
 import { createDeferred } from "../../utils/deferred";
-import { BirdSelectionManager } from "../managers/BirdSelectionManager";
+import { SelectionStrategy } from "../types/selectionTypes";
+import { ChooseBirdStrategy } from "../managers/ChooseBirdStrategy";
 
 export class BirdOfferedController {
-    constructor(private view: BirdOfferView, private readonly store: BirdsOfferedStore, private readonly selectionManager: BirdSelectionManager) {
+    private _selectionStrategy!: ChooseBirdStrategy;
+    constructor(
+        private view: BirdOfferView, 
+        private readonly store: BirdsOfferedStore, 
+        // private readonly selectionManager: BirdSelectionManage
+    ) 
+    {
         this.view.onBirdClicked = (birdId) => this.handleBirdClick(birdId);
     }
+    
+    setStrategy(strategy: SelectionStrategy): void {
+        this._selectionStrategy = strategy as ChooseBirdStrategy;
+        // this.syncView();
+    }
+
     async render(): Promise<void> {
-        this.selectionManager.reset();
+        this._selectionStrategy.reset();
 
         const birds = this.store.getOfferedBirds();
         await this.view.render(birds);
     }
 
-    // private getBirdOffers(): BirdDefinition[] {
-    //     const availableBirds = this.store.getAvailableBirds();
-    //     // if (availableBirds.length === 0) {
-    //     //     throw new Error("No birds available");
-    //     // }
-    //     // //TODO
-    //     // for(let i = 0; i < BirdsOfferedStore.initialBirdsOfferedCount; i++) {
-    //     //     const bird = this.store.getRandomAvailableBird();
-    //     //     this.store.addOfferedBird(bird);
-    //     // }
-
-    //     // return [...this.store.getOfferedBirds()];
-    // }
-
     async prepareView(selectedCount: number): Promise<void> {
         //hightlight section
-        this.selectionManager.setSelectedCount(selectedCount);
         await this.view.prepareForSelection();
     }
 
@@ -44,7 +42,7 @@ export class BirdOfferedController {
         const prev = this.view.onConfirmClicked;
 
         this.view.onConfirmClicked = () => {
-            const { selectedBirdIds } = this.selectionManager;
+            const { selectedBirdIds } = this._selectionStrategy;
             if (!selectedBirdIds.length) {
                 return;
             }
@@ -67,7 +65,7 @@ export class BirdOfferedController {
     }
 
     private handleBirdClick(birdId: string): void {
-        this.selectionManager.selectBird(birdId);
+        this._selectionStrategy.selectBird(birdId);
 
         this.syncView();
     }
@@ -78,15 +76,15 @@ export class BirdOfferedController {
     }
     
     private syncBirdSelection(): void {
-        const isRandomSelected = this.selectionManager.selectedBirdIds.includes("random");
+        const isRandomSelected = this._selectionStrategy.selectedBirdIds.includes("random");
         this.view.setRandomSelected(isRandomSelected);
 
         for (const bird of this.store.getOfferedBirds()) {
-            this.view.setSelected(bird.name, this.selectionManager.selectedBirdIds.includes(bird.name));
+            this.view.setSelected(bird.name, this._selectionStrategy.selectedBirdIds.includes(bird.name));
         }
     }
 
     private syncConfirmState(): void {
-        this.view.setConfirmEnabled(this.selectionManager.canConfirm());
-      }
+        this.view.setConfirmEnabled(this._selectionStrategy.canConfirm());
+    }
 }

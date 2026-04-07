@@ -1,5 +1,5 @@
 import birdsJson from "../../data/birds.json";
-import type { BirdDefinition } from "../game/resourceTypes";
+import type { BirdDefinition } from "../game/types/resourceTypes";
 
 type BirdsFile = {
   birds: BirdDefinition[];

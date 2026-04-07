@@ -1,23 +1,28 @@
-import { Bird } from "../game/models/Bird";
-import { BirdDefinition } from "../game/resourceTypes";
+import { BirdDefinition } from "../game/types/resourceTypes";
 import { randomInt } from "../utils/general";
 
 export class BirdsOfferedStore {
     public static readonly initialBirdsOfferedCount = 3;
     private readonly _availableBirds: BirdDefinition[] = [];
     private _offeredBirds: BirdDefinition[] = [];
-    constructor(birds: BirdDefinition[] = []) {
-        this._availableBirds = birds;
-    }
 
-    getAvailableBirds(): readonly BirdDefinition[] {
-        return this._availableBirds;
+    constructor(birds: BirdDefinition[] = []) {
+        this._availableBirds = [...birds];
     }
 
     getRandomAvailableBird(): BirdDefinition {
-        const random = this._availableBirds[randomInt(0, this._availableBirds.length - 1)];
-        // this.removeBird(random);
-        return random;
+        if (this._availableBirds.length === 0) {
+            throw new Error("No available birds");
+        }
+        return this._availableBirds[randomInt(0, this._availableBirds.length - 1)];
+    }
+
+    removeFromAvailable(bird: BirdDefinition): void {
+        const index = this._availableBirds.indexOf(bird);
+        if (index === -1) {
+            throw new Error("Bird not found in available");
+        }
+        this._availableBirds.splice(index, 1);
     }
 
     getOfferedBirds(): readonly BirdDefinition[] {
@@ -28,15 +33,15 @@ export class BirdsOfferedStore {
         return this._offeredBirds.find((bird) => bird.name === id);
     }
 
-    updateOfferedBird(bird: BirdDefinition): void {
-        if (this._offeredBirds.includes(bird)) {
-            this._offeredBirds.splice(this._offeredBirds.indexOf(bird), 1);
-            return;
-        } 
-        this._offeredBirds.push(bird);
+    setOfferedBirds(birds: BirdDefinition[]): void {
+        this._offeredBirds = [...birds];
     }
 
-    removeBird(bird: BirdDefinition): void {
-        this._availableBirds.splice(this._availableBirds.indexOf(bird), 1);
+    replaceOfferedBird(oldBird: BirdDefinition, newBird: BirdDefinition): void {
+        const index = this._offeredBirds.indexOf(oldBird);
+        if (index === -1) {
+            throw new Error("Bird not found in offered");
+        }
+        this._offeredBirds[index] = newBird;
     }
 }
