@@ -12,6 +12,10 @@ import { HandSelectionManager } from "../game/managers/HandSelectionManager";
 import birdsJson from "../../data/birds.json";
 import foodsJson from "../../data/foods.json";
 import type { BirdDefinition, FoodDefinition } from "../game/resourceTypes";
+import { BirdOfferView } from "../game/views/BirdOfferView";
+import { BirdsOfferedStore } from "../stores/BirdsOfferedStore";
+import { BirdOfferedController } from "../game/controllers/BirdOfferedController";
+import { BirdSelectionManager } from "../game/managers/BirdSelectionManager";
 
 const birds = (birdsJson as { birds: BirdDefinition[] }).birds;
 const foods = (foodsJson as { foods: FoodDefinition[] }).foods;
@@ -29,25 +33,25 @@ export class GameScene {
 
     const { layoutService } = this.gameApp;
 
-    const gameStore = new GameStore();
+    const gameStore = new GameStore(["forest", "steppe", "swamp"]);
     const playerResources = new PlayerResourceStore();
     playerResources.setInitialDeal(
       [birds[0], birds[3], birds[4]],
-      [foods[3], foods[4]]
+      [foods[0], foods[1], foods[2], foods[3], foods[4]]
     );
-    gameStore.addArea("forest");
-    gameStore.addArea("steppe");    
-    gameStore.addArea("swamp");
+    const birdsOfferedStore = new BirdsOfferedStore(birds);
 
+    //TODO
     const handSelectionManager = new HandSelectionManager(playerResources);
+    const birdSelectionManager = new BirdSelectionManager();
 
     const actionMenuView = new ActionMenuView(layoutService);
     const handView = new HandView(layoutService);
+    const birdOfferView = new BirdOfferView(layoutService);
 
     const handController = new HandController(playerResources, handView, handSelectionManager);
     const actionMenuController = new ActionMenuController(actionMenuView);
-
-    handController.renderAreas(gameStore.getAreas());
+    const birdOfferedController = new BirdOfferedController(birdOfferView, birdsOfferedStore, birdSelectionManager);
 
     // this.gameApp.app.stage.addChild(handController.container);
     // this.gameApp.app.stage.addChild(actionMenuController.container);
@@ -55,11 +59,14 @@ export class GameScene {
     const ctx: FlowContext = {
       gameApp: this.gameApp,
       stores: {
+        game: gameStore,
         playerResources,
+        birdsOffered: birdsOfferedStore,
       },
       controllers: {
         hand: handController,
         actionMenu: actionMenuController,
+        birdOffered: birdOfferedController,
       },
     };
 

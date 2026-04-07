@@ -36,5 +36,9 @@ export class PlayerResourceStore {
     if(!bird) throw new Error(`Can't find bird with id ${id}`);
     return bird;
   }
+
+  addBird(bird: Bird): void {
+    this.birds.push(bird);
+  }
 }
 

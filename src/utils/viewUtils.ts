@@ -1,4 +1,5 @@
 import gsap from "gsap";
+import { Container, Text } from "pixi.js";
 
 /**
  * Tween the alpha with asyc function, so that it can be used with "await" command
@@ -20,4 +21,9 @@ export async function alphaTo(
             },
         });
     });
+}
+
+export function setButtonInteractive(button: Container | Text, value: boolean): void {
+    button.eventMode = value ? "static" : "none";
+    button.cursor = value ? "pointer" : "default";
 }
