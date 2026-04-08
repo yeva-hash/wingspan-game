@@ -10,7 +10,7 @@ export class ChooseBirdState implements LocalState {
     const selectedCount = 2;
     birdOfferedController.setStrategy(new ChooseBirdStrategy(selectedCount));
 
-    await birdOfferedController.prepareView(selectedCount);
+    await birdOfferedController.prepareView();
     const selectedBirds = await birdOfferedController.waitForConfirmClick();
 
     for (const bird of selectedBirds) {
