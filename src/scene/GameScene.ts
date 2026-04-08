@@ -8,18 +8,13 @@ import { ActionMenuView } from "../game/views/ActionMenuView";
 import { HandView } from "../game/views/HandView";
 import { GameApp } from "../app/gameApp";
 import { GameStore } from "../stores/GameStore";
-import { HandSelectionManager } from "../game/strategy/selectionStrategy/PlayBirdStrategy";
 import birdsJson from "../../data/birds.json";
-import foodsJson from "../../data/foods.json";
-import type { BirdDefinition, FoodDefinition } from "../game/types/resourceTypes";
 import { BirdOfferView } from "../game/views/BirdOfferView";
 import { BirdsOfferedStore } from "../stores/BirdsOfferedStore";
 import { BirdOfferedController } from "../game/controllers/BirdOfferedController";
-import { ChooseActionFlow } from "../flow/ChooseActionFlow";
-import { ChooseBirdStrategy } from "../game/strategy/selectionStrategy/ChooseBirdStrategy";
+import { BirdDefinition } from "../game/types/resourceTypes";
 
 const birds = (birdsJson as { birds: BirdDefinition[] }).birds;
-const foods = (foodsJson as { foods: FoodDefinition[] }).foods;
 
 export class GameScene {
   private isRunning = false;
@@ -36,28 +31,15 @@ export class GameScene {
 
     const gameStore = new GameStore(["forest", "steppe", "swamp"]);
     const playerResources = new PlayerResourceStore();
-    playerResources.setInitialDeal(
-      [birds[0], birds[3], birds[4]],
-      [foods[0], foods[1], foods[2], foods[3], foods[4]]
-    );
     const birdsOfferedStore = new BirdsOfferedStore(birds);
-
-    //TODO
-    const handSelectionManager = new HandSelectionManager(playerResources);
 
     const actionMenuView = new ActionMenuView(layoutService);
     const handView = new HandView(layoutService);
     const birdOfferView = new BirdOfferView(layoutService);
 
-    const handController = new HandController(playerResources, handView, handSelectionManager);
+    const handController = new HandController(playerResources, handView);
     const actionMenuController = new ActionMenuController(actionMenuView);
     const birdOfferedController = new BirdOfferedController(birdOfferView, birdsOfferedStore);
-
-    handController.renderAreas(gameStore.getAreas());
-    birdOfferedController.render();
-
-    // this.gameApp.app.stage.addChild(handController.container);
-    // this.gameApp.app.stage.addChild(actionMenuController.container);
 
     const ctx: FlowContext = {
       gameApp: this.gameApp,

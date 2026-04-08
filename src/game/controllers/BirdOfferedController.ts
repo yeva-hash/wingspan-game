@@ -5,10 +5,10 @@ import { BirdOfferSelectionStrategy } from "../types/selectionTypes";
 import { BirdOfferView } from "../views/BirdOfferView";
 
 export class BirdOfferedController {
+    private strategy!: BirdOfferSelectionStrategy;
     constructor(
         private readonly view: BirdOfferView,
-        private readonly store: BirdsOfferedStore,
-        private strategy: BirdOfferSelectionStrategy,
+        private readonly store: BirdsOfferedStore
     ) {
         this.view.onBirdClicked = (birdId) => this.handleBirdClick(birdId);
     }
