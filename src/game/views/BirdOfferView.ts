@@ -1,7 +1,6 @@
 import { LayoutService } from "../../layout/LayoutService";
 import { BirdsOfferedStore } from "../../stores/BirdsOfferedStore";
 import { alphaTo, setButtonInteractive } from "../../utils/viewUtils";
-import { Bird } from "../models/Bird";
 import { BirdDefinition } from "../types/resourceTypes";
 import { BirdCardView } from "./BirdCardView";
 import * as PIXI from "pixi.js";
@@ -26,10 +25,11 @@ export class BirdOfferView {
 
     //TODO no need to rerender all birds
     async render(birds: readonly BirdDefinition[]): Promise<void> {
+        this._container.removeChildren();
         this._offeredBirds.clear();
         for (let i = 0; i < BirdsOfferedStore.initialBirdsOfferedCount; i++) {
             const bird = birds[i];
-            const view = new BirdCardView(new Bird(bird)); 
+            const view = new BirdCardView(bird); 
             view.position.set(0, i * 200);
             this._offeredBirds.set(bird.name, view);
             this._container.addChild(view);
@@ -53,7 +53,6 @@ export class BirdOfferView {
             }
         }
         setButtonInteractive(this._randomBirdText, interactive);
-        this._randomBirdText.on("pointerdown", () => this.onBirdClicked?.("random"));
     }
 
     setSelected(name: string, selected: boolean): void {

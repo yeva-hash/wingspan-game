@@ -1,16 +1,12 @@
 import * as PIXI from "pixi.js";
-import { Bird } from "../models/Bird";
+import { BirdDefinition } from "../types/resourceTypes";
 
 export class BirdCardView extends PIXI.Container {
-  readonly bird: Bird;
-
   private bg: PIXI.Graphics;
   onClicked: ((birdView: BirdCardView) => void) | null = null;
 
-  constructor(bird: Bird) {
+  constructor(bird: BirdDefinition) {
     super();
-
-    this.bird = bird;
 
     this.bg = new PIXI.Graphics()
       .roundRect(0, 0, 120, 180, 8)
