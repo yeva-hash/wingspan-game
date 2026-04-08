@@ -1,11 +1,13 @@
 import type { LocalState } from "./LocalState";
 import type { FlowContext } from "../flow/FlowTypes";
+import { PlayBirdStrategy } from "../game/strategy/selectionStrategy/PlayBirdStrategy";
 
 export class PlayingBirdState implements LocalState {
   async run(ctx: FlowContext): Promise<void> {
-    // Step 1: show birds in hand
+    ctx.controllers.hand.setStrategy(new PlayBirdStrategy());
+
     await ctx.controllers.hand.render();
-    // Step 2: wait for a bird click
+    
     const {bird, area} = await ctx.controllers.hand.waitForConfirmClick();
 
     //show bird details while choosing area
