@@ -16,6 +16,13 @@
                 "y": 170,
                 "children": [
                     {
+                        "name":"bird-offer-card-container",
+                        "type": "container",
+                        "x": 0,
+                        "y": 0,
+                        "children": []
+                    },
+                    {
                         "name":"random-bird-text",
                         "type": "text",
                         "x": 0,

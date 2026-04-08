@@ -1,14 +1,19 @@
-import { BirdsOfferedStore } from "../../stores/BirdsOfferedStore";
+import { BirdSupplyService } from "../services/BirdSupplyService";
 import { createDeferred } from "../../utils/deferred";
-import { BirdDefinition } from "../types/resourceTypes";
 import { BirdOfferSelectionStrategy } from "../types/selectionTypes";
 import { BirdOfferView } from "../views/BirdOfferView";
+import { BirdSupplyReader } from "../types/storeReaders";
+
+export type BirdOfferChoice = {
+    selectedBirdIds: string[];
+    takeRandomCount: number;
+};
 
 export class BirdOfferedController {
     private strategy!: BirdOfferSelectionStrategy;
     constructor(
         private readonly view: BirdOfferView,
-        private readonly store: BirdsOfferedStore
+        private readonly service: BirdSupplyReader
     ) {
         this.view.onBirdClicked = (birdId) => this.handleBirdClick(birdId);
     }
@@ -20,8 +25,8 @@ export class BirdOfferedController {
     }
 
     async render(): Promise<void> {
-        this.strategy.reset();
-        const birds = this.store.getOfferedBirds();
+        this.strategy?.reset();
+        const birds = this.service.getOfferedBirds();
         await this.view.render(birds);
     }
 
@@ -29,21 +34,19 @@ export class BirdOfferedController {
         await this.view.prepareForSelection();
     }
 
-    async waitForConfirmClick(): Promise<BirdDefinition[]> {
-        const deferred = createDeferred<BirdDefinition[]>();
+    async chooseBirds(): Promise<BirdOfferChoice> {
+        const deferred = createDeferred<BirdOfferChoice>();
         const prev = this.view.onConfirmClicked;
 
         this.view.onConfirmClicked = () => {
             if (!this.strategy.canConfirm()) return;
 
-            const selectedBirds = this.strategy.selectedBirdIds.map((birdId) => {
-                if (birdId === "random") {
-                    return this.store.getRandomAvailableBird();
-                }
-                return this.store.getOfferedBirdById(birdId)!;
-            });
+            const birdOfferChoice = {
+                selectedBirdIds: this.strategy.selectedBirdIds,
+                takeRandomCount: 1,
+            };
 
-            deferred.resolve(selectedBirds);
+            deferred.resolve(birdOfferChoice);
         };
 
         try {
@@ -67,7 +70,7 @@ export class BirdOfferedController {
         const isRandomSelected = this.strategy.selectedBirdIds.includes("random");
         this.view.setRandomSelected(isRandomSelected);
 
-        for (const bird of this.store.getOfferedBirds()) {
+        for (const bird of this.service.getOfferedBirds()) {
             this.view.setSelected(bird.name, this.strategy.selectedBirdIds.includes(bird.name));
         }
     }

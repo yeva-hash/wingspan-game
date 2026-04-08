@@ -1,0 +1,41 @@
+import { Food } from "../models/Food";
+import type { FoodDefinition } from "../types/resourceTypes";
+import type { BirdId } from "../../catalogs/BirdCatalog";
+
+/**
+ * Store = single source of truth for gameplay data.
+ * Mutated by commands.
+ */
+export class PlayerResourceStore {
+  private _birdIds: BirdId[] = [];
+  private _foodsById = new Map<string, Food>();
+
+  setInitialDeal(birdIds: BirdId[], foodDefs: FoodDefinition[]): void {
+    this._birdIds = [...birdIds];
+
+    this._foodsById = new Map<string, Food>();
+    for (const def of foodDefs) {
+      this._foodsById.set(def.id, new Food(def, 1));
+    }
+  }
+
+  getBirdIds(): readonly BirdId[] {
+    return this._birdIds;
+  }
+
+  getFoods(): readonly Food[] {
+    return [...this._foodsById.values()];
+  }
+
+  getFoodById(id: string): Food | undefined {
+    return this._foodsById.get(id);
+  }
+
+  hasBird(birdId: BirdId): boolean {
+    return this._birdIds.includes(birdId);
+  }
+
+  addBirdById(birdId: BirdId): void {
+    this._birdIds.push(birdId);
+  }
+}

@@ -8,7 +8,7 @@ export class PlayingBirdState implements LocalState {
 
     await ctx.controllers.hand.render();
     
-    const {bird, area} = await ctx.controllers.hand.waitForConfirmClick();
+    const {birdId, area} = await ctx.controllers.hand.chooseBird();
 
     //show bird details while choosing area
 

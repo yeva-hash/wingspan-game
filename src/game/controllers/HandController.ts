@@ -1,19 +1,23 @@
-import { PlayerResourceStore } from "../../stores/PlayerResourceStore";
+import { PlayerResourceStore } from "../stores/PlayerResourceStore";
 import { createDeferred } from "../../utils/deferred";
 import { Area, BirdDefinition } from "../types/resourceTypes";
 import { HandSelectionStrategy } from "../types/selectionTypes";
 import { HandView } from "../views/HandView";
+import { PlayerResourceReader } from "../types/storeReaders";
+import { BirdPlayRuleService } from "../services/BirdPlayRuleService";
+import { BirdId } from "../../catalogs/BirdCatalog";
 
-export type PlayBirdSelection = {
-  bird: BirdDefinition;
-  area: Area;
-};
+type PlayBirdChoice = {
+    birdId: BirdId;
+    area: Area;
+  };
 
 export class HandController {
   private strategy!: HandSelectionStrategy;
   constructor(
-      private readonly store: PlayerResourceStore,
-      private readonly view: HandView,
+    private readonly resources: PlayerResourceReader, 
+    private readonly rules: BirdPlayRuleService,
+    private readonly view: HandView,
   ) {
       this.view.onBirdClicked = (birdId) => this.handleBirdClick(birdId);
       this.view.onAreaClicked = (area) => this.handleAreaClick(area);
@@ -27,10 +31,10 @@ export class HandController {
 
   async render(): Promise<void> {
       await this.view.render(
-          this.store.getBirds(),
-          this.store.getFoods(),
+          this.resources.getBirds(),
+        this.resources.getFoods(),
       );
-      this.strategy.reset();
+      this.strategy?.reset();
       this.syncView();
   }
 
@@ -38,19 +42,19 @@ export class HandController {
       this.view.setAreas(areas);
   }
 
-  async waitForConfirmClick(): Promise<PlayBirdSelection> {
-      const deferred = createDeferred<PlayBirdSelection>();
+  async chooseBird(): Promise<PlayBirdChoice> {
+      const deferred = createDeferred<PlayBirdChoice>();
 
       const prev = this.view.onConfirmClicked;
       this.view.onConfirmClicked = () => {
           if (!this.strategy.canConfirm()) return;
 
-          const bird = this.store.getBirdById(this.strategy.selectedBirdId!);
+          const birdId = this.strategy.selectedBirdId; 
           const area = this.strategy.selectedArea;
 
-          if (!bird || !area) return;
+          if (!birdId || !area) return;
 
-          deferred.resolve({ bird, area });
+          deferred.resolve({ birdId, area });
       };
 
       try {
@@ -79,43 +83,41 @@ export class HandController {
   }
 
   private syncBirdSelection(): void {
-      for (const bird of this.store.getBirds()) {
+      for (const bird of this.resources.getBirds()) {
           this.view.setBirdSelected(bird.name, bird.name === this.strategy.selectedBirdId);
       }
   }
 
   private syncFoodHighlights(): void {
-      const bird = this.store.getBirdById(this.strategy.selectedBirdId ?? "");
+      const bird = this.resources.getBirdById(this.strategy.selectedBirdId ?? "");
       const highlightedFoodIds = new Set(
-          bird ? bird.allowedFoods.filter((foodId) => !!this.store.getFoodById(foodId)) : []
+          bird ? bird.allowedFoods.filter((foodId) => !!this.resources.getFoodById(foodId)) : []
       );
 
-      for (const food of this.store.getFoods()) {
+      for (const food of this.resources.getFoods()) {
           this.view.setFoodHighlighted(food.id, highlightedFoodIds.has(food.id));
       }
   }
 
   private syncAreaSelection(): void {
-      const bird = this.store.getBirdById(this.strategy.selectedBirdId ?? "");
+      const bird = this.getSelectedBird();
       if (!bird) return;
-      this.view.enableAreaSelection(bird.allowedAreas);
+      this.view.enableAreaSelection(this.rules.getAllowedAreas(bird));
   }
 
   private syncConfirmState(): void {
-      const bird = this.store.getBirdById(this.strategy.selectedBirdId ?? "");
-      const canConfirm = this.strategy.canConfirm() && this.canPayBirdCost(bird);
-      this.view.setConfirmEnabled(canConfirm);
-      this.view.setMessage(this.getMissingFoodMessage(bird));
-  }
+    const bird = this.getSelectedBird();
+    const area = this.strategy.selectedArea;
 
-  private canPayBirdCost(bird: BirdDefinition | null): boolean {
-      if (!bird) return false;
-      return bird.allowedFoods.every((foodId) => !!this.store.getFoodById(foodId));
-  }
+    const canConfirm =
+        this.strategy.canConfirm() &&
+        this.rules.canPlayBirdInArea(bird, area);
 
-  private getMissingFoodMessage(bird: BirdDefinition | null): string {
-      if (!bird) return "";
-      if (this.canPayBirdCost(bird)) return "";
-      return `Not enough food: ${bird.allowedFoods.join(", ")}`;
+    this.view.setConfirmEnabled(canConfirm);
+    this.view.setMessage(this.rules.getMissingFoodMessage(bird));
+}
+
+  private getSelectedBird(): BirdDefinition | null {
+    return this.resources.getBirdById(this.strategy.selectedBirdId ?? "");
   }
 }

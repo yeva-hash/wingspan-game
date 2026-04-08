@@ -1,10 +1,9 @@
-/** Bird catalog entry (same shape as layout nodes: id, name, type + optional texture for UI). */
 export type BirdDefinition = {
   id: string;
   name: string;
   description?: string;
   texture?: string;
-  allowedFoods: FoodType[];
+  allowedFoods: FoodType[]; // TODO rename to allowedResources
   allowedAreas: Area[];
 };
 
@@ -15,4 +14,4 @@ export type FoodDefinition = {
 
 export type FoodType = "seed" | "worm" | "berry" | "fish" | "mouse";
 
-export type Area = "forest" | "steppe" | "swamp";;
+export type Area = "forest" | "steppe" | "swamp";

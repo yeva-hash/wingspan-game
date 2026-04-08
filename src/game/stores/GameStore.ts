@@ -1,5 +1,5 @@
 import { Bird } from "../game/models/Bird";
-import { Area } from "../game/types/resourceTypes";
+import { Area } from "../types/resourceTypes";
 
 export class GameStore {
     constructor(private readonly _areas: Area[] = []) {}

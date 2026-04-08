@@ -2,9 +2,12 @@ import { GameApp } from "../app/gameApp";
 import { ActionMenuController } from "../game/controllers/ActionMenuController";
 import { BirdOfferedController } from "../game/controllers/BirdOfferedController";
 import type { HandController } from "../game/controllers/HandController";
-import { BirdsOfferedStore } from "../stores/BirdsOfferedStore";
-import { GameStore } from "../stores/GameStore";
-import type { PlayerResourceStore } from "../stores/PlayerResourceStore";
+import { BirdSupplyService } from "../game/services/BirdSupplyService";
+import { ChooseBirdUseCase } from "../game/useCases/ChooseBirdUseCase";
+import { PlayerResourceService } from "../game/services/PlayerResourceService";
+import { BirdSupplyStore } from "../game/stores/BirdSupplyStore";
+import { GameStore } from "../game/stores/GameStore";
+import type { PlayerResourceStore } from "../game/stores/PlayerResourceStore";
 
 export type GameControllers = {
   hand: HandController;
@@ -14,14 +17,25 @@ export type GameControllers = {
 
 export type GameStores = {
   game: GameStore;
-  playerResources: PlayerResourceStore;
-  birdsOffered: BirdsOfferedStore;
+  // playerResourcesStore: PlayerResourceStore;
+  // birdSupplyStore: BirdSupplyStore;
 };
 
 export type FlowContext = {
   gameApp: GameApp;
   stores: GameStores;
   controllers: GameControllers;
+  services: GameServices;
+  useCases: GameUseCases;
+};
+
+export type GameServices = {
+  birdSupplyService: BirdSupplyService;
+  playerResourceService: PlayerResourceService
+};
+
+export type GameUseCases = {
+  chooseBirdUseCase: ChooseBirdUseCase;
 };
 
 export type FlowState = {
