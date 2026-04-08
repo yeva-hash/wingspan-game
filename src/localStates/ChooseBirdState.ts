@@ -1,6 +1,6 @@
 import type { LocalState } from "./LocalState";
 import type { FlowContext } from "../flow/FlowTypes";
-import { ChooseBirdStrategy } from "../game/managers/ChooseBirdStrategy";
+import { ChooseBirdStrategy } from "../game/strategy/selectionStrategy/ChooseBirdStrategy";
 
 export class ChooseBirdState implements LocalState {
   async run(ctx: FlowContext): Promise<void> {

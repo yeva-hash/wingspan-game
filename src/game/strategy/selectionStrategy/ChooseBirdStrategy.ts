@@ -1,6 +1,6 @@
-import { SelectionStrategy } from "../types/selectionTypes";
+import { BirdOfferSelectionStrategy } from "../../types/selectionTypes";
 
-export class ChooseBirdStrategy implements SelectionStrategy {
+export class ChooseBirdStrategy implements BirdOfferSelectionStrategy {
     private _selectedBirdIds: string[] = [];
 
     constructor(private readonly _selectedCount: number) {}
@@ -20,8 +20,6 @@ export class ChooseBirdStrategy implements SelectionStrategy {
     canConfirm(): boolean {
         return this._selectedBirdIds.length === this._selectedCount;
     }
-
-    getMessage(): string { return ""; }
 
     reset(): void {
         this._selectedBirdIds = [];

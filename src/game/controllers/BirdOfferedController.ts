@@ -3,22 +3,18 @@ import { BirdDefinition } from "../types/resourceTypes";
 import { BirdOfferView } from "../views/BirdOfferView";
 import { createDeferred } from "../../utils/deferred";
 import { SelectionStrategy } from "../types/selectionTypes";
-import { ChooseBirdStrategy } from "../managers/ChooseBirdStrategy";
+import { ChooseBirdStrategy } from "../strategy/selectionStrategy/ChooseBirdStrategy";
 
 export class BirdOfferedController {
     private _selectionStrategy!: ChooseBirdStrategy;
-    constructor(
-        private view: BirdOfferView, 
-        private readonly store: BirdsOfferedStore, 
-        // private readonly selectionManager: BirdSelectionManage
-    ) 
+    constructor(private view: BirdOfferView, private readonly store: BirdsOfferedStore) 
     {
         this.view.onBirdClicked = (birdId) => this.handleBirdClick(birdId);
     }
     
     setStrategy(strategy: SelectionStrategy): void {
         this._selectionStrategy = strategy as ChooseBirdStrategy;
-        // this.syncView();
+        //this.syncView();
     }
 
     async render(): Promise<void> {
@@ -28,8 +24,7 @@ export class BirdOfferedController {
         await this.view.render(birds);
     }
 
-    async prepareView(selectedCount: number): Promise<void> {
-        //hightlight section
+    async prepareView(): Promise<void> {
         await this.view.prepareForSelection();
     }
 

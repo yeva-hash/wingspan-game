@@ -8,7 +8,7 @@ import { ActionMenuView } from "../game/views/ActionMenuView";
 import { HandView } from "../game/views/HandView";
 import { GameApp } from "../app/gameApp";
 import { GameStore } from "../stores/GameStore";
-import { HandSelectionManager } from "../game/managers/HandSelectionManager";
+import { HandSelectionManager } from "../game/strategy/selectionStrategy/PlayBirdStrategy";
 import birdsJson from "../../data/birds.json";
 import foodsJson from "../../data/foods.json";
 import type { BirdDefinition, FoodDefinition } from "../game/types/resourceTypes";
@@ -16,7 +16,7 @@ import { BirdOfferView } from "../game/views/BirdOfferView";
 import { BirdsOfferedStore } from "../stores/BirdsOfferedStore";
 import { BirdOfferedController } from "../game/controllers/BirdOfferedController";
 import { ChooseActionFlow } from "../flow/ChooseActionFlow";
-import { ChooseBirdStrategy } from "../game/managers/ChooseBirdStrategy";
+import { ChooseBirdStrategy } from "../game/strategy/selectionStrategy/ChooseBirdStrategy";
 
 const birds = (birdsJson as { birds: BirdDefinition[] }).birds;
 const foods = (foodsJson as { foods: FoodDefinition[] }).foods;
