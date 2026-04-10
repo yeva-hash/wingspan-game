@@ -8,6 +8,7 @@ import { PlayerResourceService } from "../game/services/PlayerResourceService";
 import { BirdSupplyStore } from "../game/stores/BirdSupplyStore";
 import { GameStore } from "../game/stores/GameStore";
 import type { PlayerResourceStore } from "../game/stores/PlayerResourceStore";
+import { HabitatService } from "../game/services/HabitatService";
 
 export type GameControllers = {
   hand: HandController;
@@ -31,7 +32,8 @@ export type FlowContext = {
 
 export type GameServices = {
   birdSupplyService: BirdSupplyService;
-  playerResourceService: PlayerResourceService
+  playerResourceService: PlayerResourceService,
+  habitatService: HabitatService;
 };
 
 export type GameUseCases = {

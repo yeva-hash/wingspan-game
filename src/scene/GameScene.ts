@@ -11,13 +11,15 @@ import { GameStore } from "../game/stores/GameStore";
 import birdsJson from "../../data/birds.json";
 import { BirdOfferView } from "../game/views/BirdOfferView";
 import { BirdOfferedController } from "../game/controllers/BirdOfferedController";
-import { BirdDefinition } from "../game/types/resourceTypes";
+import { Area, BirdDefinition } from "../game/types/resourceTypes";
 import { BirdSupplyStore } from "../game/stores/BirdSupplyStore";
 import { BirdCatalog } from "../catalogs/BirdCatalog";
 import { ChooseBirdUseCase } from "../game/useCases/ChooseBirdUseCase";
 import { BirdSupplyService } from "../game/services/BirdSupplyService";
 import { PlayerResourceService } from "../game/services/PlayerResourceService";
 import { BirdPlayRuleService } from "../game/services/BirdPlayRuleService";
+import { HabitatService } from "../game/services/HabitatService";
+import { EHabitatResourceType, HabitatStore } from "../game/stores/habitat/HabitatStore";
 
 const allBirdsFromJson = (birdsJson as { birds: BirdDefinition[] }).birds;
 
@@ -55,12 +57,15 @@ export class GameScene {
     const gameStore = new GameStore(["forest", "steppe", "swamp"]);
     const playerResourcesStore = new PlayerResourceStore();
     const birdSupplyStore = new BirdSupplyStore();
+    const habitatStores = this.initializeHabitat();
 
     const playerResourceService = new PlayerResourceService(birdCatalog, playerResourcesStore);
     const birdSupplyService = new BirdSupplyService(birdCatalog, birdSupplyStore);
     const birdPlayRuleService = new BirdPlayRuleService(playerResourceService);
+    const habitatService = new HabitatService(habitatStores);
     
     const chooseBirdUseCase = new ChooseBirdUseCase(birdSupplyService, playerResourceService);
+    // const habitatUseCase = new HabitatUseCase(gameStore,habitatService);
 
     const actionMenuView = new ActionMenuView(layoutService);
     const handView = new HandView(layoutService);
@@ -80,12 +85,23 @@ export class GameScene {
       },
       services: {
         birdSupplyService,
-        playerResourceService
+        playerResourceService,
+        habitatService
       },
       useCases: {
         chooseBirdUseCase,
+        //TODO use case?
+        // habitatUseCase
       },
     };
+  }
+
+  private initializeHabitat(): Map<Area, HabitatStore> {
+    const map = new Map<Area, HabitatStore>();
+    map.set("forest", new HabitatStore("forest", EHabitatResourceType.Food));
+    map.set("steppe", new HabitatStore("steppe", EHabitatResourceType.Eggs)); 
+    map.set("swamp", new HabitatStore("swamp", EHabitatResourceType.Birds));
+    return map;
   }
 }
 

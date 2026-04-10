@@ -1,4 +1,3 @@
-import { Bird } from "../game/models/Bird";
 import { Area } from "../types/resourceTypes";
 
 export class GameStore {

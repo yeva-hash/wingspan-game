@@ -1,5 +1,6 @@
-import { Assets, Container, Sprite, Text, Texture } from "pixi.js";
+import { Assets, Container, DEPRECATED_SCALE_MODES, Sprite, Text, Texture } from "pixi.js";
 import type { LayoutService } from "./LayoutService";
+export * as PIXI from "pixi.js";
 
 type PointLike = {
   x?: number;

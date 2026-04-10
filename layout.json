@@ -66,6 +66,254 @@
                         "texture": "assets/sprites/game-field.png"
                     },
                     {
+                        "name":"habitat-areas",
+                        "type": "container",
+                        "x": 0,
+                        "y": 0,
+                        "children": [
+                            {
+                                "name":"forest-area",
+                                "type": "container",
+                                "x": 870,
+                                "y": 190,
+                                "scale": {
+                                    "x": 0.1,
+                                    "y": 0.1
+                                },
+                                "children": [
+                                    {
+                                        "name":"forest-slot-1-container",
+                                        "type": "container",
+                                        "x": -2228,
+                                        "y": 0,
+                                        "children": [
+                                            {
+                                                "name": "forest-slot-1-bg",
+                                                "type": "sprite",
+                                                "x": 0,
+                                                "y": 0,
+                                                "anchor": {
+                                                    "x": 0.5,
+                                                    "y": 0.5
+                                                },
+                                                "texture": "assets/sprites/food-general.png"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "name":"forest-slot-2-container",
+                                        "type": "container",
+                                        "x": 0,
+                                        "y": 0,
+                                        "children": [
+                                            {
+                                                "name": "forest-slot-2-bg",
+                                                "type": "sprite",
+                                                "x": 0,
+                                                "y": 0,
+                                                "anchor": {
+                                                    "x": 0.5,
+                                                    "y": 0.5
+                                                },
+                                                "texture": "assets/sprites/food-general.png"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "name":"forest-slot-3-container",
+                                        "type": "container",
+                                        "x": 2260,
+                                        "y": 0,
+                                        "children": [
+                                            {
+                                                "name": "forest-slot-3-bg",
+                                                "type": "sprite",
+                                                "x": 0,
+                                                "y": 330,
+                                                "anchor": {
+                                                    "x": 0.5,
+                                                    "y": 0.5
+                                                },
+                                                "texture": "assets/sprites/food-general.png"
+                                            },
+                                            {
+                                                "name": "forest-slot-31-bg",
+                                                "type": "sprite",
+                                                "x": 0,
+                                                "y": -330,
+                                                "anchor": {
+                                                    "x": 0.5,
+                                                    "y": 0.5
+                                                },
+                                                "texture": "assets/sprites/food-general.png"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name":"steppe-area",
+                                "type": "container",
+                                "x": 870,
+                                "y": 400,
+                                "scale": {
+                                    "x": 0.1,
+                                    "y": 0.1
+                                },
+                                "children": [
+                                    {
+                                        "name":"steppe-slot-1-container",
+                                        "type": "container",
+                                        "x": -2228,
+                                        "y": 0,
+                                        "children": [
+                                            {
+                                                "name": "steppe-slot-1-bg",
+                                                "type": "sprite",
+                                                "x": 0,
+                                                "y": 0,
+                                                "anchor": {
+                                                    "x": 0.5,
+                                                    "y": 0.5
+                                                },
+                                                "texture": "assets/sprites/egg.png"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "name":"steppe-slot-2-container",
+                                        "type": "container",
+                                        "x": 0,
+                                        "y": 0,
+                                        "children": [
+                                            {
+                                                "name": "steppe-slot-2-bg",
+                                                "type": "sprite",
+                                                "x": 0,
+                                                "y": 0,
+                                                "anchor": {
+                                                    "x": 0.5,
+                                                    "y": 0.5
+                                                },
+                                                "texture": "assets/sprites/egg.png"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "name":"steppe-slot-3-container",
+                                        "type": "container",
+                                        "x": 2228,
+                                        "y": 0,
+                                        "children": [
+                                            {
+                                                "name": "steppe-slot-3-bg",
+                                                "type": "sprite",
+                                                "x": -330,
+                                                "y": 0,
+                                                "anchor": {
+                                                    "x": 0.5,
+                                                    "y": 0.5
+                                                },
+                                                "texture": "assets/sprites/egg.png"
+                                            },
+                                            {
+                                                "name": "steppe-slot-31-bg",
+                                                "type": "sprite",
+                                                "x": 330,
+                                                "y": 0,
+                                                "anchor": {
+                                                    "x": 0.5,
+                                                    "y": 0.5
+                                                },
+                                                "texture": "assets/sprites/egg.png"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name":"swamp-area",
+                                "type": "container",
+                                "x": 870,
+                                "y": 600,
+                                "scale": {
+                                    "x": 0.05,
+                                    "y": 0.05
+                                },
+                                "children": [
+                                    {
+                                        "name":"swamp-slot-1-container",
+                                        "type": "container",
+                                        "x": -4440,
+                                        "y": 0,
+                                        "children": [
+                                            {
+                                                "name": "swamp-slot-1-bg",
+                                                "type": "sprite",
+                                                "x": 0,
+                                                "y": 0,
+                                                "anchor": {
+                                                    "x": 0.5,
+                                                    "y": 0.5
+                                                },
+                                                "texture": "assets/sprites/bird-back-side.png"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "name":"swamp-slot-2-container",
+                                        "type": "container",
+                                        "x": 0,
+                                        "y": 0,
+                                        "children": [
+                                            {
+                                                "name": "swamp-slot-2-bg",
+                                                "type": "sprite",
+                                                "x": 0,
+                                                "y": 0,
+                                                "anchor": {
+                                                    "x": 0.5,
+                                                    "y": 0.5
+                                                },
+                                                "texture": "assets/sprites/bird-back-side.png"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "name":"swamp-slot-3-container",
+                                        "type": "container",
+                                        "x": 4520,
+                                        "y": 0,
+                                        "children": [
+                                            {
+                                                "name": "swamp-slot-3-bg",
+                                                "type": "sprite",
+                                                "x": -640,
+                                                "y": 0,
+                                                "anchor": {
+                                                    "x": 0.5,
+                                                    "y": 0.5
+                                                },
+                                                "texture": "assets/sprites/bird-back-side.png"
+                                            },
+                                            {
+                                                "name": "swamp-slot-31-bg",
+                                                "type": "sprite",
+                                                "x": 640,
+                                                "y": 0,
+                                                "anchor": {
+                                                    "x": 0.5,
+                                                    "y": 0.5
+                                                },
+                                                "texture": "assets/sprites/bird-back-side.png"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
                         "name":"action-menu",
                         "type": "container",
                         "x": 0,
