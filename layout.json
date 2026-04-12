@@ -77,14 +77,14 @@
                                 "x": 870,
                                 "y": 190,
                                 "scale": {
-                                    "x": 0.1,
-                                    "y": 0.1
+                                    "x": 1,
+                                    "y": 1
                                 },
                                 "children": [
                                     {
                                         "name":"forest-slot-1-container",
                                         "type": "container",
-                                        "x": -2228,
+                                        "x": -225,
                                         "y": 0,
                                         "children": [
                                             {
@@ -122,14 +122,14 @@
                                     {
                                         "name":"forest-slot-3-container",
                                         "type": "container",
-                                        "x": 2260,
+                                        "x": 225,
                                         "y": 0,
                                         "children": [
                                             {
                                                 "name": "forest-slot-3-bg",
                                                 "type": "sprite",
-                                                "x": 0,
-                                                "y": 330,
+                                                "x": 14,
+                                                "y": -17,
                                                 "anchor": {
                                                     "x": 0.5,
                                                     "y": 0.5
@@ -139,8 +139,8 @@
                                             {
                                                 "name": "forest-slot-31-bg",
                                                 "type": "sprite",
-                                                "x": 0,
-                                                "y": -330,
+                                                "x": -12,
+                                                "y": 15,
                                                 "anchor": {
                                                     "x": 0.5,
                                                     "y": 0.5
@@ -157,14 +157,14 @@
                                 "x": 870,
                                 "y": 400,
                                 "scale": {
-                                    "x": 0.1,
-                                    "y": 0.1
+                                    "x": 1,
+                                    "y": 1
                                 },
                                 "children": [
                                     {
                                         "name":"steppe-slot-1-container",
                                         "type": "container",
-                                        "x": -2228,
+                                        "x": -225,
                                         "y": 0,
                                         "children": [
                                             {
@@ -202,13 +202,13 @@
                                     {
                                         "name":"steppe-slot-3-container",
                                         "type": "container",
-                                        "x": 2228,
+                                        "x": 225,
                                         "y": 0,
                                         "children": [
                                             {
                                                 "name": "steppe-slot-3-bg",
                                                 "type": "sprite",
-                                                "x": -330,
+                                                "x": -36,
                                                 "y": 0,
                                                 "anchor": {
                                                     "x": 0.5,
@@ -219,7 +219,7 @@
                                             {
                                                 "name": "steppe-slot-31-bg",
                                                 "type": "sprite",
-                                                "x": 330,
+                                                "x": 36,
                                                 "y": 0,
                                                 "anchor": {
                                                     "x": 0.5,
@@ -237,14 +237,14 @@
                                 "x": 870,
                                 "y": 600,
                                 "scale": {
-                                    "x": 0.05,
-                                    "y": 0.05
+                                    "x": 1,
+                                    "y": 1
                                 },
                                 "children": [
                                     {
                                         "name":"swamp-slot-1-container",
                                         "type": "container",
-                                        "x": -4440,
+                                        "x": -225,
                                         "y": 0,
                                         "children": [
                                             {
@@ -256,7 +256,7 @@
                                                     "x": 0.5,
                                                     "y": 0.5
                                                 },
-                                                "texture": "assets/sprites/bird-back-side.png"
+                                                "texture": "assets/sprites/bird-back-side_small.png"
                                             }
                                         ]
                                     },
@@ -275,37 +275,37 @@
                                                     "x": 0.5,
                                                     "y": 0.5
                                                 },
-                                                "texture": "assets/sprites/bird-back-side.png"
+                                                "texture": "assets/sprites/bird-back-side_small.png"
                                             }
                                         ]
                                     },
                                     {
                                         "name":"swamp-slot-3-container",
                                         "type": "container",
-                                        "x": 4520,
+                                        "x": 225,
                                         "y": 0,
                                         "children": [
                                             {
                                                 "name": "swamp-slot-3-bg",
                                                 "type": "sprite",
-                                                "x": -640,
-                                                "y": 0,
+                                                "x": 30,
+                                                "y": -6,
                                                 "anchor": {
                                                     "x": 0.5,                 
                                                     "y": 0.5
                                                 },
-                                                "texture": "assets/sprites/bird-back-side.png"
+                                                "texture": "assets/sprites/bird-back-side_small.png"
                                             },
                                             {
                                                 "name": "swamp-slot-31-bg",
                                                 "type": "sprite",
-                                                "x": 640,
-                                                "y": 0,
+                                                "x": -30,
+                                                "y": 6,
                                                 "anchor": {
                                                     "x": 0.5,
                                                     "y": 0.5
                                                 },
-                                                "texture": "assets/sprites/bird-back-side.png"
+                                                "texture": "assets/sprites/bird-back-side_small.png"
                                             }
                                         ]
                                     }

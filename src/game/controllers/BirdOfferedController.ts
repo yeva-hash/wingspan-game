@@ -30,7 +30,7 @@ export class BirdOfferedController {
         await this.view.render(birds);
     }
 
-    async prepareView(): Promise<void> {
+    async prepareViewForSelection(): Promise<void> {
         await this.view.prepareForSelection();
     }
 

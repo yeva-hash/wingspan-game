@@ -11,12 +11,14 @@ export class ChooseBirdState implements LocalState {
     const rewardCount = ctx.services.habitatService.getFirstFreeSlot("swamp")?.rewardCount ?? 0;
     birdOffered.setStrategy(new ChooseBirdStrategy(rewardCount));
 
-    await birdOffered.prepareView();
+    await birdOffered.prepareViewForSelection();
     const birdOfferChoice = await birdOffered.chooseBirds();
 
     ctx.useCases.chooseBirdUseCase.execute(birdOfferChoice.selectedBirdIds);
 
-    hand.setStrategy(new ReadOnlyStrategy());
-    await hand.render();
+    birdOffered.render();
+
+    // hand.setStrategy(new ReadOnlyStrategy());
+    // await hand.render();
   }
 }
