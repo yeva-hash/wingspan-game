@@ -7,7 +7,9 @@ export class ChooseBirdState implements LocalState {
   async run(ctx: FlowContext): Promise<void> {
     const { birdOffered, hand } = ctx.controllers;
 
-    birdOffered.setStrategy(new ChooseBirdStrategy(2));
+    //TODO
+    const rewardCount = ctx.services.habitatService.getFirstFreeSlot("swamp")?.rewardCount ?? 0;
+    birdOffered.setStrategy(new ChooseBirdStrategy(rewardCount));
 
     await birdOffered.prepareView();
     const birdOfferChoice = await birdOffered.chooseBirds();

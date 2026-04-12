@@ -1,23 +1,35 @@
 import { Area } from "../../types/resourceTypes";
-import { HabitatSlotStore } from "./HabitatSlotStore";
+import { HabitatAreaStore } from "./HabitatAreaStore";
 
 export enum EHabitatResourceType {
-    Food = "food",
-    Eggs = "eggs",
-    Birds = "birds",
+    forest = "food",
+    steppe = "eggs",
+    swamp = "birds",
 }
 
 export class HabitatStore {
-    private _slots: Map<number, HabitatSlotStore> = new Map();
+    private readonly _areas: Map<Area, HabitatAreaStore>;
 
-    public area(): Area {
-        return this._area;
+    constructor() {
+        //TODO
+        this._areas = new Map([
+            ["forest", new HabitatAreaStore("forest", EHabitatResourceType.forest)],
+            ["steppe", new HabitatAreaStore("steppe", EHabitatResourceType.steppe)],
+            ["swamp", new HabitatAreaStore("swamp", EHabitatResourceType.swamp)],
+        ]);
     }
 
-    constructor(private readonly _area: Area, private readonly resourceType: EHabitatResourceType) {}
+    getArea(area: Area): HabitatAreaStore {
+        const habitatArea = this._areas.get(area);
+        if (!habitatArea) {
+            throw new Error(`Habitat area ${area} not found`);
+        }
 
-    setSlot(index: number, slot: HabitatSlotStore): void {
-        this._slots.set(index, slot);
+        return habitatArea;
+    }
+
+    getAreas(): HabitatAreaStore[] {
+        return Array.from(this._areas.values());
     }
 }
 

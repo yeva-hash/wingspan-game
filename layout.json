@@ -291,7 +291,7 @@
                                                 "x": -640,
                                                 "y": 0,
                                                 "anchor": {
-                                                    "x": 0.5,
+                                                    "x": 0.5,                 
                                                     "y": 0.5
                                                 },
                                                 "texture": "assets/sprites/bird-back-side.png"

@@ -65,6 +65,7 @@ export class HandView {
   }
 
   async render(birds: readonly BirdDefinition[], foods: readonly Food[]): Promise<void> {
+    this.show();
     this.clear();
     this.renderBirds(birds);
     this.renderFoods(foods);
@@ -125,6 +126,17 @@ export class HandView {
   setMessage(message: string): void {
     this._messageText.text = message;
     this._messageText.visible = message.length > 0;
+  }
+
+  hide(): void {
+    this._container.visible = false;
+    this._state = HandViewState.Hidden;
+  }
+
+  show(): void {
+    this._container.visible = true;
+    this._container.alpha = 1;
+    this._state = HandViewState.Visible;
   }
 
   setAreas(areas: readonly Area[]): void {
