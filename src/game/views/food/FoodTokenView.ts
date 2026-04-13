@@ -16,7 +16,6 @@ export class FoodTokenView extends PIXI.Container {
 
       this.addChild(this.bg)
 
-      //TODO
     this._nameText = new PIXI.Text({ 
       text: `${food.definition.id}`, 
       style: { fontSize: 16, fill: 0x000000 } 

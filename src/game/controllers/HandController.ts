@@ -120,4 +120,9 @@ export class HandController {
   private getSelectedBird(): BirdDefinition | null {
     return this.resources.getBirdById(this.strategy.selectedBirdId ?? "");
   }
+
+  //TODO
+  hide(): void {
+    this.view.hide();
+  }
 }

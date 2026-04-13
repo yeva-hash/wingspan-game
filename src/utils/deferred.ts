@@ -4,7 +4,6 @@ export type Deferred<T> = {
   reject: (reason?: unknown) => void;
 };
 
-//TODO
 export function createDeferred<T>(): Deferred<T> {
   let resolve!: (value: T) => void;
   let reject!: (reason?: unknown) => void;

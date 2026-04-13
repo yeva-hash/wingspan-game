@@ -1,5 +1,5 @@
 import { LayoutService } from "../../../layout/LayoutService";
-import { Area } from "../../types/resourceTypes";
+import { Area, BirdDefinition } from "../../types/resourceTypes";
 import { HabitatSlotView } from "./HabitatSlotView";
 
 export class HabitatAreaView {
@@ -23,5 +23,9 @@ export class HabitatAreaView {
         }
 
         return slot;
+    }
+
+    placeBirdCard(slotIndex: number, def: BirdDefinition): void {
+        this.getSlotView(slotIndex).placeBirdCard(def);
     }
 }

@@ -22,7 +22,7 @@ export class StartGameFlow implements FlowState {
       [foods[0], foods[1], foods[2], foods[3], foods[4]]
     );
 
-    ctx.controllers.habitat.syncOccupiedSlots();
+    // ctx.controllers.habitat.syncOccupiedSlots();
 
     return new ChooseActionFlow();
   }

@@ -1,16 +1,17 @@
 import { HabitatStore } from "../stores/habitat/HabitatStore";
 import { HabitatAreaStore } from "../stores/habitat/HabitatAreaStore";
 import { HabitatSlotStore } from "../stores/habitat/HabitatSlotStore";
-import { Area } from "../types/resourceTypes";
+import { Area, BirdDefinition } from "../types/resourceTypes";
+import { BirdCatalog } from "../../catalogs/BirdCatalog";
 
 export type BirdPlacementResult = {
     area: Area;
-    birdId: string;
+    bird: BirdDefinition;
     slotIndex: number;
 };
 
 export class HabitatService {
-    constructor(private readonly _habitatStore: HabitatStore) {}
+    constructor(private readonly _habitatStore: HabitatStore, private readonly _birdCatalog: BirdCatalog) {}
 
     getAreas(): HabitatAreaStore[] {
         return this._habitatStore.getAreas();
@@ -45,9 +46,11 @@ export class HabitatService {
 
         this.getArea(area).setBirdInSlot(slot.index, birdId);
 
+        const bird = this._birdCatalog.getById(birdId);
+
         return {
             area,
-            birdId,
+            bird,
             slotIndex: slot.index,
         };
     }

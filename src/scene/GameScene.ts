@@ -64,7 +64,7 @@ export class GameScene {
     const playerResourceService = new PlayerResourceService(birdCatalog, playerResourcesStore);
     const birdSupplyService = new BirdSupplyService(birdCatalog, birdSupplyStore);
     const birdPlayRuleService = new BirdPlayRuleService(playerResourceService);
-    const habitatService = new HabitatService(habitatStore);
+    const habitatService = new HabitatService(habitatStore, birdCatalog);
     
     const chooseBirdUseCase = new ChooseBirdUseCase(birdSupplyService, playerResourceService);
     // const habitatUseCase = new HabitatUseCase(gameStore,habitatService);
@@ -100,8 +100,6 @@ export class GameScene {
       },
       useCases: {
         chooseBirdUseCase,
-        //TODO use case?
-        // habitatUseCase
       },
     };
   }

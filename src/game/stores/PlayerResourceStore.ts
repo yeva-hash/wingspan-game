@@ -38,4 +38,14 @@ export class PlayerResourceStore {
   addBirdById(birdId: BirdId): void {
     this._birdIds.push(birdId);
   }
+
+  removeBirdById(birdId: BirdId): void {
+    this._birdIds = this._birdIds.filter((id) => id !== birdId);
+  }
+
+  removeFoodByIds(foodIds: string[]): void {
+    this._foodsById = new Map<string, Food>(
+      [...this._foodsById.entries()].filter(([id]) => !foodIds.includes(id))
+    );
+  }
 }

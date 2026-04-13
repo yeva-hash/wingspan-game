@@ -10,10 +10,6 @@ export class PlayerResourceService implements PlayerResourceReader {
     private readonly _store: PlayerResourceStore,
   ) {}
 
-  getBirdIds(): readonly BirdId[] {
-    return this._store.getBirdIds();
-  }
-
   getBirds(): BirdDefinition[] {
     return this._store.getBirdIds().map((id) => this._catalog.getById(id));
   }
@@ -36,6 +32,14 @@ export class PlayerResourceService implements PlayerResourceReader {
 
   addBirdById(birdId: BirdId): void {
     this._store.addBirdById(birdId);
+  }
+
+  removeBirdById(birdId: BirdId): void {
+    this._store.removeBirdById(birdId);
+  }
+
+  removeFoodByIds(foodIds: string[]): void {
+    this._store.removeFoodByIds(foodIds);
   }
 
   setInitialDeal(birdIds: BirdId[], foodDefs: FoodDefinition[]): void {
