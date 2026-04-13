@@ -1,7 +1,8 @@
-import { Application } from "pixi.js";
+import { Application, Assets } from "pixi.js";
 import { LayoutBuilder } from "../layout/LayoutBuilder";
 import type { LayoutConfig } from "../layout/LayoutBuilder";
 import { LayoutService } from "../layout/LayoutService";
+import { preloadAssets } from "../loader/TextureCache";
 
 type GameAppOptions = {
   mountId?: string;
@@ -33,6 +34,11 @@ export class GameApp {
     });
 
     appContainer.appendChild(this.app.canvas);
+    await Assets.init({ manifest: "assets/assets-manifest.json" });
+    await preloadAssets("food");
+    await preloadAssets("birds");
+    await preloadAssets("game");
+
     await this.layoutBuilder.build(options.layout, this.app.stage);
   }
 }

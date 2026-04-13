@@ -8,12 +8,15 @@ import { ChooseBirdUseCase } from "../game/useCases/ChooseBirdUseCase";
 import { PlayerResourceService } from "../game/services/PlayerResourceService";
 import { GameStore } from "../game/stores/GameStore";
 import { HabitatService } from "../game/services/HabitatService";
+import { FeederController } from "../game/controllers/FeederController";
+import { FeederService } from "../game/services/FeederService";
 
 export type GameControllers = {
   hand: HandController;
   actionMenu: ActionMenuController;
   birdOffered: BirdOfferedController;
   habitat: HabitatController;
+  feeder: FeederController;
 };
 
 export type GameStores = {
@@ -32,6 +35,7 @@ export type GameServices = {
   birdSupplyService: BirdSupplyService;
   playerResourceService: PlayerResourceService,
   habitatService: HabitatService;
+  feederService: FeederService;
 };
 
 export type GameUseCases = {

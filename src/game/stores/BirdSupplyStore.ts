@@ -13,7 +13,7 @@ export class BirdSupplyStore {
     }
 
     setDeckBirdIds(birdIds: BirdId[]): void {
-        this._deckBirdIds = [...birdIds].sort(() => Math.random() - 0.5);;
+        this._deckBirdIds = [...birdIds].sort(() => Math.random() - 0.5);
     }
 
     setOfferedBirdIds(birdIds: BirdId[]): void {

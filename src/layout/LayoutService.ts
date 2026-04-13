@@ -2,6 +2,7 @@ import type { Container, Sprite, Text } from "pixi.js";
 
 export type LayoutElement = Container | Sprite | Text;
 
+//TODO layout Loader
 export class LayoutService {
   private readonly elements = new Map<string, LayoutElement>();
 
@@ -18,9 +19,5 @@ export class LayoutService {
 
   has(name: string): boolean {
     return this.elements.has(name);
-  }
-
-  clear(): void {
-    this.elements.clear();
   }
 }

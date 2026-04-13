@@ -12,6 +12,8 @@ export class StartGameFlow implements FlowState {
     //TODO use case?
     ctx.services.birdSupplyService.resetForNewGame();
     ctx.services.birdSupplyService.initializeOffer();
+
+    ctx.services.feederService.resetForNewGame();
     
     ctx.controllers.birdOffered.render();
     ctx.controllers.hand.renderAreas(ctx.stores.game.getAreas());
@@ -21,6 +23,8 @@ export class StartGameFlow implements FlowState {
       [birds[0].name, birds[3].name, birds[4].name],
       [foods[0], foods[1], foods[2], foods[3], foods[4]]
     );
+
+    ctx.controllers.feeder.render();
 
     // ctx.controllers.habitat.syncOccupiedSlots();
 

@@ -48,7 +48,7 @@
                 "name":"game-field",
                 "type": "container",
                 "x": 0,
-                "y": 0,
+                "y": 5,
                 "children": [
                     {
                         "name": "game-field-bg",
@@ -457,6 +457,72 @@
                         "text": "_",
                         "fontSize": 100,
                         "color": "#000000"
+                    }
+                ]
+            },
+            {
+                "name": "feeder-container",
+                "type": "container",
+                "x": 860,
+                "y": 66,
+                "children": [
+                    {
+                        "name": "feeder-bg",
+                        "type": "sprite",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": {
+                            "x": 0.5,
+                            "y": 0.5
+                        },
+                        "scale": {
+                            "x": 0.4,
+                            "y": 0.4
+                        },
+                        "texture": "assets/sprites/feeder.png"
+                    },
+                    {
+                        "name": "feeder-food-container",
+                        "type": "container",
+                        "x": 0,
+                        "y": -25,
+                        "children": [
+                            {
+                                "name": "food-slot-1",
+                                "type": "container",
+                                "x": -160,
+                                "y": 0,
+                                "children": []
+                            },
+                            {
+                                "name": "food-slot-2",
+                                "type": "container",
+                                "x": -80,
+                                "y": 0,
+                                "children": []
+                            },
+                            {
+                                "name": "food-slot-3",
+                                "type": "container",
+                                "x": 0,
+                                "y": 0,
+                                "children": []
+                            },
+                            {
+                                "name": "food-slot-4",
+                                "type": "container",
+                                "x": 80,
+                                "y": 0,
+                                "children": []
+                            },
+                            {
+                                "name": "food-slot-5",
+                                "type": "container",
+                                "x": 160,
+                                "y": 0,
+                                "children": []
+                            }
+                        ]
                     }
                 ]
             }

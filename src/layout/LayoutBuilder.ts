@@ -1,5 +1,6 @@
 import { Assets, Container, DEPRECATED_SCALE_MODES, Sprite, Text, Texture } from "pixi.js";
 import type { LayoutService } from "./LayoutService";
+import { TextureCache } from "../loader/TextureCache";
 export * as PIXI from "pixi.js";
 
 type PointLike = {
@@ -48,7 +49,9 @@ export class LayoutBuilder {
         displayObject = new Container();
         break;
       case "sprite": {
-        const texture = node.texture ? await Assets.load(node.texture) : Texture.WHITE;
+        const texture = node.texture
+        ? TextureCache.getTexture(node.texture)
+        : Texture.WHITE;
         displayObject = new Sprite(texture);
         break;
       }

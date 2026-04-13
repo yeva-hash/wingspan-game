@@ -3,27 +3,32 @@
     {
       "id": "seed",
       "name": "Seed",
-      "description": "Seed — basic feed for many seed-eating birds."
+      "description": "Seed — basic feed for many seed-eating birds.",
+      "texture": "assets/sprites/seed.png"
     },
     {
       "id": "berry",
       "name": "Berry",
-      "description": "Sweet berries, loved by thrushes and other songbirds."
+      "description": "Sweet berries, loved by thrushes and other songbirds.",
+      "texture": "assets/sprites/berry.png"
     },
     {
       "id": "worm",
       "name": "Worm",
-      "description": "Protein-rich treat from under the soil."
+      "description": "Protein-rich treat from under the soil.",
+      "texture": "assets/sprites/worm.png"
     },
     {
       "id": "fish",
       "name": "Fish",
-      "description": "Small fish — prey from near the water."
+      "description": "Small fish — prey from near the water.",
+      "texture": "assets/sprites/fish.png"
     },
     {
       "id": "mouse",
       "name": "Mouse",
-      "description": "Small rodent for larger predatory birds."
+      "description": "Small rodent for larger predatory birds.",
+      "texture": "assets/sprites/mouse.png"
     }
   ]
 }
