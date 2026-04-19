@@ -2,6 +2,7 @@ import { FeederService } from "../services/FeederService";
 import { createDeferred } from "../../utils/deferred";
 import { FeederSelectionStrategy } from "../types/selectionTypes";
 import { FeederView } from "../views/FeederView";
+import { ChooseFoodStrategy } from "../strategy/selectionStrategy/ChooseFoodStrategy";
 
 export type FoodChoice = {
     selectedFoodIndexes: number[];
@@ -23,7 +24,11 @@ export class FeederController {
         this.syncWithStore();
     }
 
-    async selectFood(): Promise<FoodChoice> {
+    async selectFood(selectedCount?: number): Promise<FoodChoice> {
+        if (selectedCount !== undefined) {
+            this.setStrategy(new ChooseFoodStrategy(selectedCount));
+        }
+
         const deferred = createDeferred<FoodChoice>();
         await this._view.prepareForSelection();
         this.syncView();

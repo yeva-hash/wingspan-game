@@ -34,6 +34,16 @@ export class FeederService {
         return [...this._store.getFoodIds().keys()];
     }
 
+    getAvailableFoodSlotIndexes(): number[] {
+        return [...this._store.getFoodIds().entries()]
+            .filter(([, foodId]) => foodId !== null)
+            .map(([slotIndex]) => slotIndex);
+    }
+
+    getAvailableFoodCount(): number {
+        return this.getAvailableFoodSlotIndexes().length;
+    }
+
     getFoodDefsBySlots(): Map<number, FoodDefinition | null> {
         const result: Map<number, FoodDefinition | null> = new Map();
 
