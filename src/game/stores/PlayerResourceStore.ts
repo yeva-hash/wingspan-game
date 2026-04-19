@@ -48,4 +48,14 @@ export class PlayerResourceStore {
       [...this._foodsById.entries()].filter(([id]) => !foodIds.includes(id))
     );
   }
+
+  addFood(definition: FoodDefinition): void {
+    const existing = this._foodsById.get(definition.id);
+    if (existing) {
+      existing.add(1);
+      return;
+    }
+
+    this._foodsById.set(definition.id, new Food(definition, 1));
+  }
 }

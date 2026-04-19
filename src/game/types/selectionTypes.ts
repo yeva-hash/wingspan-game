@@ -1,4 +1,4 @@
-import { Area } from "./resourceTypes";
+import { Area, FoodType } from "./resourceTypes";
 
 export interface BirdOfferSelectionStrategy {
     selectBird(birdId: string): void;
@@ -15,4 +15,11 @@ export interface HandSelectionStrategy {
     reset(): void;
     readonly selectedBirdId: string | null;
     readonly selectedArea: Area | null;
+}
+
+export interface FeederSelectionStrategy {
+    selectFood(index: number): void;
+    canConfirm(): boolean;
+    reset(): void;
+    readonly selectedFoodIndexes: number[];
 }

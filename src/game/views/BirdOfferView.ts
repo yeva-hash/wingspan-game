@@ -45,7 +45,7 @@ export class BirdOfferView {
         this.setInteractive(true);
     }
 
-    setInteractive(interactive: boolean): void {
+    private setInteractive(interactive: boolean): void {
         for (const [name, bird] of this._offeredBirds.entries()) {
             setButtonInteractive(bird, interactive);
             if (interactive) {

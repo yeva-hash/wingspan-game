@@ -1,6 +1,6 @@
 import { FoodCatalog } from "../../catalogs/FoodCatalog";
 import { FeederStore } from "../stores/FeederStore";
-import { FoodDefinition } from "../types/resourceTypes";
+import { FoodDefinition, FoodType } from "../types/resourceTypes";
 
 export class FeederService {
     private static readonly maxFoodCount = 5;
@@ -11,18 +11,65 @@ export class FeederService {
     ) {}
 
     resetForNewGame(): void {
-        this._store.setFoodIds(this._catalog.getAllIds());
+        // this._store.setFoodIds(this._catalog.getAllIds());
+        this._store.reset();
     }
 
-    getRandomFoodDefs(count: number = FeederService.maxFoodCount): FoodDefinition[] {
-        const foodDefs = this._store.getFoodIds();
-        const result: FoodDefinition[] = [];
-        for (let i = 0; i < count; i++) {
-            const index = Math.floor(Math.random() * foodDefs.length);
-            result.push(this._catalog.getById(foodDefs[index]));
+    getRandomFoodDefs(count: number = FeederService.maxFoodCount): Map<number, FoodDefinition> {
+        const foodIds = this._catalog.getAllIds();
+        const result: Map<number, FoodDefinition> = new Map();
+
+        for (let i = 1; i <= count; i++) {
+            const index = Math.floor(Math.random() * foodIds.length);
+            const foodId = foodIds[index];
+
+            this._store.setFoodIdAt(i, foodId);
+            result.set(i, this._catalog.getById(foodId));
         }
 
         return result;
     }
 
+    getFoodSlotIndexes(): number[] {
+        return [...this._store.getFoodIds().keys()];
+    }
+
+    getFoodDefsBySlots(): Map<number, FoodDefinition | null> {
+        const result: Map<number, FoodDefinition | null> = new Map();
+
+        for (const [slotIndex, foodId] of this._store.getFoodIds()) {
+            result.set(slotIndex, foodId ? this._catalog.getById(foodId) : null);
+        }
+
+        return result;
+    }
+
+    hasFoodAtSlot(slotIndex: number): boolean {
+        return this._store.getFoodIdAt(slotIndex) !== null;
+    }
+
+    isEmpty(): boolean {
+        const slots = this._store.getFoodIds();
+        if (slots.size === 0) return true;
+
+        for (const foodId of slots.values()) {
+            if (foodId !== null) return false;
+        }
+
+        return true;
+    }
+
+    takeFoodsFromSlots(slotIndexes: number[]): FoodType[] {
+        const takenFoodIds: FoodType[] = [];
+
+        for (const slotIndex of slotIndexes) {
+            const foodId = this._store.getFoodIdAt(slotIndex);
+            if (!foodId) continue;
+
+            takenFoodIds.push(foodId);
+            this._store.setFoodIdAt(slotIndex, null);
+        }
+
+        return takenFoodIds;
+    }
 }

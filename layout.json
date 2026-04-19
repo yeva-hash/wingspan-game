@@ -523,6 +523,16 @@
                                 "children": []
                             }
                         ]
+                    },
+                    {
+                        "name":"choose-food-confirm-button",
+                        "type": "text",
+                        "x": -35,
+                        "y": 10,
+                        "alpha": 0,
+                        "text": "Confirm",
+                        "fontSize": 20,
+                        "color": "#000000"
                     }
                 ]
             }

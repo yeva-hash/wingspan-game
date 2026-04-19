@@ -114,7 +114,7 @@ export class HandView {
   }
 
   setFoodHighlighted(foodId: string, highlighted: boolean): void {
-    this._foodViewsById.get(foodId)?.setHighlighted(highlighted);
+    this._foodViewsById.get(foodId)?.setSelected(highlighted);
   }
 
   setConfirmEnabled(enabled: boolean): void {

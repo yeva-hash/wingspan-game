@@ -4,6 +4,7 @@ import { PlayerResourceStore } from "../stores/PlayerResourceStore";
 import { Food } from "../models/Food";
 import { PlayerResourceReader } from "../types/storeReaders";
 
+//TODO use case can cnahge store directly
 export class PlayerResourceService implements PlayerResourceReader {
   constructor(
     private readonly _catalog: BirdCatalog,
@@ -44,5 +45,9 @@ export class PlayerResourceService implements PlayerResourceReader {
 
   setInitialDeal(birdIds: BirdId[], foodDefs: FoodDefinition[]): void {
     this._store.setInitialDeal(birdIds, foodDefs);
+  }
+
+  addFood(definition: FoodDefinition): void {
+    this._store.addFood(definition);
   }
 }

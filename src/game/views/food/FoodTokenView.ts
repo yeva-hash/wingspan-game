@@ -1,31 +1,16 @@
 // views/FoodTokenView.ts
 import * as PIXI from 'pixi.js';
-import { Food } from '../../models/Food';
 
 export class FoodTokenView extends PIXI.Container {
-  private bg: PIXI.Graphics;
+  onClicked: ((token: FoodTokenView) => void) | null = null;
 
-  private _nameText: PIXI.Text;
-
-  constructor(food: Food) {
+  constructor(private _bg: PIXI.Sprite) {
     super();
-
-    this.bg = new PIXI.Graphics()
-      .circle(0, 0, 30)
-      .fill(0xe8a838);
-
-      this.addChild(this.bg)
-
-    this._nameText = new PIXI.Text({ 
-      text: `${food.definition.id}`, 
-      style: { fontSize: 16, fill: 0x000000 } 
-    });
-    this._nameText.anchor.set(0.5);
-
-    this.addChild(this._nameText);
+    this.addChild(this._bg);
+    this.on("pointerdown", () => this.onClicked?.(this));
   }
 
-  setHighlighted(highlighted: boolean): void {
-    this.alpha = highlighted ? 1 : 0.5;
+  setSelected(selected: boolean): void {
+    this._bg.alpha = selected ? 0.5 : 1;
   }
 }
