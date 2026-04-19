@@ -28,13 +28,25 @@ export type LayoutNode = {
 
 export type LayoutConfig = {
   stage: LayoutNode;
+  prefabs?: LayoutNode[];
 };
 
 export class LayoutBuilder {
   constructor(private readonly layoutService: LayoutService) {}
 
   async build(config: LayoutConfig, parent: Container): Promise<Container> {
-    const stageNode = await this.buildNode(config.stage);
+    if (config.prefabs?.length) {
+      for (const prefabNode of config.prefabs) {
+        if (!prefabNode.name) {
+          throw new Error("Prefab node must have a name");
+        }
+
+        const prefab = await this.buildNode(prefabNode, false);
+        this.layoutService.setPrefab(prefabNode.name, prefab);
+      }
+    }
+
+    const stageNode = await this.buildNode(config.stage, true);
     if (!(stageNode instanceof Container)) {
       throw new Error("Root stage node must be a container");
     }
@@ -43,7 +55,7 @@ export class LayoutBuilder {
     return stageNode;
   }
 
-  private async buildNode(node: LayoutNode): Promise<Container | Sprite | Text> {
+  private async buildNode(node: LayoutNode, registerInLayout: boolean): Promise<Container | Sprite | Text> {
     let displayObject: Container | Sprite | Text;
 
     switch (node.type) {
@@ -69,9 +81,11 @@ export class LayoutBuilder {
 
     this.applyTransform(displayObject, node);
 
-    if (node.name) {
+    if (registerInLayout && node.name) {
       displayObject.label = node.name;
       this.layoutService.set(node.name, displayObject);
+    } else if (node.name) {
+      displayObject.label = node.name;
     }
 
     if (node.children?.length) {
@@ -80,7 +94,7 @@ export class LayoutBuilder {
       }
 
       for (const child of node.children) {
-        const childObject = await this.buildNode(child);
+        const childObject = await this.buildNode(child, registerInLayout);
         displayObject.addChild(childObject);
       }
     }
