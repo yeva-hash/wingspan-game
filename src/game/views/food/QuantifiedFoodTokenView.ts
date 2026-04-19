@@ -15,11 +15,11 @@ export class QuantifiedFoodTokenView extends FoodTokenView {
     this.quantityText.text = `${this._quantity}`;
   }
 
-  constructor(food: Food, private _quantity: number) {
-    super(food);
+  constructor(bg: PIXI.Sprite, private _quantity: number) {
+    super(bg);
 
     this.quantityText = new PIXI.Text({ 
-      text: `${food.quantity}`, 
+      text: `${""}`, 
       style: { fontSize: 16, fill: 0xffffff } 
     });
     this.quantityText.anchor.set(0.5);

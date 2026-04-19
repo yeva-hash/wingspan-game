@@ -4,8 +4,9 @@ import type { Food } from "../models/Food";
 import { LayoutService } from "../../layout/LayoutService";
 import { alphaTo } from "../../utils/viewUtils";
 import { QuantifiedFoodTokenView } from "./food/QuantifiedFoodTokenView";
-import { Area, BirdDefinition } from "../types/resourceTypes";
+import { Area, BirdDefinition, FoodDefinition } from "../types/resourceTypes";
 import gsap from "gsap";
+import { TextureCache } from "../../loader/TextureCache";
 
 enum HandViewState {
   Hidden,
@@ -101,7 +102,7 @@ export class HandView {
         view!.quantity = view!.quantity + 1;
         return;
       }
-      const view = new QuantifiedFoodTokenView(food, 1);
+      const view = new QuantifiedFoodTokenView(new PIXI.Sprite(TextureCache.getTexture(food.definition.texture)), 1);
       view.position.set(index * 70, 0);
 
       this._foodViewsById.set(food.id, view);

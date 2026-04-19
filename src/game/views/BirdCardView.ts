@@ -1,16 +1,16 @@
 import * as PIXI from "pixi.js";
 import { BirdDefinition } from "../types/resourceTypes";
+import { TextureCache } from "../../loader/TextureCache";
 
 export class BirdCardView extends PIXI.Container {
-  private bg: PIXI.Graphics;
+  private bg: PIXI.Sprite;
   onClicked: ((birdView: BirdCardView) => void) | null = null;
 
   constructor(bird: BirdDefinition) {
     super();
 
-    this.bg = new PIXI.Graphics()
-      .roundRect(0, 0, 120, 180, 8)
-      .fill(0x4a7c59);
+    this.bg = new PIXI.Sprite(TextureCache.getTexture("bird-front-side"));
+    this.bg.anchor.set(0.5);
 
     const name = new PIXI.Text({
       text: bird.name,

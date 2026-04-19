@@ -4,8 +4,7 @@ import { ChooseFoodStrategy } from "../game/strategy/selectionStrategy/ChooseFoo
 
 export class GainFoodState implements LocalState {
   async run(ctx: FlowContext): Promise<void> {
-    // const rewardCount = ctx.services.habitatService.getFirstFreeSlot("forest")?.rewardCount ?? 0;
-    const rewardCount = 6;
+    const rewardCount = ctx.services.habitatService.getFirstFreeSlot("forest")?.rewardCount ?? 0;
     if (rewardCount <= 0) return;
 
     const availableFoodCount = ctx.services.feederService.getAvailableFoodCount();

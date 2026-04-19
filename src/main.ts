@@ -1,9 +1,13 @@
 import layoutJson from "../layout.json";
+import stylesJson from "../styles.json";
 import { GameApp } from "./app/gameApp";
 import type { LayoutConfig } from "./layout/LayoutBuilder";
+import { TextStyleCache, type TextStylesConfig } from "./layout/TextStyleCache";
 import { GameScene } from "./scene/GameScene";
 
 async function main() {
+  TextStyleCache.initialize(stylesJson as TextStylesConfig);
+
   const gameApp = new GameApp();
   await gameApp.init({
     mountId: "app",
@@ -17,4 +21,3 @@ async function main() {
 main().catch((err) => {
   console.error(err);
 });
-

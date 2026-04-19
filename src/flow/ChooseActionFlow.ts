@@ -7,6 +7,10 @@ import { ChooseBirdState } from "../localStates/ChooseBirdState";
 
 export class ChooseActionFlow implements FlowState {
   async run(ctx: FlowContext): Promise<FlowState | null> {
+    if (ctx.services.feederService.isEmpty()) {
+      ctx.controllers.feeder.syncWithStore();
+    }
+
     const action: ActionId = await ctx.controllers.actionMenu.chooseAction();
 
     switch (action) {

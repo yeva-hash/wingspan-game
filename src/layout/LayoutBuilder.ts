@@ -1,6 +1,7 @@
-import { Assets, Container, DEPRECATED_SCALE_MODES, Sprite, Text, Texture } from "pixi.js";
+import { Container, Sprite, Text, TextStyle, Texture } from "pixi.js";
 import type { LayoutService } from "./LayoutService";
 import { TextureCache } from "../loader/TextureCache";
+import { TextStyleCache } from "./TextStyleCache";
 export * as PIXI from "pixi.js";
 
 type PointLike = {
@@ -21,6 +22,7 @@ export type LayoutNode = {
   text?: string;
   fontSize?: number;
   color?: string;
+  styleName?: string;
   children?: LayoutNode[];
 };
 
@@ -58,10 +60,7 @@ export class LayoutBuilder {
       case "text":
         displayObject = new Text({
           text: node.text ?? "",
-          style: {
-            fontSize: node.fontSize ?? 24,
-            fill: node.color ?? "#ffffff",
-          },
+          style: this.getTextStyle(node),
         });
         break;
       default:
@@ -87,6 +86,17 @@ export class LayoutBuilder {
     }
 
     return displayObject;
+  }
+
+  private getTextStyle(node: LayoutNode): TextStyle {
+    if (node.styleName) {
+      return TextStyleCache.getTextStyle(node.styleName);
+    }
+
+    return new TextStyle({
+      fontSize: node.fontSize ?? 24,
+      fill: node.color ?? "#ffffff",
+    });
   }
 
   private applyTransform(displayObject: Container | Sprite | Text, node: LayoutNode): void {
