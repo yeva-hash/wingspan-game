@@ -29,10 +29,11 @@ export class BirdOfferView {
         this._offeredBirds.clear();
         for (let i = 0; i < BirdSupplyService.initialOfferedBirdCount; i++) {
             const bird = birds[i];
-            const view = new BirdCardView(bird); 
-            view.position.set(0, i * 200);
+            const prefab = await this._layoutService.createPrefab<PIXI.Container>("bird");
+            const view = new BirdCardView(prefab, bird); 
+            view.container.position.set(0, i * 200);
             this._offeredBirds.set(bird.name, view);
-            this._cardContainer.addChild(view);
+            this._cardContainer.addChild(view.container);
         }
 
         this.setInteractive(false);
@@ -47,7 +48,7 @@ export class BirdOfferView {
 
     private setInteractive(interactive: boolean): void {
         for (const [name, bird] of this._offeredBirds.entries()) {
-            setButtonInteractive(bird, interactive);
+            setButtonInteractive(bird.container, interactive);
             if (interactive) {
                 bird.onClicked = () => this.onBirdClicked?.(name);
             }

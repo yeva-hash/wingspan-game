@@ -2,30 +2,35 @@ import * as PIXI from "pixi.js";
 import { BirdDefinition } from "../types/resourceTypes";
 import { TextureCache } from "../../loader/TextureCache";
 
-export class BirdCardView extends PIXI.Container {
-  private bg: PIXI.Sprite;
+export class BirdCardView {
+  readonly container: PIXI.Container;
   onClicked: ((birdView: BirdCardView) => void) | null = null;
 
-  constructor(bird: BirdDefinition) {
-    super();
+  constructor(container: PIXI.Container, bird: BirdDefinition) {
+    this.container = container;
 
-    this.bg = new PIXI.Sprite(TextureCache.getTexture("bird-front-side"));
-    this.bg.anchor.set(0.5);
+    const bg = this.container.getChildByLabel("bird-front-side", true) as PIXI.Sprite | null;
+    const birdImage = this.container.getChildByLabel("bird-image", true) as PIXI.Sprite | null;
+    const nameText = this.container.getChildByLabel("bird-name", true) as PIXI.Text | null;
 
-    const name = new PIXI.Text({
-      text: bird.name,
-      style: { fontSize: 14, fill: 0xffffff },
-    });
+    if (!bg || !birdImage || !nameText) {
+      throw new Error("BirdCardView: prefab is missing required children");
+    }
 
-    name.position.set(8, 8);
+    birdImage.texture = TextureCache.getTexture(bird.texture);
+    nameText.text = bird.name;
 
-    this.addChild(this.bg, name);
-    this.eventMode = "static";
-    this.cursor = "pointer";
-    this.on("pointerdown", () => this.onClicked?.(this));
+    this.container.eventMode = "static";
+    this.container.cursor = "pointer";
+    this.container.on("pointerdown", () => this.onClicked?.(this));
   }
 
   setSelected(selected: boolean): void {
-    this.bg.alpha = selected ? 0.5 : 1;
+    const bg = this.container.getChildByLabel("bird-front-side", true) as PIXI.Sprite | null;
+    if (!bg) {
+      throw new Error("BirdCardView: prefab is missing bird-front-side");
+    }
+
+    bg.alpha = selected ? 0.5 : 1;
   }
 }

@@ -16,12 +16,14 @@
         "assets": [
           { "alias": "bird-back-side-big", "src": "assets/sprites/bird-back-side_big.png" },
           { "alias": "bird-back-side-small", "src": "assets/sprites/bird-back-side_small.png" },
-          { "alias": "bird-front-side", "src": "assets/sprites/bird-front-side.png" }
+          { "alias": "bird-front-side", "src": "assets/sprites/bird-front-side.png" },
+          { "alias": "teteriv", "src": "assets/sprites/birds/teteriv.png" }
         ]
       },
       {
         "name": "game",
         "assets": [
+          { "alias": "background", "src": "assets/sprites/background.png" },
           { "alias": "egg", "src": "assets/sprites/egg.png" },
           { "alias": "feeder", "src": "assets/sprites/feeder.png" },
           { "alias": "game-field", "src": "assets/sprites/game-field.png" },

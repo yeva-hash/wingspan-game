@@ -1,4 +1,55 @@
 {
+    "prefabs": [
+        {
+            "name": "bird",
+            "type": "container",
+            "x": 0,
+            "y": 0,
+            "children": [
+                {
+                    "name": "bird-front-side",
+                    "type": "sprite",
+                    "x": 0,
+                    "y": 0,
+                    "anchor": {
+                        "x": 0.5,
+                        "y": 0.5
+                    },
+                    "scale": {
+                        "x": 0.8,
+                        "y": 0.8
+                    },
+                    "texture": "bird-front-side"
+                },
+                {
+                    "name": "bird-image",
+                    "type": "sprite",
+                    "x": 0,
+                    "y": -24,
+                    "anchor": {
+                        "x": 0.5,
+                        "y": 0.5
+                    },
+                    "scale": {
+                        "x": 0.6,
+                        "y": 0.6
+                    }
+                },
+                {
+                    "name": "bird-name",
+                    "type": "text",
+                    "x": 0.5,
+                    "y": -70,
+                    "text": "",
+                    "anchor": {
+                        "x": 0.5,
+                        "y": 0.5
+                    },
+                    "styleName": "bird-name"
+                }
+            ]
+        }
+    ],
     "stage": {
         "name": "game",
         "type": "container",
@@ -10,6 +61,17 @@
         },
         "children": [
             {
+                "name": "background",
+                "type": "sprite",
+                "x": 0,
+                "y": 0,
+                "scale": {
+                    "x": 1.125,
+                    "y": 1
+                },
+                "texture": "assets/sprites/background.png"
+            },
+            {
                 "name":"bird-offer-container",
                 "type": "container",
                 "x": 1470,
@@ -18,8 +80,8 @@
                     {
                         "name":"bird-offer-card-container",
                         "type": "container",
-                        "x": 0,
-                        "y": 0,
+                        "x": 65,
+                        "y": 80,
                         "children": []
                     },
                     {
@@ -54,7 +116,7 @@
                         "name": "game-field-bg",
                         "type": "sprite",
                         "x": 836,
-                        "y": 410,
+                        "y": 436,
                         "anchor": {
                             "x": 0.5,
                             "y": 0.5
@@ -532,7 +594,7 @@
                         "alpha": 0,
                         "text": "Confirm",
                         "styleName": "confirm-button"
-                      }
+                    }
                 ]
             }
         ]

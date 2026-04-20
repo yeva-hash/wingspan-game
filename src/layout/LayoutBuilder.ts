@@ -1,5 +1,5 @@
-import { Container, Sprite, Text, TextStyle, Texture } from "pixi.js";
-import type { LayoutService } from "./LayoutService";
+import { Container, Sprite, Text, TextStyle } from "pixi.js";
+import type { LayoutElement, LayoutService } from "./LayoutService";
 import { TextureCache } from "../loader/TextureCache";
 import { TextStyleCache } from "./TextStyleCache";
 export * as PIXI from "pixi.js";
@@ -32,7 +32,9 @@ export type LayoutConfig = {
 };
 
 export class LayoutBuilder {
-  constructor(private readonly layoutService: LayoutService) {}
+  constructor(private readonly layoutService: LayoutService) {
+    this.layoutService.setPrefabBuilder(this.buildPrefab.bind(this));
+  }
 
   async build(config: LayoutConfig, parent: Container): Promise<Container> {
     if (config.prefabs?.length) {
@@ -41,8 +43,7 @@ export class LayoutBuilder {
           throw new Error("Prefab node must have a name");
         }
 
-        const prefab = await this.buildNode(prefabNode, false);
-        this.layoutService.setPrefab(prefabNode.name, prefab);
+        this.layoutService.setPrefabNode(prefabNode.name, prefabNode);
       }
     }
 
@@ -55,6 +56,11 @@ export class LayoutBuilder {
     return stageNode;
   }
 
+  async buildPrefab<T extends LayoutElement>(name: string): Promise<T> {
+    const prefabNode = this.layoutService.getPrefabNode(name);
+    return await this.buildNode(prefabNode, false) as T;
+  }
+
   private async buildNode(node: LayoutNode, registerInLayout: boolean): Promise<Container | Sprite | Text> {
     let displayObject: Container | Sprite | Text;
 
@@ -63,10 +69,9 @@ export class LayoutBuilder {
         displayObject = new Container();
         break;
       case "sprite": {
-        const texture = node.texture
-        ? TextureCache.getTexture(node.texture)
-        : Texture.WHITE;
-        displayObject = new Sprite(texture);
+        displayObject = node.texture
+          ? new Sprite(TextureCache.getTexture(node.texture))
+          : new Sprite();
         break;
       }
       case "text":

@@ -10,9 +10,9 @@ export class HabitatAreaView {
         private readonly _layoutService: LayoutService,
     ) {
         this._slots = new Map([
-            [1, new HabitatSlotView(this._layoutService.get(`${this._area}-slot-1-container`))],
-            [2, new HabitatSlotView(this._layoutService.get(`${this._area}-slot-2-container`))],
-            [3, new HabitatSlotView(this._layoutService.get(`${this._area}-slot-3-container`))],
+            [1, new HabitatSlotView(this._layoutService.get(`${this._area}-slot-1-container`), this._layoutService)],
+            [2, new HabitatSlotView(this._layoutService.get(`${this._area}-slot-2-container`), this._layoutService)],
+            [3, new HabitatSlotView(this._layoutService.get(`${this._area}-slot-3-container`), this._layoutService)],
         ]);
     }
 

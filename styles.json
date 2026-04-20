@@ -17,5 +17,24 @@
     "dropShadowDistance": 2,
     "padding": 4,
     "align": "center"
+  },
+  "bird-name": {
+    "fontFamily": "\"Comic Sans MS\", cursive",
+    "fontSize": 18,
+    "fontStyle": "normal",
+    "fontVariant": "normal",
+    "fontWeight": "bold",
+    "fill": ["#3a2e1f", "#5a442c"],
+    "fillGradientType": 1,
+    "stroke": "#ffffff",
+    "strokeThickness": 3,
+    "lineJoin": "round",
+    "dropShadow": true,
+    "dropShadowColor": "#000000",
+    "dropShadowBlur": 4,
+    "dropShadowAngle": 1.2,
+    "dropShadowDistance": 2,
+    "padding": 4,
+    "align": "center"
   }
 }
