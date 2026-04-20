@@ -46,6 +46,41 @@
                         "y": 0.5
                     },
                     "styleName": "bird-name"
+                },
+                {
+                    "name": "egg-container",
+                    "type": "container",
+                    "x": -40,
+                    "y": 60,
+                    "children": [
+                        {                    
+                            "name": "egg-image",
+                            "type": "sprite",
+                            "x": 0,
+                            "y": 0,
+                            "anchor": {
+                                "x": 0.5,
+                                "y": 0.5
+                            },
+                            "scale": {
+                                "x": 0.3,
+                                "y": 0.3
+                            },
+                            "texture": "assets/sprites/egg.png"
+                        },
+                        {
+                            "name": "egg-text",
+                            "type": "text",
+                            "x": 15,
+                            "y": 0,
+                            "text": "",
+                            "anchor": {
+                                "x": 0,
+                                "y": 0.5
+                            },
+                            "styleName": "bird-name"
+                        }
+                    ]
                 }
             ]
         }

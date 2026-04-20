@@ -12,13 +12,15 @@ export class BirdCardView {
     const bg = this.container.getChildByLabel("bird-front-side", true) as PIXI.Sprite | null;
     const birdImage = this.container.getChildByLabel("bird-image", true) as PIXI.Sprite | null;
     const nameText = this.container.getChildByLabel("bird-name", true) as PIXI.Text | null;
+    const eggContainerText = this.container.getChildByLabel("egg-text", true) as PIXI.Text | null;
 
-    if (!bg || !birdImage || !nameText) {
+    if (!bg || !birdImage || !nameText || !eggContainerText) {
       throw new Error("BirdCardView: prefab is missing required children");
     }
 
     birdImage.texture = TextureCache.getTexture(bird.texture);
     nameText.text = bird.name;
+    eggContainerText.text = `${bird.maxEggCount}`;
 
     this.container.eventMode = "static";
     this.container.cursor = "pointer";
