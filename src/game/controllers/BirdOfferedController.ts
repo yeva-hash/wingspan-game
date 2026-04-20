@@ -71,7 +71,7 @@ export class BirdOfferedController {
         this.view.setRandomSelected(isRandomSelected);
 
         for (const bird of this.service.getOfferedBirds()) {
-            this.view.setSelected(bird.name, this.strategy.selectedBirdIds.includes(bird.name));
+            this.view.setSelected(bird.id, this.strategy.selectedBirdIds.includes(bird.id));
         }
     }
 

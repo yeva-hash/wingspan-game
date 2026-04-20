@@ -88,9 +88,9 @@ export class HandView {
       const prefab = await this._layoutService.createPrefab<PIXI.Container>("bird");
       const view = new BirdCardView(prefab, bird);
       view.container.position.set(index * 130, 0);
-      view.onClicked = () => this.onBirdClicked?.(bird.name);
+      view.onClicked = () => this.onBirdClicked?.(bird.id);
 
-      this._birdViewsById.set(bird.name, view);
+      this._birdViewsById.set(bird.id, view);
       this._birdsContainer.addChild(view.container);
     }
   }

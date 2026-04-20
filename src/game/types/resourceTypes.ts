@@ -5,6 +5,7 @@ export type BirdDefinition = {
   texture: string;
   allowedFoods: FoodType[]; // TODO rename to allowedResources
   allowedAreas: Area[];
+  maxEggCount: number;
 };
 
 export type FoodDefinition = {

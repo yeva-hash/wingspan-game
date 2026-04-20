@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import { BirdDefinition } from "../../types/resourceTypes";
+import { PlayedBird } from "../../models/PlayedBird";
 import { BirdCardView } from "../BirdCardView";
 import { alphaTo } from "../../../utils/viewUtils";
 import { LayoutService } from "../../../layout/LayoutService";
@@ -17,12 +17,12 @@ export class HabitatSlotView {
         // place bird card view 
     }
 
-    async placeBirdCard(def: BirdDefinition): Promise<void> {
+    async placeBirdCard(bird: PlayedBird): Promise<void> {
         //TODO
         if (this._birdCardView) return;
 
         const prefab = await this._layoutService.createPrefab<PIXI.Container>("bird");
-        this._birdCardView = new BirdCardView(prefab, def);
+        this._birdCardView = new BirdCardView(prefab, bird.definition);
         this._container.addChild(this._birdCardView.container);
         this._birdCardView.container.alpha = 0;
         this._birdCardView.container.position.set(-57, -96);

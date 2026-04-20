@@ -1,12 +1,14 @@
 import { HabitatStore } from "../stores/habitat/HabitatStore";
 import { HabitatAreaStore } from "../stores/habitat/HabitatAreaStore";
 import { HabitatSlotStore } from "../stores/habitat/HabitatSlotStore";
-import { Area, BirdDefinition } from "../types/resourceTypes";
+import { BirdId } from "../../catalogs/BirdCatalog";
 import { BirdCatalog } from "../../catalogs/BirdCatalog";
+import { PlayedBird } from "../models/PlayedBird";
+import { Area } from "../types/resourceTypes";
 
 export type BirdPlacementResult = {
     area: Area;
-    bird: BirdDefinition;
+    bird: PlayedBird;
     slotIndex: number;
 };
 
@@ -37,16 +39,16 @@ export class HabitatService {
     //     return this.getFirstFreeSlot(area) !== null;
     // }
 
-    placeBirdInArea(area: Area, birdId: string): BirdPlacementResult {
+    placeBirdInArea(area: Area, birdId: BirdId): BirdPlacementResult {
         const slot = this.getFirstFreeSlot(area);
         if (!slot) {
             //TODO visual feedback
             throw new Error(`No free slots in ${area}`);
         }
 
-        this.getArea(area).setBirdInSlot(slot.index, birdId);
-
-        const bird = this._birdCatalog.getById(birdId);
+        const birdDefinition = this._birdCatalog.getById(birdId);
+        const bird = new PlayedBird(birdDefinition);
+        this.getArea(area).setBirdInSlot(slot.index, bird);
 
         return {
             area,

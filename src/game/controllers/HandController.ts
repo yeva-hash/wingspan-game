@@ -84,7 +84,7 @@ export class HandController {
 
   private syncBirdSelection(): void {
       for (const bird of this.resources.getBirds()) {
-          this.view.setBirdSelected(bird.name, bird.name === this.strategy.selectedBirdId);
+          this.view.setBirdSelected(bird.id, bird.id === this.strategy.selectedBirdId);
       }
   }
 

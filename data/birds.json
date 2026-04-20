@@ -6,7 +6,8 @@
       "texture": "teteriv",
       "description": "A small grey city bird; fond of crumbs and grain.",
       "allowedAreas": ["forest", "steppe"],
-      "allowedFoods": ["seed", "worm"]
+      "allowedFoods": ["seed", "worm"],
+      "maxEggCount": 4
     },
     {
       "id": "tit",
@@ -14,7 +15,8 @@
       "texture": "teteriv",
       "description": "Colourful bird with a black cap; often visits feeders in winter.",
       "allowedAreas": ["forest"],
-      "allowedFoods": ["seed"]
+      "allowedFoods": ["seed"],
+      "maxEggCount": 5
     },
     {
       "id": "bullfinch",
@@ -22,7 +24,8 @@
       "texture": "teteriv",
       "description": "Red-breasted winter visitor with a stout bill.",
       "allowedAreas": ["steppe"],
-      "allowedFoods": ["seed", "worm"]
+      "allowedFoods": ["seed", "worm"],
+      "maxEggCount": 4
     },
     {
       "id": "thrush",
@@ -30,7 +33,8 @@
       "texture": "teteriv",
       "description": "Songbird that readily eats berries and worms.",
       "allowedAreas": ["swamp", "steppe"],
-      "allowedFoods": ["worm", "berry"]
+      "allowedFoods": ["worm", "berry"],
+      "maxEggCount": 3
     },
     {
       "id": "nightingale",
@@ -38,7 +42,8 @@
       "texture": "teteriv",
       "description": "Famous night singer with a rich, bushy voice.",
       "allowedAreas": ["swamp"],
-      "allowedFoods": ["worm", "berry"]
+      "allowedFoods": ["worm", "berry"],
+      "maxEggCount": 4
     },
     {
       "id": "goldfinch",
@@ -46,7 +51,8 @@
       "texture": "teteriv",
       "description": "Red-and-yellow finch that loves seeds.",
       "allowedAreas": ["forest"],
-      "allowedFoods": ["seed"]
+      "allowedFoods": ["seed"],
+      "maxEggCount": 4
     },
     {
       "id": "skylark",
@@ -54,7 +60,8 @@
       "texture": "teteriv",
       "description": "Rises singing over open fields and meadows.",
       "allowedAreas": ["steppe"],
-      "allowedFoods": ["seed", "worm"]
+      "allowedFoods": ["seed", "worm"],
+      "maxEggCount": 3
     },
     {
       "id": "swallow",
@@ -62,7 +69,8 @@
       "texture": "teteriv",
       "description": "Fast aerial hunter of insects over water and fields.",
       "allowedAreas": ["swamp", "steppe"],
-      "allowedFoods": ["worm", "berry"]
+      "allowedFoods": ["worm", "berry"],
+      "maxEggCount": 4
     },
     {
       "id": "woodpecker",
@@ -70,7 +78,8 @@
       "texture": "teteriv",
       "description": "Drums on trunks to find insects under the bark.",
       "allowedAreas": ["forest"],
-      "allowedFoods": ["worm", "berry"]
+      "allowedFoods": ["worm", "berry"],
+      "maxEggCount": 5
     },
     {
       "id": "magpie",
@@ -78,7 +87,8 @@
       "texture": "teteriv",
       "description": "Smart black-and-white corvid, curious about everything.",
       "allowedAreas": ["forest"],
-      "allowedFoods": ["worm", "berry"]
+      "allowedFoods": ["worm", "berry"],
+      "maxEggCount": 6
     }
   ]
 }

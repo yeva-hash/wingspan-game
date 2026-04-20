@@ -1,4 +1,5 @@
 import { Area } from "../../types/resourceTypes";
+import { PlayedBird } from "../../models/PlayedBird";
 import { EHabitatResourceType } from "./HabitatStore";
 import { HabitatSlotStore } from "./HabitatSlotStore";
 
@@ -38,7 +39,7 @@ export class HabitatAreaStore {
         return slot;
     }
 
-    setBirdInSlot(index: number, birdId: string): void {
-        this.getSlot(index).setBirdId(birdId);
+    setBirdInSlot(index: number, bird: PlayedBird): void {
+        this.getSlot(index).setBird(bird);
     }
 }

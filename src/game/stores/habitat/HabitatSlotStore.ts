@@ -1,8 +1,10 @@
+import { PlayedBird } from "../../models/PlayedBird";
+
 export class HabitatSlotStore {
     constructor(
         private readonly _index: number,
         private readonly _rewardCount: number,
-        private _birdId: string | null = null,
+        private _bird: PlayedBird | null = null,
     ) {}
 
     get index(): number {
@@ -13,19 +15,23 @@ export class HabitatSlotStore {
         return this._rewardCount;
     }
 
+    get bird(): PlayedBird | null {
+        return this._bird;
+    }
+
     get birdId(): string | null {
-        return this._birdId;
+        return this._bird?.id ?? null;
     }
 
     get isOccupied(): boolean {
-        return this._birdId !== null;
+        return this._bird !== null;
     }
 
-    setBirdId(birdId: string): void {
-        this._birdId = birdId;
+    setBird(bird: PlayedBird): void {
+        this._bird = bird;
     }
 
     clearBird(): void {
-        this._birdId = null;
+        this._bird = null;
     }
 }

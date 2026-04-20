@@ -7,7 +7,7 @@ export class BirdCatalog {
 
     constructor(birds: BirdDefinition[]) {
         for (const bird of birds) {
-            const birdId = bird.name;
+            const birdId = bird.id;
 
             if (this._birdsById.has(birdId)) {
                 throw new Error(`Duplicate bird id: ${birdId}`);
