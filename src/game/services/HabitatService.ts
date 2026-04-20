@@ -39,7 +39,7 @@ export class HabitatService {
     //     return this.getFirstFreeSlot(area) !== null;
     // }
 
-    placeBirdInArea(area: Area, birdId: BirdId): BirdPlacementResult {
+    placeBirdInAreaSlot(area: Area, birdId: BirdId): BirdPlacementResult {
         const slot = this.getFirstFreeSlot(area);
         if (!slot) {
             //TODO visual feedback

@@ -11,6 +11,7 @@ import { HabitatService } from "../game/services/HabitatService";
 import { FeederController } from "../game/controllers/FeederController";
 import { FeederService } from "../game/services/FeederService";
 import { GainFoodUseCase } from "../game/useCases/GainFoodUseCase";
+import { PlayBirdUseCase } from "../game/useCases/PlayBirdUseCase";
 
 export type GameControllers = {
   hand: HandController;
@@ -42,6 +43,7 @@ export type GameServices = {
 export type GameUseCases = {
   chooseBirdUseCase: ChooseBirdUseCase;
   gainFoodUseCase: GainFoodUseCase;
+  playBirdUseCase: PlayBirdUseCase;
 };
 
 export type FlowState = {

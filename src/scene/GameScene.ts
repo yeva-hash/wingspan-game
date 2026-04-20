@@ -29,6 +29,7 @@ import { FeederService } from "../game/services/FeederService";
 import { FeederController } from "../game/controllers/FeederController";
 import { FeederView } from "../game/views/FeederView";
 import { GainFoodUseCase } from "../game/useCases/GainFoodUseCase";
+import { PlayBirdUseCase } from "../game/useCases/PlayBirdUseCase";
 
 const allBirdsFromJson = (birdsJson as { birds: BirdDefinition[] }).birds;
 const allFoodsFromJson = (foodsJson as { foods: FoodDefinition[] }).foods;
@@ -79,6 +80,7 @@ export class GameScene {
     
     const chooseBirdUseCase = new ChooseBirdUseCase(birdSupplyService, playerResourceService);
     const gainFoodUseCase = new GainFoodUseCase(feederService, playerResourceService, foodCatalog);
+    const playBirdUseCase = new PlayBirdUseCase(habitatService, playerResourceService);
     // const habitatUseCase = new HabitatUseCase(gameStore,habitatService);
 
     const actionMenuView = new ActionMenuView(layoutService);
@@ -117,6 +119,7 @@ export class GameScene {
       useCases: {
         chooseBirdUseCase,
         gainFoodUseCase,
+        playBirdUseCase,
       },
     };
   }

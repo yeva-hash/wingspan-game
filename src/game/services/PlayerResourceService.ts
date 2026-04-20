@@ -35,12 +35,16 @@ export class PlayerResourceService implements PlayerResourceReader {
     this._store.addBirdById(birdId);
   }
 
-  removeBirdById(birdId: BirdId): void {
-    this._store.removeBirdById(birdId);
-  }
+  spendBirdForPlay(birdId: BirdId): BirdDefinition {
+    const bird = this.getBirdById(birdId);
+    if (!bird) {
+      throw new Error(`Bird ${birdId} not found in player resources`);
+    }
 
-  removeFoodByIds(foodIds: string[]): void {
-    this._store.removeFoodByIds(foodIds);
+    this._store.removeBirdById(birdId);
+    this._store.removeFoodByIds(bird.allowedFoods);
+
+    return bird;
   }
 
   setInitialDeal(birdIds: BirdId[], foodDefs: FoodDefinition[]): void {

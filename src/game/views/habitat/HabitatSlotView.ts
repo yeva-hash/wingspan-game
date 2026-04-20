@@ -23,9 +23,10 @@ export class HabitatSlotView {
 
         const prefab = await this._layoutService.createPrefab<PIXI.Container>("bird");
         this._birdCardView = new BirdCardView(prefab, bird.definition);
+        this._birdCardView.setEggProgress(bird.eggCount, bird.maxEggCount);
         this._container.addChild(this._birdCardView.container);
         this._birdCardView.container.alpha = 0;
-        this._birdCardView.container.position.set(-57, -96);
+        this._birdCardView.container.position.set(0, 0);
 
         await alphaTo(this._birdCardView.container, 0.5, 1);
     }

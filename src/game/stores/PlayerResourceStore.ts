@@ -44,9 +44,21 @@ export class PlayerResourceStore {
   }
 
   removeFoodByIds(foodIds: string[]): void {
-    this._foodsById = new Map<string, Food>(
-      [...this._foodsById.entries()].filter(([id]) => !foodIds.includes(id))
-    );
+    for (const foodId of foodIds) {
+      const food = this._foodsById.get(foodId);
+      if (!food) {
+        throw new Error(`Food ${foodId} not found in player resources`);
+      }
+
+      const wasTaken = food.take(1);
+      if (!wasTaken) {
+        throw new Error(`Not enough food ${foodId} to remove from player resources`);
+      }
+
+      if (food.quantity === 0) {
+        this._foodsById.delete(foodId);
+      }
+    }
   }
 
   addFood(definition: FoodDefinition): void {

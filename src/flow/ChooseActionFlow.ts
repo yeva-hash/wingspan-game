@@ -28,7 +28,7 @@ export class ChooseActionFlow implements FlowState {
         break;
     }
 
-    return null;
+    return new ChooseActionFlow();
   }
 }
 

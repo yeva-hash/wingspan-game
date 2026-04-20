@@ -19,10 +19,6 @@ export class HabitatSlotStore {
         return this._bird;
     }
 
-    get birdId(): string | null {
-        return this._bird?.id ?? null;
-    }
-
     get isOccupied(): boolean {
         return this._bird !== null;
     }

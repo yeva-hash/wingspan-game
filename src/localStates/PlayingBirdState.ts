@@ -10,14 +10,10 @@ export class PlayingBirdState implements LocalState {
     
     const { birdId, area } = await ctx.controllers.hand.chooseBird();
 
-    const result = ctx.services.habitatService.placeBirdInArea(area, birdId);
+    const result = ctx.useCases.playBirdUseCase.execute(area, birdId);
 
     ctx.controllers.hand.hide();
     ctx.controllers.habitat.placeBirdCard(result);
-
-    //TODO use case?
-    ctx.services.playerResourceService.removeBirdById(birdId);
-    ctx.services.playerResourceService.removeFoodByIds(result.bird.allowedFoods);
     // ctx.controllers.habitat.syncOccupiedSlots();
   }
 }
