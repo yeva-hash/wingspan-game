@@ -33,12 +33,6 @@ export class HabitatService {
         return this.getSlots(area).find((slot) => !slot.isOccupied) ?? null;
     }
 
-    getOccupiedSlotIndexes(area: Area): number[] {
-        return this.getSlots(area)
-            .filter((slot) => slot.isOccupied)
-            .map((slot) => slot.index);
-    }
-
     getAvailableEggPlacementSlotsByArea(): HabitatBirdSlotMap {
         const availableSlotsByArea: HabitatBirdSlotMap = new Map();
 
@@ -63,14 +57,6 @@ export class HabitatService {
     getSlot(area: Area, slotIndex: number): HabitatSlotStore {
         return this.getArea(area).getSlot(slotIndex);
     }
-
-    // getFirstFreeSlotIndex(area: Area): number | null {
-    //     return this.getFirstFreeSlot(area)?.index ?? null;
-    // }
-
-    // canPlaceBirdInArea(area: Area): boolean {
-    //     return this.getFirstFreeSlot(area) !== null;
-    // }
 
     placeBirdInAreaSlot(area: Area, birdId: BirdId): BirdPlacementResult {
         const slot = this.getFirstFreeSlot(area);
@@ -98,5 +84,12 @@ export class HabitatService {
 
         bird.placeEgg();
         return bird;
+    }
+
+    
+    private getOccupiedSlotIndexes(area: Area): number[] {
+        return this.getSlots(area)
+            .filter((slot) => slot.isOccupied)
+            .map((slot) => slot.index);
     }
 }

@@ -6,9 +6,7 @@ import { ChooseActionFlow } from "../flow/ChooseActionFlow";
 export class GainEggsState implements LocalState {
   async run(ctx: FlowContext): Promise<void> {
       const rewardArea: Area = "steppe";
-    //   let rewardCount = ctx.services.habitatService.getRewardCount(rewardArea);
-    let rewardCount = 10
-
+      let rewardCount = ctx.services.habitatService.getRewardCount(rewardArea);
 
       while (rewardCount > 0) {
           const availableSlotsByArea = ctx.services.habitatService.getAvailableEggPlacementSlotsByArea();

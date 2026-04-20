@@ -29,24 +29,6 @@ export class HabitatController {
             }
         }
 
-        // for (const areaStore of this._service.getAreas()) {
-        //     const areaView = this.getAreaView(areaStore.area);
-        //     const availableSlotIndexes = new Set(availableSlotsByArea.get(areaStore.area) ?? []);
-
-        //     for (const slotStore of areaStore.getSlots()) {
-        //         const slotView = areaView.getSlotView(slotStore.index);
-        //         const slotRef = { area: areaStore.area, slotIndex: slotStore.index };
-        //         const isAvailable = availableSlotIndexes.has(slotStore.index);
-
-        //         slotView.onBirdClicked = isAvailable ? () => {
-        //             this.clearEggPlacementSelection();
-        //             deferred.resolve(slotRef);
-        //         } : null;
-
-        //         areaView.setBirdInteractive(slotStore.index, isAvailable);
-        //     }
-        // }
-
         return deferred.promise;
     }
 
