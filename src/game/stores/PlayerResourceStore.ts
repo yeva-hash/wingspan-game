@@ -15,6 +15,11 @@ export class PlayerResourceStore {
 
     this._foodsById = new Map<string, Food>();
     for (const def of foodDefs) {
+      const existing = this._foodsById.get(def.id);
+      if (existing) {
+        existing.add(1);
+        continue;
+      }
       this._foodsById.set(def.id, new Food(def, 1));
     }
   }

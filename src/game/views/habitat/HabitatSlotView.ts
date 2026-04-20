@@ -6,6 +6,8 @@ import { LayoutService } from "../../../layout/LayoutService";
 
 export class HabitatSlotView {
     private _birdCardView?: BirdCardView;
+    private _isBirdInteractive = false;
+    onBirdClicked: (() => void) | null = null;
 
     constructor(
         private readonly _container: PIXI.Container,
@@ -29,5 +31,21 @@ export class HabitatSlotView {
         this._birdCardView.container.position.set(0, 0);
 
         await alphaTo(this._birdCardView.container, 0.5, 1);
+    }
+
+    setBirdInteractive(interactive: boolean): void {
+        this._isBirdInteractive = interactive;
+
+        if (!this._birdCardView) {
+            return;
+        }
+
+        this._birdCardView.container.eventMode = interactive ? "static" : "none";
+        this._birdCardView.container.cursor = interactive ? "pointer" : "default";
+        this._birdCardView.onClicked = interactive ? () => this.onBirdClicked?.() : null;
+    }
+
+    updateEggProgress(bird: PlayedBird): void {
+        this._birdCardView?.setEggProgress(bird.eggCount, bird.maxEggCount);
     }
 }

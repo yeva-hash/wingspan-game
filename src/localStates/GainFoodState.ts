@@ -1,10 +1,13 @@
 import type { LocalState } from "./LocalState";
 import type { FlowContext } from "../flow/FlowTypes";
 import { ChooseFoodStrategy } from "../game/strategy/selectionStrategy/ChooseFoodStrategy";
+import { Area } from "../game/types/resourceTypes";
 
 export class GainFoodState implements LocalState {
   async run(ctx: FlowContext): Promise<void> {
-    const rewardCount = ctx.services.habitatService.getFirstFreeSlot("forest")?.rewardCount ?? 0;
+    const rewardArea: Area = "forest";
+    let rewardCount = ctx.services.habitatService.getRewardCount(rewardArea)
+
     if (rewardCount <= 0) return;
 
     const availableFoodCount = ctx.services.feederService.getAvailableFoodCount();

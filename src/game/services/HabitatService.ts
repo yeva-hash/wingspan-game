@@ -12,6 +12,8 @@ export type BirdPlacementResult = {
     slotIndex: number;
 };
 
+export type HabitatBirdSlotMap = Map<Area, number[]>;
+
 export class HabitatService {
     constructor(private readonly _habitatStore: HabitatStore, private readonly _birdCatalog: BirdCatalog) {}
 
@@ -29,6 +31,37 @@ export class HabitatService {
 
     getFirstFreeSlot(area: Area): HabitatSlotStore | null {
         return this.getSlots(area).find((slot) => !slot.isOccupied) ?? null;
+    }
+
+    getOccupiedSlotIndexes(area: Area): number[] {
+        return this.getSlots(area)
+            .filter((slot) => slot.isOccupied)
+            .map((slot) => slot.index);
+    }
+
+    getAvailableEggPlacementSlotsByArea(): HabitatBirdSlotMap {
+        const availableSlotsByArea: HabitatBirdSlotMap = new Map();
+
+        for (const areaStore of this.getAreas()) {
+            const slotIndexes = this.getOccupiedSlotIndexes(areaStore.area).filter((slotIndex) => {
+                const bird = this.getSlot(areaStore.area, slotIndex).bird;
+                return !!bird?.canPlaceEgg;
+            });
+
+            if (slotIndexes.length > 0) {
+                availableSlotsByArea.set(areaStore.area, slotIndexes);
+            }
+        }
+
+        return availableSlotsByArea;
+    }
+
+    getRewardCount(area: Area): number {
+        return this.getFirstFreeSlot(area)?.rewardCount ?? 0;
+    }
+
+    getSlot(area: Area, slotIndex: number): HabitatSlotStore {
+        return this.getArea(area).getSlot(slotIndex);
     }
 
     // getFirstFreeSlotIndex(area: Area): number | null {
@@ -55,5 +88,15 @@ export class HabitatService {
             bird,
             slotIndex: slot.index,
         };
+    }
+
+    placeEgg(area: Area, slotIndex: number): PlayedBird {
+        const bird = this.getSlot(area, slotIndex).bird;
+        if (!bird) {
+            throw new Error(`No bird found in ${area} slot ${slotIndex}`);
+        }
+
+        bird.placeEgg();
+        return bird;
     }
 }

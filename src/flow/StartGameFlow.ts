@@ -21,7 +21,7 @@ export class StartGameFlow implements FlowState {
     //TODO use case?
     ctx.services.playerResourceService.setInitialDeal(
       [birds[0].id, birds[3].id, birds[4].id],
-      [foods[0], foods[1], foods[2], foods[3], foods[4]]
+      [foods[0], foods[1], foods[2], foods[3], foods[4], foods[1], foods[2], foods[1], foods[2],foods[1], foods[2],foods[1], foods[2],]
     );
 
     ctx.controllers.feeder.render();

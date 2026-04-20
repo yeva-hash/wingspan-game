@@ -29,4 +29,12 @@ export class HabitatAreaView {
     placeBirdCard(slotIndex: number, bird: PlayedBird): void {
         this.getSlotView(slotIndex).placeBirdCard(bird);
     }
+
+    setBirdInteractive(slotIndex: number, interactive: boolean): void {
+        this.getSlotView(slotIndex).setBirdInteractive(interactive);
+    }
+
+    updateEggProgress(slotIndex: number, bird: PlayedBird): void {
+        this.getSlotView(slotIndex).updateEggProgress(bird);
+    }
 }
