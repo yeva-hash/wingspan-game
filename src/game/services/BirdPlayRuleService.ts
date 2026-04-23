@@ -11,7 +11,7 @@ export class BirdPlayRuleService {
       return false;
     }
 
-    return bird.allowedFoods.every((foodId) => {
+    return bird.requiredFoods.every((foodId) => {
       return !!this._resources.getFoodById(foodId);
     });
   }
@@ -21,7 +21,7 @@ export class BirdPlayRuleService {
       return [];
     }
 
-    return bird.allowedFoods.filter((foodId) => {
+    return bird.requiredFoods.filter((foodId) => {
       return !this._resources.getFoodById(foodId);
     });
   }

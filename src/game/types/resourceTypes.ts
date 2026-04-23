@@ -3,7 +3,7 @@ export type BirdDefinition = {
   id: string;
   name: string;
   texture: string;
-  allowedFoods: FoodType[]; // TODO rename to allowedResources
+  requiredFoods: FoodType[];
   allowedAreas: Area[];
   maxEggCount: number;
 };

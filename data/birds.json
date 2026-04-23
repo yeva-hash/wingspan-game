@@ -6,7 +6,7 @@
       "texture": "teteriv",
       "description": "A small grey city bird; fond of crumbs and grain.",
       "allowedAreas": ["forest", "steppe"],
-      "allowedFoods": ["seed", "worm"],
+      "requiredFoods": ["seed"],
       "maxEggCount": 4
     },
     {
@@ -15,7 +15,7 @@
       "texture": "teteriv",
       "description": "Colourful bird with a black cap; often visits feeders in winter.",
       "allowedAreas": ["forest"],
-      "allowedFoods": ["seed"],
+      "requiredFoods": ["worm"],
       "maxEggCount": 5
     },
     {
@@ -24,7 +24,7 @@
       "texture": "teteriv",
       "description": "Red-breasted winter visitor with a stout bill.",
       "allowedAreas": ["steppe"],
-      "allowedFoods": ["seed", "worm"],
+      "requiredFoods": ["seed", "worm"],
       "maxEggCount": 4
     },
     {
@@ -33,7 +33,7 @@
       "texture": "teteriv",
       "description": "Songbird that readily eats berries and worms.",
       "allowedAreas": ["swamp", "steppe"],
-      "allowedFoods": ["worm", "berry"],
+      "requiredFoods": ["berry"],
       "maxEggCount": 3
     },
     {
@@ -42,7 +42,7 @@
       "texture": "teteriv",
       "description": "Famous night singer with a rich, bushy voice.",
       "allowedAreas": ["swamp"],
-      "allowedFoods": ["worm", "berry"],
+      "requiredFoods": ["mouse"],
       "maxEggCount": 4
     },
     {
@@ -51,7 +51,7 @@
       "texture": "teteriv",
       "description": "Red-and-yellow finch that loves seeds.",
       "allowedAreas": ["forest"],
-      "allowedFoods": ["seed"],
+      "requiredFoods": ["fish"],
       "maxEggCount": 4
     },
     {
@@ -60,7 +60,7 @@
       "texture": "teteriv",
       "description": "Rises singing over open fields and meadows.",
       "allowedAreas": ["steppe"],
-      "allowedFoods": ["seed", "worm"],
+      "requiredFoods": ["fish", "worm"],
       "maxEggCount": 3
     },
     {
@@ -69,7 +69,7 @@
       "texture": "teteriv",
       "description": "Fast aerial hunter of insects over water and fields.",
       "allowedAreas": ["swamp", "steppe"],
-      "allowedFoods": ["worm", "berry"],
+      "requiredFoods": ["mouse", "berry"],
       "maxEggCount": 4
     },
     {
@@ -78,7 +78,7 @@
       "texture": "teteriv",
       "description": "Drums on trunks to find insects under the bark.",
       "allowedAreas": ["forest"],
-      "allowedFoods": ["worm", "berry"],
+      "requiredFoods": ["berry"],
       "maxEggCount": 5
     },
     {
@@ -87,7 +87,7 @@
       "texture": "teteriv",
       "description": "Smart black-and-white corvid, curious about everything.",
       "allowedAreas": ["forest"],
-      "allowedFoods": ["worm", "berry"],
+      "requiredFoods": ["seed"],
       "maxEggCount": 6
     }
   ]

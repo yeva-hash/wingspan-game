@@ -42,7 +42,7 @@ export class PlayerResourceService implements PlayerResourceReader {
     }
 
     this._store.removeBirdById(birdId);
-    this._store.removeFoodByIds(bird.allowedFoods);
+    this._store.removeFoodByIds(bird.requiredFoods);
 
     return bird;
   }

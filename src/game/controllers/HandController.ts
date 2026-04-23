@@ -31,7 +31,7 @@ export class HandController {
 
   async render(): Promise<void> {
       await this.view.render(
-          this.resources.getBirds(),
+        this.resources.getBirds(),
         this.resources.getFoods(),
       );
       this.strategy?.reset();
@@ -41,6 +41,35 @@ export class HandController {
   renderAreas(areas: readonly Area[]): void {
       this.view.setAreas(areas);
   }
+
+  private syncView(): void {
+    const bird = this.getSelectedBird();
+
+    for (const b of this.resources.getBirds()) {
+        this.view.setBirdSelected(b.id, b.id === this.strategy.selectedBirdId);
+    }
+
+    const highlightedFoodIds = new Set(
+        bird ? bird.requiredFoods.filter((foodId) => !!this.resources.getFoodById(foodId)) : []
+    );
+    for (const food of this.resources.getFoods()) {
+        this.view.setFoodHighlighted(food.id, highlightedFoodIds.has(food.id));
+    }
+
+    if (bird) {
+        this.view.enableAreaSelection(this.rules.getAllowedAreas(bird));
+    }
+
+    const area = this.strategy.selectedArea;
+    this.view.setConfirmEnabled(
+        this.strategy.canConfirm() && this.rules.canPlayBirdInArea(bird, area)
+    );
+    this.view.setMessage(this.rules.getMissingFoodMessage(bird));
+  }
+
+  private getSelectedBird(): BirdDefinition | null {
+    return this.resources.getBirdById(this.strategy.selectedBirdId ?? "");
+}
 
   async chooseBird(): Promise<PlayBirdChoice> {
       const deferred = createDeferred<PlayBirdChoice>();
@@ -72,53 +101,7 @@ export class HandController {
   private handleAreaClick(area: Area): void {
       this.strategy.selectArea(area);
       this.view.setAreaSelected(area);
-      this.syncConfirmState();
-  }
-
-  private syncView(): void {
-      this.syncBirdSelection();
-      this.syncFoodHighlights();
-      this.syncAreaSelection();
-      this.syncConfirmState();
-  }
-
-  private syncBirdSelection(): void {
-      for (const bird of this.resources.getBirds()) {
-          this.view.setBirdSelected(bird.id, bird.id === this.strategy.selectedBirdId);
-      }
-  }
-
-  private syncFoodHighlights(): void {
-      const bird = this.resources.getBirdById(this.strategy.selectedBirdId ?? "");
-      const highlightedFoodIds = new Set(
-          bird ? bird.allowedFoods.filter((foodId) => !!this.resources.getFoodById(foodId)) : []
-      );
-
-      for (const food of this.resources.getFoods()) {
-          this.view.setFoodHighlighted(food.id, highlightedFoodIds.has(food.id));
-      }
-  }
-
-  private syncAreaSelection(): void {
-      const bird = this.getSelectedBird();
-      if (!bird) return;
-      this.view.enableAreaSelection(this.rules.getAllowedAreas(bird));
-  }
-
-  private syncConfirmState(): void {
-    const bird = this.getSelectedBird();
-    const area = this.strategy.selectedArea;
-
-    const canConfirm =
-        this.strategy.canConfirm() &&
-        this.rules.canPlayBirdInArea(bird, area);
-
-    this.view.setConfirmEnabled(canConfirm);
-    this.view.setMessage(this.rules.getMissingFoodMessage(bird));
-}
-
-  private getSelectedBird(): BirdDefinition | null {
-    return this.resources.getBirdById(this.strategy.selectedBirdId ?? "");
+      this.syncView();
   }
 
   //TODO
