@@ -26,8 +26,11 @@
           { "alias": "background", "src": "assets/sprites/background.png" },
           { "alias": "egg", "src": "assets/sprites/egg.png" },
           { "alias": "feeder", "src": "assets/sprites/feeder.png" },
+          { "alias": "forest-icon", "src": "assets/sprites/area-icons/forest-icon.png" },
           { "alias": "game-field", "src": "assets/sprites/game-field.png" },
-          { "alias": "hand-field", "src": "assets/sprites/hand-field.png" }
+          { "alias": "hand-field", "src": "assets/sprites/hand-field.png" },
+          { "alias": "steppe-icon", "src": "assets/sprites/area-icons/steppe-icon.png" },
+          { "alias": "swamp-icon", "src": "assets/sprites/area-icons/swamp-icon.png" }
         ]
       }
     ]

@@ -27,7 +27,7 @@ export class HandView {
   private readonly _birdViewsById = new Map<string, BirdCardView>();
   private readonly _foodViewsById = new Map<string, QuantifiedFoodTokenView>();
 
-  private readonly _areaSelections = new Map<Area, PIXI.Text>();
+  private readonly _areaSelections = new Map<Area, PIXI.Sprite>();
 
   private readonly _minimizeButton: PIXI.Text;
 
@@ -86,7 +86,7 @@ export class HandView {
     for (const [index, bird] of birds.entries()) {
       const prefab = await this._layoutService.createPrefab<PIXI.Container>("bird");
       const view = new BirdCardView(prefab, bird);
-      view.container.position.set(index * 130, 0);
+      view.container.position.set(index * (130 + 10), 0); 
       view.onClicked = () => this.onBirdClicked?.(bird.id);
 
       this._birdViewsById.set(bird.id, view);
@@ -146,26 +146,26 @@ export class HandView {
         return;
       }
 
-      const text = this._layoutService.get(`${area}-text`) as PIXI.Text;
-      text.eventMode = "static";
-      text.cursor = "pointer";
-      this._areaSelections.set(area, text);
-      text.visible = false;
-      text.on("pointerdown", () => this.onAreaClicked?.(area));
+      const icon = this._layoutService.get(`${area}-icon`) as PIXI.Sprite;
+      icon.eventMode = "static";
+      icon.cursor = "pointer";
+      this._areaSelections.set(area, icon);
+      icon.visible = false;
+      icon.on("pointerdown", () => this.onAreaClicked?.(area));
     });
   }
 
   setAreaSelected(areaId: Area): void {
-    this._areaSelections.forEach((text, area) => {
-      text.alpha = area === areaId ? 1 : 0.5;
+    this._areaSelections.forEach((icon, area) => {
+      icon.alpha = area === areaId ? 1 : 0.5;
     });
   }
 
   enableAreaSelection(allowedAreas: readonly Area[]): void {
-    this._areaSelections.forEach((text, areaId) => {
-      text.alpha = 1;
-      text.visible = allowedAreas.includes(areaId);
-      text.interactive = allowedAreas.includes(areaId);
+    this._areaSelections.forEach((icon, areaId) => {
+      icon.alpha = 1;
+      icon.visible = allowedAreas.includes(areaId);
+      icon.interactive = allowedAreas.includes(areaId);
     });
   }
 }

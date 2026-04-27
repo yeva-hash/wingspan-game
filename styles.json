@@ -36,5 +36,23 @@
     "dropShadowDistance": 2,
     "padding": 4,
     "align": "center"
+  },
+  "hand-food-quantity": {
+    "fontFamily": "\"Comic Sans MS\", cursive",
+    "fontSize": 16,
+    "fontStyle": "normal",
+    "fontVariant": "normal",
+    "fontWeight": "bold",
+    "fill": "#ffffff",
+    "stroke": "#3a2e1f",
+    "strokeThickness": 3,
+    "lineJoin": "round",
+    "dropShadow": true,
+    "dropShadowColor": "#000000",
+    "dropShadowBlur": 3,
+    "dropShadowAngle": 1.2,
+    "dropShadowDistance": 2,
+    "padding": 2,
+    "align": "center"
   }
 }
