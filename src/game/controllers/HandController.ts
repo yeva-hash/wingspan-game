@@ -100,8 +100,8 @@ export class HandController {
 
   private handleAreaClick(area: Area): void {
       this.strategy.selectArea(area);
-      this.view.setAreaSelected(area);
       this.syncView();
+      this.view.setAreaSelected(area);
   }
 
   //TODO
