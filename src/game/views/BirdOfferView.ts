@@ -1,26 +1,24 @@
 import { LayoutService } from "../../layout/LayoutService";
-import { alphaTo, setButtonInteractive } from "../../utils/viewUtils";
+import { setButtonInteractive } from "../../utils/viewUtils";
 import { BirdSupplyService } from "../services/BirdSupplyService";
 import { BirdDefinition } from "../types/resourceTypes";
 import { BirdCardView } from "./BirdCardView";
+import { BaseInteractiveView } from "./BaseInteractiveView";
 import * as PIXI from "pixi.js";
 
-export class BirdOfferView {
+export class BirdOfferView extends BaseInteractiveView {
     private readonly _cardContainer: PIXI.Container;
     private readonly _randomBirdText: PIXI.Text;
-    private readonly _confirmButton: PIXI.Text;
     private _offeredBirds: Map<string, BirdCardView> = new Map();
 
     onBirdClicked: ((birdId: string) => void) | null = null;
-    onConfirmClicked: (() => void) | null = null;
 
     constructor(private readonly _layoutService: LayoutService) {
+        super(_layoutService.get("choose-bird-confirm-button"));
         this._cardContainer = this._layoutService.get("bird-offer-card-container");
         this._randomBirdText = this._layoutService.get("random-bird-text");
-        this._confirmButton = this._layoutService.get("choose-bird-confirm-button");
 
         this._randomBirdText.on("pointerdown", () => this.onBirdClicked?.("random"));
-        this._confirmButton.on("pointerdown", () => this.onConfirmClicked?.());
     }
 
     //TODO no need to rerender all birds
@@ -39,10 +37,8 @@ export class BirdOfferView {
         this.setInteractive(false);
     }
 
-    async prepareForSelection(): Promise<void> {
+    protected onPrepareForSelection(): void {
         //TODO hightlight section
-        await this.toggleShow(true);
-        this.setConfirmEnabled(false);
         this.setInteractive(true);
     }
 
@@ -64,17 +60,7 @@ export class BirdOfferView {
         this._randomBirdText.alpha = selected ? 0.5 : 1;
     }
 
-    setConfirmEnabled(enabled: boolean): void {
-        setButtonInteractive(this._confirmButton, enabled);
-        this._confirmButton.alpha = enabled ? 1 : 0.5;
-    }
-
-    private async toggleShow(show: boolean): Promise<void> {
-        const to = show ? 1 : 0;
-
-        await Promise.all([
-            alphaTo(this._confirmButton, 0.5, to),
-            alphaTo(this._randomBirdText, 0.5, to),
-        ]);
+    protected override getShowTargets(): PIXI.Container[] {
+        return [this._confirmButton, this._randomBirdText];
     }
 }

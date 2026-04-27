@@ -165,13 +165,19 @@
                     },
                     {
                         "name":"choose-bird-confirm-button",
-                        "type": "text",
+                        "type": "sprite",
                         "x": 0,
                         "y": -95,
                         "alpha": 0,
-                        "text": "Confirm Selection",
-                        "fontSize": 20,
-                        "color": "#000000"
+                        "texture": "confirm-button",
+                        "anchor": {
+                            "x": 0.5,
+                            "y": 0.5
+                        },
+                        "scale": {
+                            "x": 0.35,
+                            "y": 0.35
+                        }
                     }
                 ]
             },
@@ -536,13 +542,15 @@
                         "color": "#000000"
                     },
                     {
-                        "name":"confirm-button",
-                        "type": "text",
-                        "x": 500,
-                        "y": 500,
-                        "text": "Confirm Selection",
-                        "fontSize": 20,
-                        "color": "#000000"
+                        "name":"hand-confirm-button",
+                        "type": "sprite",
+                        "x": 740,
+                        "y": 580,
+                        "texture": "confirm-button",
+                        "anchor": {
+                            "x": 0.5,
+                            "y": 0.5
+                        }
                     },
                     {
                         "name":"area-selection",
@@ -663,12 +671,19 @@
                     },
                     {
                         "name":"choose-food-confirm-button",
-                        "type": "text",
+                        "type": "sprite",
                         "x": -35,
                         "y": 10,
                         "alpha": 0,
-                        "text": "Confirm",
-                        "styleName": "confirm-button"
+                        "texture": "confirm-button",
+                        "anchor": {
+                            "x": 0.5,
+                            "y": 0.5
+                        },
+                        "scale": {
+                            "x": 0.35,
+                            "y": 0.35
+                        }
                     }
                 ]
             }

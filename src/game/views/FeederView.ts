@@ -1,26 +1,22 @@
-import { Container, Sprite, Text, Texture } from "pixi.js";
+import { Sprite } from "pixi.js";
 import { LayoutService } from "../../layout/LayoutService";
-import { FoodDefinition, FoodType } from "../types/resourceTypes";
+import { FoodDefinition } from "../types/resourceTypes";
 import { TextureCache } from "../../loader/TextureCache";
-import { alphaTo, setButtonInteractive } from "../../utils/viewUtils";
+import { setButtonInteractive } from "../../utils/viewUtils";
 import { FoodTokenView } from "./food/FoodTokenView";
+import { BaseInteractiveView } from "./BaseInteractiveView";
 
-export class FeederView {
+export class FeederView extends BaseInteractiveView {
     private readonly _foodTokens: Map<number, FoodTokenView | null> = new Map();
-    private readonly _confirmButton: Text;
 
     onFoodClicked: ((index: number) => void) | null = null;
-    onConfirmClicked: (() => void) | null = null;
 
     constructor(private _layoutService: LayoutService) {
-        this._confirmButton = this._layoutService.get("choose-food-confirm-button");
-        this._confirmButton.on("pointerdown", () => this.onConfirmClicked?.());
+        super(_layoutService.get("choose-food-confirm-button"));
     }
 
-    async prepareForSelection(): Promise<void> {
+    protected onPrepareForSelection(): void {
         //TODO hightlight section
-        await this.toggleShow(true);
-        this.setConfirmEnabled(false);
         this.setInteractive(true);
     }
 
@@ -90,19 +86,5 @@ export class FeederView {
 
     setSelected(index: number, selected: boolean): void {
         this._foodTokens.get(index)?.setSelected(selected);
-    }
-
-    //TODO the same code 
-    setConfirmEnabled(enabled: boolean): void {
-        setButtonInteractive(this._confirmButton, enabled);
-        this._confirmButton.alpha = enabled ? 1 : 0.5;
-    }
-
-    private async toggleShow(show: boolean): Promise<void> {
-        const to = show ? 1 : 0;
-
-        await Promise.all([
-            alphaTo(this._confirmButton, 0.5, to),
-        ]);
     }
 }

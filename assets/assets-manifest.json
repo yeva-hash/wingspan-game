@@ -24,6 +24,7 @@
         "name": "game",
         "assets": [
           { "alias": "background", "src": "assets/sprites/background.png" },
+          { "alias": "confirm-button", "src": "assets/sprites/confirm-button.png" },
           { "alias": "egg", "src": "assets/sprites/egg.png" },
           { "alias": "feeder", "src": "assets/sprites/feeder.png" },
           { "alias": "forest-icon", "src": "assets/sprites/area-icons/forest-icon.png" },

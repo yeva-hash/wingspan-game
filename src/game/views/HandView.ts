@@ -4,8 +4,9 @@ import type { QuantifiedFood } from "../models/QuantifiedFood";
 import { LayoutService } from "../../layout/LayoutService";
 import { alphaTo } from "../../utils/viewUtils";
 import { QuantifiedFoodTokenView } from "./food/QuantifiedFoodTokenView";
-import { Area, BirdDefinition, FoodDefinition } from "../types/resourceTypes";
+import { Area, BirdDefinition } from "../types/resourceTypes";
 import gsap from "gsap";
+import { BaseInteractiveView } from "./BaseInteractiveView";
 
 enum HandViewState {
   Hidden,
@@ -13,15 +14,13 @@ enum HandViewState {
   Minimized,
 }
 
-export class HandView {
+export class HandView extends BaseInteractiveView {
   onBirdClicked: ((birdId: string) => void) | null = null;
-  onConfirmClicked: (() => void) | null = null;
   onAreaClicked: ((areaId: Area) => void) | null = null;
 
   private readonly _container: PIXI.Container;
   private readonly _birdsContainer: PIXI.Container;
   private readonly _foodsContainer: PIXI.Container;
-  private readonly _confirmButton: PIXI.Container;
   private readonly _messageText: PIXI.Text;
 
   private readonly _birdViewsById = new Map<string, BirdCardView>();
@@ -34,18 +33,12 @@ export class HandView {
   private _state = HandViewState.Hidden;
 
   constructor(private _layoutService: LayoutService) {
+    super(_layoutService.get("hand-confirm-button"));
     this._container = this._layoutService.get("hand-field");
     this._birdsContainer = this._layoutService.get("birds-container");
     this._foodsContainer = this._layoutService.get("foods-container");
-    this._confirmButton = this._layoutService.get("confirm-button");
     this._messageText = this._layoutService.get("hand-message-text");
     this._minimizeButton = this._layoutService.get("minimize-button");
-
-    this._confirmButton.eventMode = "static";
-    this._confirmButton.cursor = "pointer";
-    this._confirmButton.on("pointerdown", () => {
-      this.onConfirmClicked?.();
-    });
 
     this._minimizeButton.eventMode = "static";
     this._minimizeButton.cursor = "pointer";
@@ -116,12 +109,6 @@ export class HandView {
 
   setFoodHighlighted(foodId: string, highlighted: boolean): void {
     this._foodViewsById.get(foodId)?.setSelected(!highlighted);
-  }
-
-  setConfirmEnabled(enabled: boolean): void {
-    this._confirmButton.eventMode = enabled ? "static" : "none";
-    this._confirmButton.alpha = enabled ? 1 : 0.5;
-    this._confirmButton.cursor = enabled ? "pointer" : "default";
   }
 
   setMessage(message: string): void {
