@@ -1,14 +1,18 @@
 # Claude Code Project Memory
 
-See @README.md for the full project overview and @package.json for the available npm scripts.
+See @package.json for npm scripts and @layout.json for the current board layout contract used by the views.
 
 ## Project Summary
 
-- This repository is a TypeScript + Vite + PixiJS board-game prototype centered on bird cards, habitats, food tokens, and turn actions.
-- The current implementation is a gameplay foundation, not a finished game.
-- The strongest existing flow is playing a bird from the hand into a habitat.
-- Bird selection from the public offer is partially implemented.
-- `GainFoodState` and `GainEggsState` are not finished.
+- This repository is a TypeScript + Vite + PixiJS prototype of a bird-themed board game.
+- The project is still a prototype, but it now has a functioning continuous action loop rather than a single-action demo.
+- The main playable actions are:
+  play a bird from hand into a habitat,
+  take food from the feeder,
+  place eggs on already-played birds,
+  choose birds from the public offer or from a random deck draw.
+- Core gameplay is wired end to end through stores, services, controllers, local states, and use cases.
+- Game setup is still partly hardcoded in `StartGameFlow` and there is still no full turn/round economy, scoring, or automated tests.
 
 ## Run Commands
 
@@ -17,77 +21,103 @@ See @README.md for the full project overview and @package.json for the available
 - Build production bundle: `npm run build`
 - Preview production build: `npm run preview`
 
-## Core Architecture
+## Current Architecture
 
 - `src/main.ts`
-  Bootstraps the app, loads `layout.json`, creates `GameApp`, and starts `GameScene`.
+  Loads `layout.json`, creates `GameApp`, and starts `GameScene`.
 
 - `src/app/GameApp.ts`
-  Initializes the Pixi application, mounts the canvas, loads asset bundles, and builds the scene from JSON layout data.
+  Boots Pixi, mounts the canvas, loads the asset manifest, and exposes `LayoutService`.
 
 - `src/scene/GameScene.ts`
-  Composes the runtime graph:
-  stores -> services -> views -> controllers -> flows/use cases.
+  Builds the full runtime dependency graph for a play session:
+  catalogs -> stores -> services -> use cases -> views -> controllers -> flow manager.
 
 - `src/flow/`
-  High-level session flow.
-  `StartGameFlow` prepares the initial state.
-  `ChooseActionFlow` waits for one action and delegates to a local state.
+  Top-level game flow.
+  `StartGameFlow` resets supplies, seeds the feeder and initial player resources, and hands control to `ChooseActionFlow`.
+  `ChooseActionFlow` loops forever by returning a new instance of itself after each completed action.
+  `FlowManager` runs flow states sequentially until one returns `null`.
 
 - `src/localStates/`
-  Focused user interaction sequences.
-  `PlayingBirdState` is the most complete one.
-  `ChooseBirdState` works with the bird offer.
-  `GainFoodState` and `GainEggsState` are placeholders/incomplete.
+  Per-action interaction sequences.
+  `PlayingBirdState`, `GainFoodState`, `GainEggsState`, and `ChooseBirdState` are all active and wired into the action menu.
 
 - `src/game/stores/`
-  Mutable gameplay state.
-  Treat stores as the source of truth.
+  Mutable source-of-truth state.
+  Important stores are:
+  `PlayerResourceStore`,
+  `BirdSupplyStore`,
+  `FeederStore`,
+  `HabitatStore`.
+  `GameStore` is currently lightweight and only carries the list of active areas.
 
 - `src/game/services/`
-  Rule and query layer over stores.
-  Keep validation and gameplay logic here when possible.
-
-- `src/game/controllers/`
-  Connect services and views.
-  Controllers handle interaction orchestration, not low-level data storage.
-
-- `src/game/views/`
-  Pixi display and interaction code.
-  Most views depend on `LayoutService` names defined in `layout.json`.
+  Read/query logic plus focused gameplay rules over stores.
+  Notable services:
+  `BirdSupplyService` manages deck + public offer,
+  `FeederService` manages feeder slots,
+  `HabitatService` manages habitat slots, rewards, and egg placement,
+  `PlayerResourceService` reads and mutates the player hand/foods,
+  `BirdPlayRuleService` validates whether a selected bird can be played.
 
 - `src/game/useCases/`
-  Multi-step state mutations.
-  `ChooseBirdUseCase` is the clearest example of the intended pattern.
+  Multi-step mutations spanning multiple services.
+  `ChooseBirdUseCase`, `GainFoodUseCase`, and `PlayBirdUseCase` are active patterns worth following for new gameplay mutations.
 
-## Layout System
+- `src/game/controllers/`
+  Orchestrate user interaction between services and Pixi views.
+  Controllers commonly use deferred promises plus callback swapping to wait for UI input.
 
-- The board UI is declared in `layout.json`.
-- `LayoutBuilder` converts JSON nodes into Pixi `Container`, `Sprite`, and `Text` objects.
-- `LayoutService` stores named layout nodes for later lookup.
-- If you rename layout node IDs in `layout.json`, update every matching `layoutService.get(...)` call.
-- Prefer extending the JSON layout and existing view bindings instead of hardcoding positions in unrelated files.
+- `src/game/strategy/selectionStrategy/`
+  UI selection rules are encapsulated as strategies.
+  `PlayBirdStrategy`, `ChooseBirdStrategy`, `ChooseFoodStrategy`, and `ReadOnlyStrategy` control selection/confirm behavior without pushing that logic into views.
+
+- `src/game/views/`
+  Pixi rendering and interaction surfaces.
+  Most views depend on named nodes from `layout.json` through `LayoutService`.
+
+## Layout And Assets
+
+- `layout.json` is the board/UI contract.
+- `src/layout/LayoutBuilder.ts` builds Pixi display objects from the JSON layout.
+- `src/layout/LayoutService.ts` stores named nodes for later lookup.
+- Most UI wiring depends on exact layout node names. If a node id changes in `layout.json`, update every matching `layoutService.get(...)` usage.
+- `assets/assets-manifest.json` controls Pixi asset bundle loading.
 
 ## Data Files
 
 - `data/birds.json`
-  Bird definitions, allowed habitats, and required foods.
+  Bird definitions, allowed habitats, egg limits, and required foods.
 
 - `data/foods.json`
   Food definitions and textures.
 
-- `assets/assets-manifest.json`
-  Pixi asset bundles.
+## Gameplay That Currently Works
 
-## Gameplay Rules Already Encoded
-
-- Bird cost validation lives in `BirdPlayRuleService`.
-- Bird placement availability lives in `HabitatService`.
-- Bird deck + public offer behavior lives in `BirdSupplyService`.
-- The initial hand is currently hardcoded in `StartGameFlow`.
-- Habitat reward counts are currently reused to determine action strength.
-  Forest drives food-gain count.
-  Swamp drives choose-bird count.
+- New game setup resets the bird offer and feeder.
+- The initial hand and initial food pool are assigned in `StartGameFlow`.
+- The action menu loops continuously after each action.
+- Playing a bird:
+  the hand UI renders birds and food,
+  playable habitats are highlighted via rule checks,
+  the chosen bird is removed from the hand,
+  required food is spent,
+  the bird is placed into the first free slot in the selected habitat.
+- Choosing birds:
+  reward count comes from the swamp habitat progression,
+  birds can be taken from the public offer,
+  `"random"` selections are resolved from the deck,
+  the public offer is refilled after selection.
+- Gaining food:
+  reward count comes from the forest habitat progression,
+  feeder selection is interactive,
+  selected feeder slots are emptied,
+  food is added to player resources.
+- Gaining eggs:
+  reward count comes from the steppe habitat progression,
+  only occupied bird slots that can still hold eggs are selectable,
+  egg placement updates the bird model and the habitat view.
 
 ## Important File Relationships
 
@@ -95,51 +125,46 @@ See @README.md for the full project overview and @package.json for the available
 - `data/birds.json` <-> `src/catalogs/BirdCatalog.ts`
 - `data/foods.json` <-> `src/catalogs/FoodCatalog.ts`
 - `src/game/stores/*` <-> `src/game/services/*`
-- `src/game/services/*` <-> `src/game/controllers/*`
-- `src/game/controllers/*` <-> `src/game/views/*`
-- `src/flow/*` and `src/localStates/*` coordinate user-visible game progression
+- `src/game/services/*` <-> `src/game/useCases/*`
+- `src/game/services/*` + `src/game/views/*` <-> `src/game/controllers/*`
+- `src/flow/*` + `src/localStates/*` coordinate player-visible game progression
 
-## Current Implementation Status
+## Current Gaps
 
-- Completed enough to inspect and extend:
-  app bootstrap, asset loading, layout construction, action menu, bird offer rendering, hand rendering, bird placement, habitat slot placement, feeder population.
-
-- Not complete:
-  repeated turn loop, food selection resolution, egg gain resolution, broader game progression, tests, production-ready card visuals.
+- `StartGameFlow` still hardcodes the opening birds and food instead of using a dedicated setup use case or real setup rules.
+- `GameStore` does not yet represent rounds, turns, players, scoring, or action limits.
+- Reward areas are still hardcoded inside local states:
+  forest for food,
+  steppe for eggs,
+  swamp for bird draw.
+- Several files still contain TODOs around visual feedback, rendering optimization, and architecture cleanup.
+- Views are functional but still prototype-level in visuals and some interaction polish.
+- No automated tests are present.
 
 ## Editing Guidance
 
-- Preserve the layered architecture.
-  Prefer putting mutations in use cases or clearly scoped services instead of burying them in views.
+- Preserve the existing layering.
+  Keep raw state in stores, read/rule logic in services, multi-step mutations in use cases, orchestration in controllers/local states, and rendering in views.
 
-- Keep `layout.json` and view lookup names in sync.
-  Many UI elements are found by string key.
+- Prefer adding gameplay mutations as new or expanded use cases.
+  Avoid burying cross-store mutations directly inside views or controllers.
+
+- When changing selection behavior, look in `src/game/strategy/selectionStrategy/` first.
+  A new strategy is usually cleaner than adding conditionals throughout a controller.
+
+- Keep `layout.json` and view lookup names synchronized.
+  A renamed node can silently break UI initialization.
 
 - Avoid editing `dist/` or `node_modules/`.
   Source of truth is under `src/`, `data/`, `assets/`, and `layout.json`.
 
-- When adding new gameplay actions:
-  update the local state first,
-  add or extend service logic,
-  then wire controller/view behavior.
-
-- When adding new UI:
-  prefer defining a named node in `layout.json` and retrieving it through `LayoutService`.
-
-- `UIController.ts` looks unused/experimental.
-  Confirm before investing in it as an active pattern.
-
-## Known Gaps And Cautions
-
-- `ChooseActionFlow` currently returns `null` after one action, so the main flow does not continue into a full turn loop yet.
-- Several files contain `TODO` markers and prototype shortcuts.
-- Some rendering code is still placeholder-quality and favors simple shapes/text over final art.
-- The feeder has rendering support and randomization, but the full player interaction loop is not complete.
+- `UIController.ts` still appears unused/experimental.
+  Confirm whether it should be revived before building new logic around it.
 
 ## Good Next Tasks For Claude Code
 
-- Finish `GainFoodState` by wiring feeder selection and reward resolution end to end.
-- Implement `GainEggsState`.
-- Turn `ChooseActionFlow` into a repeatable action loop or round loop.
-- Move more multi-step mutations into dedicated use cases.
-- Add lightweight tests around services and use cases.
+- Move initial game setup out of `StartGameFlow` into a dedicated use case.
+- Replace hardcoded reward-area assumptions in local states with explicit action/rule configuration.
+- Add turn, round, or player progression state to `GameStore` and the top-level flow.
+- Add lightweight tests around services and use cases, especially bird play, feeder selection, and egg placement.
+- Improve error/edge-case feedback when an action has no valid targets.

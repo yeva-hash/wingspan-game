@@ -32,6 +32,8 @@ export class GameApp {
       antialias: true,
     });
 
+    (window.top as any).globalThis.__PIXI_APP__ = this.app;
+
     appContainer.appendChild(this.app.canvas);
 
     //TODO

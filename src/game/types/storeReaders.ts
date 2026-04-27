@@ -1,12 +1,12 @@
 import { BirdId } from "../../catalogs/BirdCatalog";
-import { Food } from "../models/Food";
+import { QuantifiedFood } from "../models/QuantifiedFood";
 import { BirdDefinition } from "./resourceTypes";
 
 export interface PlayerResourceReader {
     getBirds(): BirdDefinition[];
     getBirdById(id: BirdId): BirdDefinition | null;
-    getFoods(): readonly Food[];
-    getFoodById(id: string): Food | undefined;
+    getFoods(): readonly QuantifiedFood[];
+    getFoodById(id: string): QuantifiedFood | undefined;
   }
   
   export interface BirdSupplyReader {

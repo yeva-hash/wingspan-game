@@ -1,12 +1,11 @@
 import * as PIXI from "pixi.js";
 import { BirdCardView } from "./BirdCardView";
-import type { Food } from "../models/Food";
+import type { QuantifiedFood } from "../models/QuantifiedFood";
 import { LayoutService } from "../../layout/LayoutService";
 import { alphaTo } from "../../utils/viewUtils";
 import { QuantifiedFoodTokenView } from "./food/QuantifiedFoodTokenView";
 import { Area, BirdDefinition, FoodDefinition } from "../types/resourceTypes";
 import gsap from "gsap";
-import { TextureCache } from "../../loader/TextureCache";
 
 enum HandViewState {
   Hidden,
@@ -65,11 +64,11 @@ export class HandView {
     });
   }
 
-  async render(birds: readonly BirdDefinition[], foods: readonly Food[]): Promise<void> {
+  async render(birds: readonly BirdDefinition[], foods: readonly QuantifiedFood[]): Promise<void> {
     this.show();
     this.clear();
     await this.renderBirds(birds);
-    this.renderFoods(foods);
+    await this.renderFoods(foods);
     await alphaTo(this._container, 0.75, 1);
     this._state = HandViewState.Visible;
   }
@@ -95,20 +94,20 @@ export class HandView {
     }
   }
 
-  private renderFoods(foods: readonly Food[]): void {
-    foods.forEach((food, index) => {
+  private async renderFoods(foods: readonly QuantifiedFood[]): Promise<void> {
+    for (const [index, food] of foods.entries()) {
       if (this._foodViewsById.has(food.id)) {
         const view = this._foodViewsById.get(food.id);
-        //TODO
-        view!.quantity = view!.quantity + 1;
-        return;
+        view!.quantity = food.quantity;
+        continue;
       }
-      const view = new QuantifiedFoodTokenView(new PIXI.Sprite(TextureCache.getTexture(food.definition.texture)), 1);
-      view.position.set(index * 70, 0);
+      const prefab = await this._layoutService.createPrefab<PIXI.Container>("hand-food");
+      const view = new QuantifiedFoodTokenView(prefab, food);
+      view.container.position.set(index * 70, 0);
 
       this._foodViewsById.set(food.id, view);
-      this._foodsContainer.addChild(view);
-    });
+      this._foodsContainer.addChild(view.container);
+    }
   }
 
   setBirdSelected(instanceId: string, selected: boolean): void {

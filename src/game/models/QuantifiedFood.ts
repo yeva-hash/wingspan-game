@@ -3,7 +3,7 @@ import type { FoodDefinition, FoodType } from "../types/resourceTypes";
 /**
  * Food in the player's inventory: catalog entry + quantity.
  */
-export class Food {
+export class QuantifiedFood {
   readonly definition: FoodDefinition;
   private _quantity: number;
 
@@ -22,7 +22,7 @@ export class Food {
 
   add(amount: number): void {
     if (amount < 0) {
-      throw new Error("Food.add: amount must be >= 0");
+      throw new Error("QuantifiedFood.add: amount must be >= 0");
     }
     this._quantity += amount;
   }

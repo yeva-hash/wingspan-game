@@ -1,4 +1,4 @@
-import { Food } from "../models/Food";
+import { QuantifiedFood } from "../models/QuantifiedFood";
 import type { FoodDefinition } from "../types/resourceTypes";
 import type { BirdId } from "../../catalogs/BirdCatalog";
 
@@ -8,19 +8,19 @@ import type { BirdId } from "../../catalogs/BirdCatalog";
  */
 export class PlayerResourceStore {
   private _birdIds: BirdId[] = [];
-  private _foodsById = new Map<string, Food>();
+  private _foodsById = new Map<string, QuantifiedFood>();
 
   setInitialDeal(birdIds: BirdId[], foodDefs: FoodDefinition[]): void {
     this._birdIds = [...birdIds];
 
-    this._foodsById = new Map<string, Food>();
+    this._foodsById = new Map<string, QuantifiedFood>();
     for (const def of foodDefs) {
       const existing = this._foodsById.get(def.id);
       if (existing) {
         existing.add(1);
         continue;
       }
-      this._foodsById.set(def.id, new Food(def, 1));
+      this._foodsById.set(def.id, new QuantifiedFood(def, 1));
     }
   }
 
@@ -28,11 +28,11 @@ export class PlayerResourceStore {
     return this._birdIds;
   }
 
-  getFoods(): readonly Food[] {
+  getFoods(): readonly QuantifiedFood[] {
     return [...this._foodsById.values()];
   }
 
-  getFoodById(id: string): Food | undefined {
+  getFoodById(id: string): QuantifiedFood | undefined {
     return this._foodsById.get(id);
   }
 
@@ -73,6 +73,6 @@ export class PlayerResourceStore {
       return;
     }
 
-    this._foodsById.set(definition.id, new Food(definition, 1));
+    this._foodsById.set(definition.id, new QuantifiedFood(definition, 1));
   }
 }

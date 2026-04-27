@@ -1,4 +1,3 @@
-import { Food } from "../models/Food";
 import { FoodType } from "../types/resourceTypes";
 
 export class FeederStore {

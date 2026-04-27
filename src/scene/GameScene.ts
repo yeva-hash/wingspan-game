@@ -6,7 +6,7 @@ import { ActionMenuController } from "../game/controllers/ActionMenuController";
 import { PlayerResourceStore } from "../game/stores/PlayerResourceStore";
 import { ActionMenuView } from "../game/views/ActionMenuView";
 import { HandView } from "../game/views/HandView";
-import { GameApp } from "../app/gameApp";
+import { GameApp } from "../app/GameApp";
 import { GameStore } from "../game/stores/GameStore";
 import birdsJson from "../../data/birds.json";
 import foodsJson from "../../data/foods.json";

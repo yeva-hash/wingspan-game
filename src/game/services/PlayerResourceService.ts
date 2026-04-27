@@ -1,7 +1,7 @@
 import type { BirdDefinition, FoodDefinition } from "../types/resourceTypes";
 import { BirdCatalog, BirdId } from "../../catalogs/BirdCatalog";
 import { PlayerResourceStore } from "../stores/PlayerResourceStore";
-import { Food } from "../models/Food";
+import { QuantifiedFood } from "../models/QuantifiedFood";
 import { PlayerResourceReader } from "../types/storeReaders";
 
 //TODO use case can cnahge store directly
@@ -23,11 +23,11 @@ export class PlayerResourceService implements PlayerResourceReader {
     return this._catalog.getById(id);
   }
 
-  getFoods(): readonly Food[] {
+  getFoods(): readonly QuantifiedFood[] {
     return this._store.getFoods();
   }
 
-  getFoodById(id: string): Food | undefined {
+  getFoodById(id: string): QuantifiedFood | undefined {
     return this._store.getFoodById(id);
   }
 

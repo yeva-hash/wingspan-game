@@ -1,6 +1,6 @@
 import layoutJson from "../layout.json";
 import stylesJson from "../styles.json";
-import { GameApp } from "./app/gameApp";
+import { GameApp } from "./app/GameApp";
 import type { LayoutConfig } from "./layout/LayoutBuilder";
 import { TextStyleCache, type TextStylesConfig } from "./layout/TextStyleCache";
 import { GameScene } from "./scene/GameScene";

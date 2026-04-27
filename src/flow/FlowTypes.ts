@@ -1,4 +1,4 @@
-import { GameApp } from "../app/gameApp";
+import { GameApp } from "../app/GameApp";
 import { ActionMenuController } from "../game/controllers/ActionMenuController";
 import { BirdOfferedController } from "../game/controllers/BirdOfferedController";
 import { HabitatController } from "../game/controllers/HabitatController";
