@@ -1,8 +1,11 @@
 import * as PIXI from "pixi.js";
-import { BirdDefinition } from "../types/resourceTypes";
+import { Area, BirdDefinition, FoodType } from "../types/resourceTypes";
 import { TextureCache } from "../../loader/TextureCache";
 
 export class BirdCardView {
+  private static readonly iconYOffset = 22;
+  private static readonly iconScale = 0.32;
+
   readonly container: PIXI.Container;
   onClicked: ((birdView: BirdCardView) => void) | null = null;
   private readonly _eggText: PIXI.Text;
@@ -16,8 +19,10 @@ export class BirdCardView {
     const birdImage = this.container.getChildByLabel("bird-image", true) as PIXI.Sprite | null;
     const nameText = this.container.getChildByLabel("bird-name", true) as PIXI.Text | null;
     const eggText = this.container.getChildByLabel("egg-text", true) as PIXI.Text | null;
+    const foodsContainer = this.container.getChildByLabel("bird-foods-container", true) as PIXI.Container | null;
+    const areasContainer = this.container.getChildByLabel("bird-areas-container", true) as PIXI.Container | null;
 
-    if (!bg || !birdImage || !nameText || !eggText) {
+    if (!bg || !birdImage || !nameText || !eggText || !foodsContainer || !areasContainer) {
       throw new Error("BirdCardView: prefab is missing required children");
     }
 
@@ -25,6 +30,8 @@ export class BirdCardView {
     nameText.text = bird.name;
     eggText.text = `${bird.maxEggCount}`;
     this._eggText = eggText;
+    this.renderFoodIcons(foodsContainer, bird.requiredFoods);
+    this.renderAreaIcons(areasContainer, bird.allowedAreas);
 
     this.container.eventMode = "static";
     this.container.cursor = "pointer";
@@ -42,5 +49,26 @@ export class BirdCardView {
 
   setEggProgress(eggCount: number, maxEggCount: number = this._maxEggCount): void {
     this._eggText.text = `${eggCount}/${maxEggCount}`;
+  }
+
+  private renderFoodIcons(container: PIXI.Container, requiredFoods: readonly FoodType[]): void {
+    this.renderIcons(container, requiredFoods);
+  }
+
+  private renderAreaIcons(container: PIXI.Container, allowedAreas: readonly Area[]): void {
+    const textureAliases = allowedAreas.map((area) => `${area}-icon`);
+    this.renderIcons(container, textureAliases);
+  }
+
+  private renderIcons(container: PIXI.Container, textureAliases: readonly string[]): void {
+    container.removeChildren();
+
+    textureAliases.forEach((textureAlias, index) => {
+      const icon = new PIXI.Sprite(TextureCache.getTexture(textureAlias));
+      icon.anchor.set(0.5);
+      icon.y = index * BirdCardView.iconYOffset;
+      icon.scale.set(BirdCardView.iconScale, BirdCardView.iconScale);
+      container.addChild(icon);
+    });
   }
 }

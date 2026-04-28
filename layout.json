@@ -81,6 +81,20 @@
                             "styleName": "bird-name"
                         }
                     ]
+                },
+                {
+                    "name": "bird-foods-container",
+                    "type": "container",
+                    "x": -48,
+                    "y": -8,
+                    "children": []
+                },
+                {
+                    "name": "bird-areas-container",
+                    "type": "container",
+                    "x": 48,
+                    "y": -8,
+                    "children": []
                 }
             ]
         },
