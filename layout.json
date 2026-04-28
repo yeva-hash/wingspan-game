@@ -170,17 +170,16 @@
                     {
                         "name":"random-bird-text",
                         "type": "text",
-                        "x": 0,
-                        "y": -45,
+                        "x": 22,
+                        "y": -65,
                         "alpha": 0,
-                        "text": "Random Bird",
-                        "fontSize": 20,
-                        "color": "#000000"
+                        "text": "Random",
+                        "styleName": "random-bird-text"
                     },
                     {
                         "name":"choose-bird-confirm-button",
                         "type": "sprite",
-                        "x": 0,
+                        "x": 65,
                         "y": -95,
                         "alpha": 0,
                         "texture": "confirm-button",
@@ -467,7 +466,7 @@
                     {
                         "name":"action-menu",
                         "type": "container",
-                        "x": 0,
+                        "x": -20,
                         "y": 0,
                         "children": [
                             {
@@ -476,8 +475,7 @@
                                 "x": 400,
                                 "y": 77,
                                 "text": "Play Bird",
-                                "fontSize": 20,
-                                "color": "#000000"
+                                "styleName": "action-menu-play-bird"
                             },
                             {
                                 "name":"gain-food-text",
@@ -485,8 +483,7 @@
                                 "x": 400,
                                 "y": 179,
                                 "text": "Gain Food",
-                                "fontSize": 20,
-                                "color": "#000000"
+                                "styleName": "action-menu-gain-food"
                             },
                             {
                                 "name":"gain-eggs-text",
@@ -494,8 +491,7 @@
                                 "x": 400,
                                 "y": 385,
                                 "text": "Gain Eggs",
-                                "fontSize": 20,
-                                "color": "#000000"
+                                "styleName": "action-menu-gain-eggs"
                             },
                             {
                                 "name":"choose-bird-text",
@@ -503,8 +499,7 @@
                                 "x": 400,
                                 "y": 600,
                                 "text": "Choose Bird",
-                                "fontSize": 20,
-                                "color": "#000000"
+                                "styleName": "action-menu-choose-bird"
                             }
                         ]
                     }
@@ -698,8 +693,8 @@
                     {
                         "name":"choose-food-confirm-button",
                         "type": "sprite",
-                        "x": -35,
-                        "y": 10,
+                        "x": 0,
+                        "y": 23,
                         "alpha": 0,
                         "texture": "confirm-button",
                         "anchor": {

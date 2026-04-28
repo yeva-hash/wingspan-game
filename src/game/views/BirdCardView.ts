@@ -39,12 +39,12 @@ export class BirdCardView {
   }
 
   setSelected(selected: boolean): void {
-    const bg = this.container.getChildByLabel("bird-front-side", true) as PIXI.Sprite | null;
-    if (!bg) {
-      throw new Error("BirdCardView: prefab is missing bird-front-side");
-    }
+    // const bg = this.container.getChildByLabel("bird-front-side", true) as PIXI.Sprite | null;
+    // if (!bg) {
+    //   throw new Error("BirdCardView: prefab is missing bird-front-side");
+    // }
 
-    bg.alpha = selected ? 0.5 : 1;
+    this.container.alpha = selected ? 0.5 : 1;
   }
 
   setEggProgress(eggCount: number, maxEggCount: number = this._maxEggCount): void {

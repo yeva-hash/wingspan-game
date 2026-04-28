@@ -72,7 +72,7 @@ export class HandView extends BaseInteractiveView {
     this._birdViewsById.clear();
     this._foodViewsById.clear();
     this.setMessage("");
-    // this._areaSelections.forEach((_, id) => this.setAreaSelected(id, false));
+    this.resetAreaSelection();
   }
 
   private async renderBirds(birds: readonly BirdDefinition[]): Promise<void> {
@@ -153,6 +153,14 @@ export class HandView extends BaseInteractiveView {
       icon.alpha = 1;
       icon.visible = allowedAreas.includes(areaId);
       icon.interactive = allowedAreas.includes(areaId);
+    });
+  }
+
+  resetAreaSelection(): void {
+    this._areaSelections.forEach((icon) => {
+      icon.alpha = 1;
+      icon.visible = false;
+      icon.interactive = false;
     });
   }
 }

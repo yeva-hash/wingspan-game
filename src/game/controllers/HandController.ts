@@ -35,7 +35,7 @@ export class HandController {
         this.resources.getFoods(),
       );
       this.strategy?.reset();
-      this.syncView();
+    //   this.syncView();
   }
 
   renderAreas(areas: readonly Area[]): void {
@@ -58,6 +58,8 @@ export class HandController {
 
     if (bird) {
         this.view.enableAreaSelection(this.rules.getAllowedAreas(bird));
+    } else {
+        this.view.resetAreaSelection();
     }
 
     const area = this.strategy.selectedArea;
