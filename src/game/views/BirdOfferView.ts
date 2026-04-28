@@ -29,7 +29,7 @@ export class BirdOfferView extends BaseInteractiveView {
             const bird = birds[i];
             const prefab = await this._layoutService.createPrefab<PIXI.Container>("bird");
             const view = new BirdCardView(prefab, bird); 
-            view.container.position.set(0, i * 200);
+            view.container.position.set(0, i * 210);
             this._offeredBirds.set(bird.id, view);
             this._cardContainer.addChild(view.container);
         }

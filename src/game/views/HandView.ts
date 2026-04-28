@@ -79,7 +79,7 @@ export class HandView extends BaseInteractiveView {
     for (const [index, bird] of birds.entries()) {
       const prefab = await this._layoutService.createPrefab<PIXI.Container>("bird");
       const view = new BirdCardView(prefab, bird);
-      view.container.position.set(index * (130 + 10), 0); 
+      view.container.position.set(index * (140 + 20), 0); 
       view.onClicked = () => this.onBirdClicked?.(bird.id);
 
       this._birdViewsById.set(bird.id, view);

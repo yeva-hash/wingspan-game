@@ -16,8 +16,8 @@
                         "y": 0.5
                     },
                     "scale": {
-                        "x": 0.8,
-                        "y": 0.8
+                        "x": 0.9,
+                        "y": 0.9
                     },
                     "texture": "bird-front-side"
                 },
@@ -25,7 +25,7 @@
                     "name": "bird-image",
                     "type": "sprite",
                     "x": 0,
-                    "y": -24,
+                    "y": -40,
                     "anchor": {
                         "x": 0.5,
                         "y": 0.5
@@ -39,7 +39,7 @@
                     "name": "bird-name",
                     "type": "text",
                     "x": 0.5,
-                    "y": -70,
+                    "y": -80,
                     "text": "",
                     "anchor": {
                         "x": 0.5,
@@ -86,14 +86,14 @@
                     "name": "bird-foods-container",
                     "type": "container",
                     "x": -48,
-                    "y": -8,
+                    "y": -43,
                     "children": []
                 },
                 {
                     "name": "bird-areas-container",
                     "type": "container",
                     "x": 48,
-                    "y": -8,
+                    "y": -43,
                     "children": []
                 }
             ]
@@ -535,8 +535,8 @@
                     {
                         "name":"birds-container",
                         "type": "container",
-                        "x": 320,
-                        "y": 210,
+                        "x": 340,
+                        "y": 220,
                         "children": []
                     },
                     {
@@ -582,6 +582,10 @@
                                 "anchor": {
                                     "x": 0.5,
                                     "y": 0.5
+                                },
+                                "scale": {
+                                    "x": 1.2,
+                                    "y": 1.2
                                 }
                             },
                             {
@@ -593,6 +597,10 @@
                                 "anchor": {
                                     "x": 0.5,
                                     "y": 0.5
+                                },
+                                "scale": {
+                                    "x": 1.2,
+                                    "y": 1.2
                                 }
                             },
                             {
@@ -604,6 +612,10 @@
                                 "anchor": {
                                     "x": 0.5,
                                     "y": 0.5
+                                },
+                                "scale": {
+                                    "x": 1.2,
+                                    "y": 1.2
                                 }
                             }
                         ]

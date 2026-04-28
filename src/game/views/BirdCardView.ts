@@ -3,8 +3,8 @@ import { Area, BirdDefinition, FoodType } from "../types/resourceTypes";
 import { TextureCache } from "../../loader/TextureCache";
 
 export class BirdCardView {
-  private static readonly iconYOffset = 22;
-  private static readonly iconScale = 0.32;
+  private static readonly iconYOffset = 30;
+  private static readonly iconScale = 0.5;
 
   readonly container: PIXI.Container;
   onClicked: ((birdView: BirdCardView) => void) | null = null;
@@ -67,7 +67,7 @@ export class BirdCardView {
       const icon = new PIXI.Sprite(TextureCache.getTexture(textureAlias));
       icon.anchor.set(0.5);
       icon.y = index * BirdCardView.iconYOffset;
-      icon.scale.set(BirdCardView.iconScale, BirdCardView.iconScale);
+      icon.scale.set(BirdCardView.iconScale);
       container.addChild(icon);
     });
   }

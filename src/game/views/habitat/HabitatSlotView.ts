@@ -28,7 +28,7 @@ export class HabitatSlotView {
         this._birdCardView.setEggProgress(bird.eggCount, bird.maxEggCount);
         this._container.addChild(this._birdCardView.container);
         this._birdCardView.container.alpha = 0;
-        this._birdCardView.container.position.set(0, 0);
+        this._birdCardView.container.position.set(2, 6);
 
         await alphaTo(this._birdCardView.container, 0.5, 1);
     }
