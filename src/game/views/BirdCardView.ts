@@ -3,7 +3,8 @@ import { Area, BirdDefinition, FoodType } from "../types/resourceTypes";
 import { TextureCache } from "../../loader/TextureCache";
 
 export class BirdCardView {
-  private static readonly iconYOffset = 30;
+  private static readonly foodIconYOffset = 30;
+  private static readonly areaIconYOffset = 45;
   private static readonly iconScale = 0.5;
 
   readonly container: PIXI.Container;
@@ -52,21 +53,25 @@ export class BirdCardView {
   }
 
   private renderFoodIcons(container: PIXI.Container, requiredFoods: readonly FoodType[]): void {
-    this.renderIcons(container, requiredFoods);
+    this.renderIcons(container, requiredFoods, BirdCardView.foodIconYOffset);
   }
 
   private renderAreaIcons(container: PIXI.Container, allowedAreas: readonly Area[]): void {
     const textureAliases = allowedAreas.map((area) => `${area}-icon`);
-    this.renderIcons(container, textureAliases);
+    this.renderIcons(container, textureAliases, BirdCardView.areaIconYOffset);
   }
 
-  private renderIcons(container: PIXI.Container, textureAliases: readonly string[]): void {
+  private renderIcons(
+    container: PIXI.Container,
+    textureAliases: readonly string[],
+    yOffset: number,
+  ): void {
     container.removeChildren();
 
     textureAliases.forEach((textureAlias, index) => {
       const icon = new PIXI.Sprite(TextureCache.getTexture(textureAlias));
       icon.anchor.set(0.5);
-      icon.y = index * BirdCardView.iconYOffset;
+      icon.y = index * yOffset;
       icon.scale.set(BirdCardView.iconScale);
       container.addChild(icon);
     });

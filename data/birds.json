@@ -5,7 +5,7 @@
       "name": "Sparrow",
       "texture": "teteriv",
       "description": "A small grey city bird; fond of crumbs and grain.",
-      "allowedAreas": ["forest", "steppe"],
+      "allowedAreas": ["forest", "steppe", "swamp"],
       "requiredFoods": ["seed"],
       "maxEggCount": 4
     },
