@@ -32,6 +32,7 @@ import { GainFoodUseCase } from "../game/useCases/GainFoodUseCase";
 import { PlayBirdUseCase } from "../game/useCases/PlayBirdUseCase";
 import { CancelButtonView } from "../game/views/CancelButtonView";
 import { CancelButtonController } from "../game/controllers/CancelButtonController";
+import { DimmerController } from "../game/controllers/DimmerController";
 
 const allBirdsFromJson = (birdsJson as { birds: BirdDefinition[] }).birds;
 const allFoodsFromJson = (foodsJson as { foods: FoodDefinition[] }).foods;
@@ -103,6 +104,7 @@ export class GameScene {
     const birdOfferedController = new BirdOfferedController(birdOfferView, birdSupplyService);
     const feederController = new FeederController(feederService, feederView);
     const cancelButtonController = new CancelButtonController(cancelButtonView);
+    const dimmerController = new DimmerController(layoutService);
 
     return {
       gameApp: this.gameApp,
@@ -114,6 +116,7 @@ export class GameScene {
         habitat: habitatController,
         feeder: feederController,
         cancelButton: cancelButtonController,
+        dimmer: dimmerController,
       },
       services: {
         birdSupplyService,

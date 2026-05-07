@@ -13,6 +13,7 @@ import { FeederService } from "../game/services/FeederService";
 import { GainFoodUseCase } from "../game/useCases/GainFoodUseCase";
 import { PlayBirdUseCase } from "../game/useCases/PlayBirdUseCase";
 import { CancelButtonController } from "../game/controllers/CancelButtonController";
+import { DimmerController } from "../game/controllers/DimmerController";
 
 export type GameControllers = {
   hand: HandController;
@@ -21,6 +22,7 @@ export type GameControllers = {
   habitat: HabitatController;
   feeder: FeederController;
   cancelButton: CancelButtonController;
+  dimmer: DimmerController;
 };
 
 export type GameStores = {

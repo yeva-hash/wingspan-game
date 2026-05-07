@@ -10,41 +10,48 @@ export class GainFoodState extends CancelableLocalState {
 
     if (rewardCount <= 0) return;
 
-    const availableFoodCount = ctx.services.feederService.getAvailableFoodCount();
+    await ctx.controllers.dimmer.highlight("feeder-container");
 
-    if (rewardCount > availableFoodCount) {
-      const availableSlotIndexes = ctx.services.feederService.getAvailableFoodSlotIndexes();
+    try {
+      const availableFoodCount = ctx.services.feederService.getAvailableFoodCount();
 
-      if (availableSlotIndexes.length > 0) {
-        ctx.useCases.gainFoodUseCase.execute(availableSlotIndexes);
-      }
+      if (rewardCount > availableFoodCount) {
+        const availableSlotIndexes = ctx.services.feederService.getAvailableFoodSlotIndexes();
 
-      ctx.controllers.feeder.syncWithStore();
+        if (availableSlotIndexes.length > 0) {
+          ctx.useCases.gainFoodUseCase.execute(availableSlotIndexes);
+        }
 
-      const remainingRewardCount = rewardCount - availableFoodCount;
-      if (remainingRewardCount <= 0) {
+        ctx.controllers.feeder.syncWithStore();
+
+        const remainingRewardCount = rewardCount - availableFoodCount;
+        if (remainingRewardCount <= 0) {
+          return;
+        }
+
+        const { selectedFoodIndexes } = await ctx.controllers.feeder.selectFood(remainingRewardCount);
+        if (this.isCancelled) return;
+
+        ctx.useCases.gainFoodUseCase.execute(selectedFoodIndexes);
+        ctx.controllers.feeder.syncWithStore();
         return;
       }
 
-      const { selectedFoodIndexes } = await ctx.controllers.feeder.selectFood(remainingRewardCount);
+      ctx.controllers.feeder.setStrategy(new ChooseFoodStrategy(rewardCount));
+
+      const { selectedFoodIndexes } = await ctx.controllers.feeder.selectFood();
       if (this.isCancelled) return;
 
       ctx.useCases.gainFoodUseCase.execute(selectedFoodIndexes);
+
       ctx.controllers.feeder.syncWithStore();
-      return;
+    } finally {
+      await ctx.controllers.dimmer.clear();
     }
-
-    ctx.controllers.feeder.setStrategy(new ChooseFoodStrategy(rewardCount));
-
-    const { selectedFoodIndexes } = await ctx.controllers.feeder.selectFood();
-    if (this.isCancelled) return;
-
-    ctx.useCases.gainFoodUseCase.execute(selectedFoodIndexes);
-
-    ctx.controllers.feeder.syncWithStore();
   }
 
   protected override async onCancel(ctx: FlowContext): Promise<void> {
     await ctx.controllers.feeder.cancelSelection();
+    await ctx.controllers.dimmer.clear();
   }
 }
