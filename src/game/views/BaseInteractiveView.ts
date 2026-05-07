@@ -27,16 +27,17 @@ export abstract class BaseInteractiveView {
   }
 
   async cancelSelection(): Promise<void> {
-    this.onConfirmClicked = null;
-    this.setConfirmEnabled(false);
-    this.onCancelSelection();
-    await this.toggleShow(false);
+    await this.finishSelection(() => this.onCancelSelection());
   }
 
   async completeSelection(): Promise<void> {
+    await this.finishSelection(() => this.onCompleteSelection());
+  }
+
+  private async finishSelection(beforeHide: () => void): Promise<void> {
     this.onConfirmClicked = null;
     this.setConfirmEnabled(false);
-    this.onCompleteSelection();
+    beforeHide();
     await this.toggleShow(false);
   }
 

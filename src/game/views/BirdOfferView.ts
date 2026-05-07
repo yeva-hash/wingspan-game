@@ -38,7 +38,6 @@ export class BirdOfferView extends BaseInteractiveView {
     }
 
     protected onPrepareForSelection(): void {
-        //TODO hightlight section
         this.setInteractive(true);
     }
 

@@ -16,13 +16,13 @@ export class CancelButtonView {
 
   async show(): Promise<void> {
     this.setInteractive(true);
-    await alphaTo(this._button, 0.2, 1);
+    await alphaTo(this._button, 0.1, 1);
   }
 
   async hide(): Promise<void> {
     this.onCancelClicked = null;
     this.setInteractive(false);
-    await alphaTo(this._button, 0.2, 0);
+    await alphaTo(this._button, 0.1, 0);
   }
 
   private setInteractive(interactive: boolean): void {
