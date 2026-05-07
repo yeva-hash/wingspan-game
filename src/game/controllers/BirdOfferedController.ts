@@ -54,7 +54,9 @@ export class BirdOfferedController {
         };
 
         try {
-            return await deferred.promise;
+            const choice = await deferred.promise;
+            await this.view.completeSelection();
+            return choice;
         } finally {
             this.view.onConfirmClicked = prev;
         }

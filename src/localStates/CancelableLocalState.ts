@@ -12,7 +12,8 @@ export abstract class CancelableLocalState implements LocalState {
     const actionPromise = this.runAction(ctx);
     const cancelPromise = ctx.controllers.cancelButton.waitForCancel().then(async () => {
       this.isCancelled = true;
-      await this.onCancel(ctx);
+      //TODO?
+      this.onCancel(ctx);
     });
 
     try {

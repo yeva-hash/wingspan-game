@@ -16,7 +16,6 @@ export class FeederView extends BaseInteractiveView {
     }
 
     protected onPrepareForSelection(): void {
-        //TODO hightlight section
         this.setInteractive(true);
     }
 

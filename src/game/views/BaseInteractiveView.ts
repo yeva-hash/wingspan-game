@@ -14,7 +14,10 @@ export abstract class BaseInteractiveView {
 
   setConfirmEnabled(enabled: boolean): void {
     setButtonInteractive(this._confirmButton, enabled);
-    this._confirmButton.alpha = enabled ? 1 : 0.5;
+
+    if (this._confirmButton.alpha > 0) {
+      this._confirmButton.alpha = enabled ? 1 : 0.5;
+    }
   }
 
   async prepareForSelection(): Promise<void> {
@@ -30,12 +33,23 @@ export abstract class BaseInteractiveView {
     await this.toggleShow(false);
   }
 
+  async completeSelection(): Promise<void> {
+    this.onConfirmClicked = null;
+    this.setConfirmEnabled(false);
+    this.onCompleteSelection();
+    await this.toggleShow(false);
+  }
+
   protected onPrepareForSelection(): void {}
 
   protected onCancelSelection(): void {}
 
+  protected onCompleteSelection(): void {
+    this.onCancelSelection();
+  }
+
   protected async toggleShow(show: boolean): Promise<void> {
-    const to = show ? 1 : 0;
+    const to = show ? 0.5 : 0;
     await Promise.all(this.getShowTargets().map((target) => alphaTo(target, 0.5, to)));
   }
 
