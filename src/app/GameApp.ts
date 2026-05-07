@@ -15,14 +15,17 @@ type GameAppOptions = {
 export class GameApp {
   readonly app: Application;
   readonly layoutService: LayoutService;
+  readonly backgroundRoot: Container;
   readonly gameRoot: Container;
   private readonly layoutBuilder: LayoutBuilder;
-  private resizeService?: ResizeService;
+  private backgroundResizeService?: ResizeService;
+  private gameResizeService?: ResizeService;
 
   constructor() {
     this.app = new Application();
     this.layoutService = new LayoutService();
     this.layoutBuilder = new LayoutBuilder(this.layoutService);
+    this.backgroundRoot = new Container();
     this.gameRoot = new Container();
   }
 
@@ -41,9 +44,9 @@ export class GameApp {
       antialias: true,
     });
 
-    // (window.top as any).globalThis.__PIXI_APP__ = this.app;
 
     appContainer.appendChild(this.app.canvas);
+    this.app.stage.addChild(this.backgroundRoot);
     this.app.stage.addChild(this.gameRoot);
 
     //TODO
@@ -54,18 +57,42 @@ export class GameApp {
 
     await this.layoutBuilder.build(options.layout, this.gameRoot);
 
-    this.resizeService = new ResizeService({
+    const designWidth = options.designWidth ?? 1728;
+    const designHeight = options.designHeight ?? 1024;
+
+    this.moveBackgroundToCoverLayer();
+
+    this.backgroundResizeService = new ResizeService({
+      app: this.app,
+      root: this.backgroundRoot,
+      designWidth,
+      designHeight,
+      mode: "cover",
+    });
+
+    this.gameResizeService = new ResizeService({
       app: this.app,
       root: this.gameRoot,
-      designWidth: options.designWidth ?? 1728,
-      designHeight: options.designHeight ?? 1024,
-      mode: options.resizeMode,
+      designWidth,
+      designHeight,
+      mode: options.resizeMode ?? "fit",
     });
-    this.resizeService.init();
+
+    this.backgroundResizeService.init();
+    this.gameResizeService.init();
+
+    (window.top as any).globalThis.__PIXI_APP__ = this.app;
   }
 
   destroy(): void {
-    this.resizeService?.destroy();
+    this.backgroundResizeService?.destroy();
+    this.gameResizeService?.destroy();
     this.app.destroy(true);
+  }
+
+  private moveBackgroundToCoverLayer(): void {
+    const background = this.layoutService.get("background");
+    background.parent?.removeChild(background);
+    this.backgroundRoot.addChild(background);
   }
 }

@@ -136,11 +136,11 @@
     "stage": {
         "name": "game",
         "type": "container",
-        "x": 0,
-        "y": 0,
+        "x": -110,
+        "y": 110,
         "scale": {
-            "x": 1,
-            "y": 1
+            "x": 1.1,
+            "y": 1.1
         },
         "children": [
             {
@@ -630,7 +630,7 @@
                 "name": "feeder-container",
                 "type": "container",
                 "x": 860,
-                "y": 66,
+                "y": 0,
                 "children": [
                     {
                         "name": "feeder-bg",
