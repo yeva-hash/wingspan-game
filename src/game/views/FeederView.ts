@@ -20,6 +20,14 @@ export class FeederView extends BaseInteractiveView {
         this.setInteractive(true);
     }
 
+    protected override onCancelSelection(): void {
+        this.setInteractive(false);
+
+        for (const foodToken of this._foodTokens.values()) {
+            foodToken?.setSelected(false);
+        }
+    }
+
     fillFoodSlots(foodDefs: Map<number, FoodDefinition>): void {
         for (const [index, token] of this._foodTokens.entries()) {
             if (!token) continue;

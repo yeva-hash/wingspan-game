@@ -30,6 +30,8 @@ import { FeederController } from "../game/controllers/FeederController";
 import { FeederView } from "../game/views/FeederView";
 import { GainFoodUseCase } from "../game/useCases/GainFoodUseCase";
 import { PlayBirdUseCase } from "../game/useCases/PlayBirdUseCase";
+import { CancelButtonView } from "../game/views/CancelButtonView";
+import { CancelButtonController } from "../game/controllers/CancelButtonController";
 
 const allBirdsFromJson = (birdsJson as { birds: BirdDefinition[] }).birds;
 const allFoodsFromJson = (foodsJson as { foods: FoodDefinition[] }).foods;
@@ -93,12 +95,14 @@ export class GameScene {
       ["swamp", new HabitatAreaView("swamp", layoutService)],
     ]);
     const feederView = new FeederView(layoutService);
+    const cancelButtonView = new CancelButtonView(layoutService);
 
     const habitatController = new HabitatController(habitatService, habitatAreaViews);
     const handController = new HandController(playerResourceService, birdPlayRuleService, handView);
     const actionMenuController = new ActionMenuController(actionMenuView);
     const birdOfferedController = new BirdOfferedController(birdOfferView, birdSupplyService);
     const feederController = new FeederController(feederService, feederView);
+    const cancelButtonController = new CancelButtonController(cancelButtonView);
 
     return {
       gameApp: this.gameApp,
@@ -109,6 +113,7 @@ export class GameScene {
         birdOffered: birdOfferedController,
         habitat: habitatController,
         feeder: feederController,
+        cancelButton: cancelButtonController,
       },
       services: {
         birdSupplyService,

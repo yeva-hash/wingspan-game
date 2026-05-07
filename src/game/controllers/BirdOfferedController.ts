@@ -34,6 +34,10 @@ export class BirdOfferedController {
         await this.view.prepareForSelection();
     }
 
+    async cancelSelection(): Promise<void> {
+        await this.view.cancelSelection();
+    }
+
     async chooseBirds(): Promise<BirdOfferChoice> {
         const deferred = createDeferred<BirdOfferChoice>();
         const prev = this.view.onConfirmClicked;

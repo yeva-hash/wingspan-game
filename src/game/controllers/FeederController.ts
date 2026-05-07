@@ -24,6 +24,10 @@ export class FeederController {
         this.syncWithStore();
     }
 
+    async cancelSelection(): Promise<void> {
+        await this._view.cancelSelection();
+    }
+
     async selectFood(selectedCount?: number): Promise<FoodChoice> {
         if (selectedCount !== undefined) {
             this.setStrategy(new ChooseFoodStrategy(selectedCount));

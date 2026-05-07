@@ -28,7 +28,7 @@ export class HandView extends BaseInteractiveView {
 
   private readonly _areaSelections = new Map<Area, PIXI.Sprite>();
 
-  private readonly _minimizeButton: PIXI.Text;
+  private readonly _minimizeButton: PIXI.Container;
 
   private _state = HandViewState.Hidden;
 
@@ -119,6 +119,9 @@ export class HandView extends BaseInteractiveView {
   hide(): void {
     this._container.visible = false;
     this._state = HandViewState.Hidden;
+    this.onConfirmClicked = null;
+    this.setConfirmEnabled(false);
+    this.resetAreaSelection();
   }
 
   show(): void {

@@ -23,7 +23,16 @@ export abstract class BaseInteractiveView {
     this.onPrepareForSelection();
   }
 
+  async cancelSelection(): Promise<void> {
+    this.onConfirmClicked = null;
+    this.setConfirmEnabled(false);
+    this.onCancelSelection();
+    await this.toggleShow(false);
+  }
+
   protected onPrepareForSelection(): void {}
+
+  protected onCancelSelection(): void {}
 
   protected async toggleShow(show: boolean): Promise<void> {
     const to = show ? 1 : 0;

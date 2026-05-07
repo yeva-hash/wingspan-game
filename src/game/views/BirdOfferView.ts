@@ -42,6 +42,15 @@ export class BirdOfferView extends BaseInteractiveView {
         this.setInteractive(true);
     }
 
+    protected override onCancelSelection(): void {
+        this.setInteractive(false);
+        this.setRandomSelected(false);
+
+        for (const bird of this._offeredBirds.values()) {
+            bird.setSelected(false);
+        }
+    }
+
     private setInteractive(interactive: boolean): void {
         for (const [birdId, bird] of this._offeredBirds.entries()) {
             setButtonInteractive(bird.container, interactive);

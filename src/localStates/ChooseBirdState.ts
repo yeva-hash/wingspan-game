@@ -1,11 +1,11 @@
-import type { LocalState } from "./LocalState";
 import type { FlowContext } from "../flow/FlowTypes";
 import { ChooseBirdStrategy } from "../game/strategy/selectionStrategy/ChooseBirdStrategy";
 import { ReadOnlyStrategy } from "../game/strategy/selectionStrategy/ReadOnlyStrategy";
 import { Area } from "../game/types/resourceTypes";
+import { CancelableLocalState } from "./CancelableLocalState";
 
-export class ChooseBirdState implements LocalState {
-  async run(ctx: FlowContext): Promise<void> {
+export class ChooseBirdState extends CancelableLocalState {
+  protected async runAction(ctx: FlowContext): Promise<void> {
     const { birdOffered, hand } = ctx.controllers;
 
     //TODO
@@ -15,6 +15,7 @@ export class ChooseBirdState implements LocalState {
 
     await birdOffered.prepareViewForSelection();
     const birdOfferChoice = await birdOffered.chooseBirds();
+    if (this.isCancelled) return;
 
     ctx.useCases.chooseBirdUseCase.execute(birdOfferChoice.selectedBirdIds);
 
@@ -22,5 +23,9 @@ export class ChooseBirdState implements LocalState {
 
     // hand.setStrategy(new ReadOnlyStrategy());
     // await hand.render();
+  }
+
+  protected override async onCancel(ctx: FlowContext): Promise<void> {
+    await ctx.controllers.birdOffered.cancelSelection();
   }
 }
