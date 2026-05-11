@@ -11,6 +11,7 @@ export class PlayingBirdState extends CancelableLocalState {
     const { birdId, area } = await ctx.controllers.hand.chooseBird();
     if (this.isCancelled) return;
 
+    this.disableCancelButton(ctx);
     const result = ctx.useCases.playBirdUseCase.execute(area, birdId);
 
     ctx.controllers.hand.hide();

@@ -17,6 +17,7 @@ export class ChooseBirdState extends CancelableLocalState {
     const birdOfferChoice = await birdOffered.chooseBirds();
     if (this.isCancelled) return;
 
+    this.disableCancelButton(ctx);
     ctx.useCases.chooseBirdUseCase.execute(birdOfferChoice.selectedBirdIds);
 
     birdOffered.render();

@@ -25,6 +25,12 @@ export class CancelButtonView {
     await alphaTo(this._button, 0.1, 0);
   }
 
+  disable(): void {
+    this.onCancelClicked = null;
+    this.setInteractive(false);
+    this._button.alpha = 0.5;
+  }
+
   private setInteractive(interactive: boolean): void {
     setButtonInteractive(this._button, interactive);
   }

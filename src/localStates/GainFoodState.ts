@@ -32,6 +32,7 @@ export class GainFoodState extends CancelableLocalState {
         const { selectedFoodIndexes } = await ctx.controllers.feeder.selectFood(remainingRewardCount);
         if (this.isCancelled) return;
 
+        this.disableCancelButton(ctx);
         ctx.useCases.gainFoodUseCase.execute(selectedFoodIndexes);
         ctx.controllers.feeder.syncWithStore();
         return;
@@ -42,6 +43,7 @@ export class GainFoodState extends CancelableLocalState {
       const { selectedFoodIndexes } = await ctx.controllers.feeder.selectFood();
       if (this.isCancelled) return;
 
+      this.disableCancelButton(ctx);
       ctx.useCases.gainFoodUseCase.execute(selectedFoodIndexes);
 
       ctx.controllers.feeder.syncWithStore();

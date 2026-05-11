@@ -12,6 +12,10 @@ export class CancelButtonController {
     await this._view.hide();
   }
 
+  disable(): void {
+    this._view.disable();
+  }
+
   async waitForCancel(): Promise<void> {
     const deferred = createDeferred<void>();
     const prev = this._view.onCancelClicked;

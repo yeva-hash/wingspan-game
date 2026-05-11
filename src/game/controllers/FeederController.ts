@@ -54,8 +54,9 @@ export class FeederController {
         };
 
         try {
+            //TODO await?
             const choice = await deferred.promise;
-            await this._view.completeSelection();
+            this._view.completeSelection();
             return choice;
         } finally {
             this._view.onFoodClicked = prevFoodClick;

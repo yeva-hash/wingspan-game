@@ -12,7 +12,6 @@ export abstract class CancelableLocalState implements LocalState {
     const actionPromise = this.runAction(ctx);
     const cancelPromise = ctx.controllers.cancelButton.waitForCancel().then(async () => {
       this.isCancelled = true;
-      //TODO?
       this.onCancel(ctx);
     });
 
@@ -24,6 +23,10 @@ export abstract class CancelableLocalState implements LocalState {
   }
 
   protected abstract runAction(ctx: FlowContext): Promise<void>;
+
+  protected disableCancelButton(ctx: FlowContext): void {
+    ctx.controllers.cancelButton.disable();
+  }
 
   protected async onCancel(_ctx: FlowContext): Promise<void> {}
 }
