@@ -2,7 +2,6 @@ import * as PIXI from "pixi.js";
 import { BirdCardView } from "./BirdCardView";
 import type { QuantifiedFood } from "../models/QuantifiedFood";
 import { LayoutService } from "../../layout/LayoutService";
-import { alphaTo } from "../../utils/viewUtils";
 import { QuantifiedFoodTokenView } from "./food/QuantifiedFoodTokenView";
 import { Area, BirdDefinition } from "../types/resourceTypes";
 import gsap from "gsap";
@@ -15,6 +14,11 @@ enum HandViewState {
 }
 
 export class HandView extends BaseInteractiveView {
+  private static readonly visibleY = 0;
+  private static readonly minimizedY = 675;
+  private static readonly hiddenY = 1024;
+  private static readonly slideDuration = 0.75;
+
   onBirdClicked: ((birdId: string) => void) | null = null;
   onAreaClicked: ((areaId: Area) => void) | null = null;
 
@@ -49,7 +53,8 @@ export class HandView extends BaseInteractiveView {
 
   private onMinimizeClicked(): void {
     const isVisible = this._state === HandViewState.Visible;
-    const YPos = isVisible ? 675 : 0;
+    const YPos = isVisible ? HandView.minimizedY : HandView.visibleY;
+    gsap.killTweensOf(this._container);
     gsap.to(this._container, { y: YPos, duration: 1, ease: "power1.inOut",
        onComplete: () => {
         this._state = isVisible ? HandViewState.Minimized : HandViewState.Visible; 
@@ -61,8 +66,10 @@ export class HandView extends BaseInteractiveView {
     this.show();
     this.clear();
     await this.renderBirds(birds);
+    this.setBirdsInteractive(false);
     await this.renderFoods(foods);
-    await alphaTo(this._container, 0.75, 1);
+    await this.slideInOut(HandView.hiddenY, HandView.visibleY);
+    this.setBirdsInteractive(true);
     this._state = HandViewState.Visible;
   }
 
@@ -107,6 +114,13 @@ export class HandView extends BaseInteractiveView {
     this._birdViewsById.get(instanceId)?.setSelected(selected);
   }
 
+  private setBirdsInteractive(interactive: boolean): void {
+    for (const birdView of this._birdViewsById.values()) {
+      birdView.container.eventMode = interactive ? "static" : "none";
+      birdView.container.cursor = interactive ? "pointer" : "default";
+    }
+  }
+
   setFoodHighlighted(foodId: string, highlighted: boolean): void {
     this._foodViewsById.get(foodId)?.setSelected(!highlighted);
   }
@@ -116,18 +130,38 @@ export class HandView extends BaseInteractiveView {
     this._messageText.visible = message.length > 0;
   }
 
-  hide(): void {
-    this._container.visible = false;
-    this._state = HandViewState.Hidden;
+  async hide(): Promise<void> {
+    this.setBirdsInteractive(false);
     this.onConfirmClicked = null;
     this.setConfirmEnabled(false);
     this.resetAreaSelection();
+    await this.slideInOut(this._container.y, HandView.hiddenY);
+    this._container.visible = false;
+    this._container.y = HandView.visibleY;
+    this._state = HandViewState.Hidden;
   }
 
   show(): void {
     this._container.visible = true;
     this._container.alpha = 1;
-    this._state = HandViewState.Visible;
+    this._state = HandViewState.Hidden;
+  }
+
+  private async slideInOut(fromY: number, toY: number): Promise<void> {
+    gsap.killTweensOf(this._container);
+
+    await new Promise<void>((resolve) => {
+      gsap.fromTo(
+        this._container,
+        { y: fromY },
+        {
+          y: toY,
+          duration: HandView.slideDuration,
+          ease: "power1.inOut",
+          onComplete: () => resolve(),
+        },
+      );
+    });
   }
 
   setAreas(areas: readonly Area[]): void {

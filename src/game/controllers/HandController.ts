@@ -107,7 +107,7 @@ export class HandController {
   }
 
   //TODO
-  hide(): void {
-    this.view.hide();
+  async hide(): Promise<void> {
+    await this.view.hide();
   }
 }

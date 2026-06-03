@@ -14,12 +14,12 @@ export class PlayingBirdState extends CancelableLocalState {
     this.disableCancelButton(ctx);
     const result = ctx.useCases.playBirdUseCase.execute(area, birdId);
 
-    ctx.controllers.hand.hide();
+    await ctx.controllers.hand.hide();
     ctx.controllers.habitat.placeBirdCard(result);
     // ctx.controllers.habitat.syncOccupiedSlots();
   }
 
   protected override async onCancel(ctx: FlowContext): Promise<void> {
-    ctx.controllers.hand.hide();
+    await ctx.controllers.hand.hide();
   }
 }
