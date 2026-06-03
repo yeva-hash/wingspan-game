@@ -1,4 +1,5 @@
 import { BirdSupplyService } from "../services/BirdSupplyService";
+import type { Container } from "pixi.js";
 import { createDeferred } from "../../utils/deferred";
 import { BirdOfferSelectionStrategy } from "../types/selectionTypes";
 import { BirdOfferView } from "../views/BirdOfferView";
@@ -16,6 +17,10 @@ export class BirdOfferedController {
         private readonly service: BirdSupplyReader
     ) {
         this.view.onBirdClicked = (birdId) => this.handleBirdClick(birdId);
+    }
+
+    get container(): Container {
+        return this.view.container;
     }
 
     setStrategy(strategy: BirdOfferSelectionStrategy): void {

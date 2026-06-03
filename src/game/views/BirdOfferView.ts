@@ -7,6 +7,7 @@ import { BaseInteractiveView } from "./BaseInteractiveView";
 import * as PIXI from "pixi.js";
 
 export class BirdOfferView extends BaseInteractiveView {
+    private readonly _container: PIXI.Container;
     private readonly _cardContainer: PIXI.Container;
     private readonly _randomBirdText: PIXI.Text;
     private _offeredBirds: Map<string, BirdCardView> = new Map();
@@ -15,10 +16,15 @@ export class BirdOfferView extends BaseInteractiveView {
 
     constructor(private readonly _layoutService: LayoutService) {
         super(_layoutService.get("choose-bird-confirm-button"));
+        this._container = this._layoutService.get("bird-offer-container");
         this._cardContainer = this._layoutService.get("bird-offer-card-container");
         this._randomBirdText = this._layoutService.get("random-bird-text");
 
         this._randomBirdText.on("pointerdown", () => this.onBirdClicked?.("random"));
+    }
+
+    get container(): PIXI.Container {
+        return this._container;
     }
 
     //TODO no need to rerender all birds

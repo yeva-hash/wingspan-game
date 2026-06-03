@@ -1,6 +1,5 @@
 import type { FlowContext } from "../flow/FlowTypes";
 import { ChooseBirdStrategy } from "../game/strategy/selectionStrategy/ChooseBirdStrategy";
-import { ReadOnlyStrategy } from "../game/strategy/selectionStrategy/ReadOnlyStrategy";
 import { Area } from "../game/types/resourceTypes";
 import { CancelableLocalState } from "./CancelableLocalState";
 
@@ -13,20 +12,27 @@ export class ChooseBirdState extends CancelableLocalState {
     let rewardCount = ctx.services.habitatService.getRewardCount(rewardArea)
     birdOffered.setStrategy(new ChooseBirdStrategy(rewardCount));
 
-    await birdOffered.prepareViewForSelection();
-    const birdOfferChoice = await birdOffered.chooseBirds();
-    if (this.isCancelled) return;
+    await ctx.controllers.dimmer.highlight(birdOffered.container);
 
-    this.disableCancelButton(ctx);
-    ctx.useCases.chooseBirdUseCase.execute(birdOfferChoice.selectedBirdIds);
+    try {
+      await birdOffered.prepareViewForSelection();
+      const birdOfferChoice = await birdOffered.chooseBirds();
+      if (this.isCancelled) return;
 
-    birdOffered.render();
+      this.disableCancelButton(ctx);
+      ctx.useCases.chooseBirdUseCase.execute(birdOfferChoice.selectedBirdIds);
 
-    // hand.setStrategy(new ReadOnlyStrategy());
-    // await hand.render();
+      birdOffered.render();
+
+      // hand.setStrategy(new ReadOnlyStrategy());
+      // await hand.render();
+    } finally {
+      await ctx.controllers.dimmer.clear();
+    }
   }
 
   protected override async onCancel(ctx: FlowContext): Promise<void> {
     await ctx.controllers.birdOffered.cancelSelection();
+    await ctx.controllers.dimmer.clear();
   }
 }
