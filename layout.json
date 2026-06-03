@@ -739,8 +739,8 @@
                     {
                         "name": "cancel-button",
                         "type": "sprite",
-                        "x": 1800,
-                        "y": -15,
+                        "x": 1645,
+                        "y": 80,
                         "alpha": 0,
                         "texture": "cancel-button",
                         "anchor": {

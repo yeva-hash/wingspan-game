@@ -1,4 +1,4 @@
-import { Sprite } from "pixi.js";
+import { Container, Sprite } from "pixi.js";
 import { LayoutService } from "../../layout/LayoutService";
 import { FoodDefinition } from "../types/resourceTypes";
 import { TextureCache } from "../../loader/TextureCache";
@@ -8,11 +8,17 @@ import { BaseInteractiveView } from "./BaseInteractiveView";
 
 export class FeederView extends BaseInteractiveView {
     private readonly _foodTokens: Map<number, FoodTokenView | null> = new Map();
+    private readonly _container: Container;
 
     onFoodClicked: ((index: number) => void) | null = null;
 
     constructor(private _layoutService: LayoutService) {
         super(_layoutService.get("choose-food-confirm-button"));
+        this._container = _layoutService.get("feeder-container");
+    }
+
+    get container(): Container {
+        return this._container;
     }
 
     protected onPrepareForSelection(): void {

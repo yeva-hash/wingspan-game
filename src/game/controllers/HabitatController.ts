@@ -1,4 +1,5 @@
 import { createDeferred } from "../../utils/deferred";
+import type { Container } from "pixi.js";
 import { BirdPlacementResult, HabitatBirdSlotMap, HabitatService } from "../services/HabitatService";
 import { Area } from "../types/resourceTypes";
 import { HabitatAreaView } from "../views/habitat/HabitatAreaView";
@@ -39,6 +40,23 @@ export class HabitatController {
         }
 
         this.getAreaView(area).updateEggProgress(slotIndex, bird);
+    }
+
+    getBirdCardContainers(slotsByArea: HabitatBirdSlotMap): Container[] {
+        const containers: Container[] = [];
+
+        for (const [area, slotIndexes] of slotsByArea) {
+            const areaView = this.getAreaView(area);
+
+            for (const slotIndex of slotIndexes) {
+                const container = areaView.getBirdCardContainer(slotIndex);
+                if (container) {
+                    containers.push(container);
+                }
+            }
+        }
+
+        return containers;
     }
 
     clearEggPlacementSelection(): void {

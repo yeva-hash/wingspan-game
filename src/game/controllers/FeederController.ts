@@ -1,4 +1,5 @@
 import { FeederService } from "../services/FeederService";
+import type { Container } from "pixi.js";
 import { createDeferred } from "../../utils/deferred";
 import { FeederSelectionStrategy } from "../types/selectionTypes";
 import { FeederView } from "../views/FeederView";
@@ -12,6 +13,10 @@ export class FeederController {
     private strategy!: FeederSelectionStrategy;
 
     constructor(private readonly _services: FeederService, private readonly _view: FeederView) {}
+
+    get container(): Container {
+        return this._view.container;
+    }
 
     setStrategy(strategy: FeederSelectionStrategy): void {
         this.strategy = strategy;

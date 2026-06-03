@@ -11,37 +11,40 @@ type HighlightedTarget = {
 export class DimmerController {
   private readonly _container: Container;
   private readonly _image: Container;
-  private _highlightedTarget: HighlightedTarget | null = null;
+  private _highlightedTargets: HighlightedTarget[] = [];
 
   constructor(private readonly _layoutService: LayoutService) {
     this._container = this._layoutService.get("dimmer-container");
     this._image = this._layoutService.get("dimmer-img");
   }
 
-  async highlight(targetName: string): Promise<void> {
-    if (this._highlightedTarget) {
+  async highlight(targets: Container | Container[]): Promise<void> {
+    if (this._highlightedTargets.length > 0) {
       await this.clear();
     }
 
-    const target = this._layoutService.get<Container>(targetName);
-    const originalParent = target.parent;
-    if (!originalParent) {
-      throw new Error(`Dimmer target "${targetName}" has no parent`);
+    const normalizedTargets = Array.isArray(targets) ? targets : [targets];
+
+    for (const target of normalizedTargets) {
+      const originalParent = target.parent;
+      if (!originalParent) {
+        throw new Error("Dimmer target has no parent");
+      }
+
+      const originalIndex = originalParent.getChildIndex(target);
+      const targetGlobalPosition = target.getGlobalPosition();
+      const targetDimmerPosition = this._container.toLocal(targetGlobalPosition);
+
+      originalParent.removeChild(target);
+      this._container.addChild(target);
+      target.position.copyFrom(targetDimmerPosition);
+
+      this._highlightedTargets.push({
+        target,
+        originalParent,
+        originalIndex,
+      });
     }
-
-    const originalIndex = originalParent.getChildIndex(target);
-    const targetGlobalPosition = target.getGlobalPosition();
-    const targetDimmerPosition = this._container.toLocal(targetGlobalPosition);
-
-    originalParent.removeChild(target);
-    this._container.addChild(target);
-    target.position.copyFrom(targetDimmerPosition);
-
-    this._highlightedTarget = {
-      target,
-      originalParent,
-      originalIndex,
-    };
 
     await alphaTo(this._image, 0.25, 1);
   }
@@ -49,17 +52,21 @@ export class DimmerController {
   async clear(): Promise<void> {
     await alphaTo(this._image, 0.25, 0);
 
-    if (!this._highlightedTarget) {
+    if (this._highlightedTargets.length === 0) {
       return;
     }
 
-    const { target, originalParent, originalIndex } = this._highlightedTarget;
-    const targetGlobalPosition = target.getGlobalPosition();
-    const targetOriginalPosition = originalParent.toLocal(targetGlobalPosition);
+    const targetsToRestore = [...this._highlightedTargets].sort((a, b) => a.originalIndex - b.originalIndex);
 
-    this._container.removeChild(target);
-    originalParent.addChildAt(target, originalIndex);
-    target.position.copyFrom(targetOriginalPosition);
-    this._highlightedTarget = null;
+    for (const { target, originalParent, originalIndex } of targetsToRestore) {
+      const targetGlobalPosition = target.getGlobalPosition();
+      const targetOriginalPosition = originalParent.toLocal(targetGlobalPosition);
+
+      this._container.removeChild(target);
+      originalParent.addChildAt(target, Math.min(originalIndex, originalParent.children.length));
+      target.position.copyFrom(targetOriginalPosition);
+    }
+
+    this._highlightedTargets = [];
   }
 }

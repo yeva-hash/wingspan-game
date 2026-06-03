@@ -1,4 +1,5 @@
 import { LayoutService } from "../../../layout/LayoutService";
+import type { Container } from "pixi.js";
 import { PlayedBird } from "../../models/PlayedBird";
 import { Area } from "../../types/resourceTypes";
 import { HabitatSlotView } from "./HabitatSlotView";
@@ -32,6 +33,10 @@ export class HabitatAreaView {
 
     setBirdInteractive(slotIndex: number, interactive: boolean): void {
         this.getSlotView(slotIndex).setBirdInteractive(interactive);
+    }
+
+    getBirdCardContainer(slotIndex: number): Container | null {
+        return this.getSlotView(slotIndex).getBirdCardContainer();
     }
 
     updateEggProgress(slotIndex: number, bird: PlayedBird): void {

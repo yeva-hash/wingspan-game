@@ -7,25 +7,32 @@ export class GainEggsState extends CancelableLocalState {
       const rewardArea: Area = "steppe";
       let rewardCount = ctx.services.habitatService.getRewardCount(rewardArea);
 
-      while (rewardCount > 0) {
-          const availableSlotsByArea = ctx.services.habitatService.getAvailableEggPlacementSlotsByArea();
-          if (availableSlotsByArea.size === 0) {
-              break;
+      try {
+          while (rewardCount > 0) {
+              const availableSlotsByArea = ctx.services.habitatService.getAvailableEggPlacementSlotsByArea();
+              if (availableSlotsByArea.size === 0) {
+                  break;
+              }
+
+              const highlightTargets = ctx.controllers.habitat.getBirdCardContainers(availableSlotsByArea);
+              await ctx.controllers.dimmer.highlight(highlightTargets);
+
+              const selectedSlot = await ctx.controllers.habitat.chooseBirdForEggPlacement(availableSlotsByArea);
+              if (this.isCancelled) return;
+
+              ctx.services.habitatService.placeEgg(selectedSlot.area, selectedSlot.slotIndex);
+              ctx.controllers.habitat.updateEggProgress(selectedSlot.area, selectedSlot.slotIndex);
+
+              rewardCount -= 1;
           }
-
-          const selectedSlot = await ctx.controllers.habitat.chooseBirdForEggPlacement(availableSlotsByArea);
-          if (this.isCancelled) return;
-
-          ctx.services.habitatService.placeEgg(selectedSlot.area, selectedSlot.slotIndex);
-          ctx.controllers.habitat.updateEggProgress(selectedSlot.area, selectedSlot.slotIndex);
-
-          rewardCount -= 1;
+      } finally {
+        ctx.controllers.habitat.clearEggPlacementSelection();
+        await ctx.controllers.dimmer.clear();
       }
-
-    ctx.controllers.habitat.clearEggPlacementSelection();
   }
 
   protected override async onCancel(ctx: FlowContext): Promise<void> {
     ctx.controllers.habitat.clearEggPlacementSelection();
+    await ctx.controllers.dimmer.clear();
   }
 }

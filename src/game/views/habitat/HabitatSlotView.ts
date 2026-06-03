@@ -45,6 +45,10 @@ export class HabitatSlotView {
         this._birdCardView.onClicked = interactive ? () => this.onBirdClicked?.() : null;
     }
 
+    getBirdCardContainer(): PIXI.Container | null {
+        return this._birdCardView?.container ?? null;
+    }
+
     updateEggProgress(bird: PlayedBird): void {
         this._birdCardView?.setEggProgress(bird.eggCount, bird.maxEggCount);
     }

@@ -10,7 +10,7 @@ export class GainFoodState extends CancelableLocalState {
 
     if (rewardCount <= 0) return;
 
-    await ctx.controllers.dimmer.highlight("feeder-container");
+    await ctx.controllers.dimmer.highlight(ctx.controllers.feeder.container);
 
     try {
       const availableFoodCount = ctx.services.feederService.getAvailableFoodCount();
