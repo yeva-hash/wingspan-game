@@ -38,10 +38,10 @@ import { DimmerController } from "../game/controllers/DimmerController";
 import { GoalCatalog } from "../catalogs/GoalCatalog";
 import { GoalStore } from "../game/stores/GoalStore";
 import { GoalService } from "../game/services/GoalService";
-import { GoalScoringService } from "../game/services/GoalScoringService";
 import { GoalView } from "../game/views/GoalView";
 import { GoalController } from "../game/controllers/GoalController";
-import { GoalPointService } from "../game/services/GoalPointService";
+import { GoalMetricHelper } from "../game/helpers/GoalMetricHelper";
+import { GoalPointHelper } from "../game/helpers/GoalPointHelper";
 
 const allBirdsFromJson = (birdsJson as { birds: BirdDefinition[] }).birds;
 const allFoodsFromJson = (foodsJson as { foods: FoodDefinition[] }).foods;
@@ -93,8 +93,8 @@ export class GameScene {
     const habitatService = new HabitatService(habitatStore, birdCatalog);
     const feederService = new FeederService(foodCatalog, feederStore);
     const goalService = new GoalService(goalCatalog, goalStore, goalConfig.roundGoalCount);
-    const goalScoringService = new GoalScoringService(habitatService);
-    const goalPointService = new GoalPointService();
+    const goalMetricHelper = new GoalMetricHelper(habitatService);
+    const goalPointHelper = new GoalPointHelper();
     
     const chooseBirdUseCase = new ChooseBirdUseCase(birdSupplyService, playerResourceService);
     const gainFoodUseCase = new GainFoodUseCase(feederService, playerResourceService, foodCatalog);
@@ -121,7 +121,7 @@ export class GameScene {
     const feederController = new FeederController(feederService, feederView);
     const cancelButtonController = new CancelButtonController(cancelButtonView);
     const dimmerController = new DimmerController(layoutService);
-    const goalController = new GoalController(goalService, goalScoringService, goalPointService, goalView);
+    const goalController = new GoalController(goalService, goalMetricHelper, goalPointHelper, goalView);
 
     return {
       gameApp: this.gameApp,
@@ -141,9 +141,7 @@ export class GameScene {
         playerResourceService,
         habitatService,
         feederService,
-        goalService,
-        goalScoringService,
-        goalPointService
+        goalService
       },
       useCases: {
         chooseBirdUseCase,

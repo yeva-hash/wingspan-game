@@ -1,10 +1,10 @@
-import { HabitatService } from "./HabitatService";
+import { HabitatService } from "../services/HabitatService";
 import type { GoalDefinition, GoalParams } from "../types/goalTypes";
 import type { Area, FoodType } from "../types/resourceTypes";
 
 type MetricHandler = (params: GoalParams) => number;
 
-export class GoalScoringService {
+export class GoalMetricHelper {
     private readonly _metricHandlers: Record<GoalDefinition["metric"], MetricHandler> = {
         playedBirdsInArea: (params) => this.countPlayedBirdsInArea(this.requireArea(params)),
         eggsInArea: (params) => this.countEggsInArea(this.requireArea(params)),

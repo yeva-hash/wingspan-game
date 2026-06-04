@@ -1,6 +1,6 @@
 import type { GoalDefinition } from "../types/goalTypes";
 
-export class GoalPointService {
+export class GoalPointHelper {
     calculatePoints(goal: GoalDefinition, metricValue: number): number {
         switch (goal.scoring.type) {
             case "perUnit": {
