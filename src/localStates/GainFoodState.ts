@@ -4,11 +4,11 @@ import { Area } from "../game/types/resourceTypes";
 import { CancelableLocalState } from "./CancelableLocalState";
 
 export class GainFoodState extends CancelableLocalState {
-  protected async runAction(ctx: FlowContext): Promise<void> {
+  protected async runAction(ctx: FlowContext): Promise<boolean> {
     const rewardArea: Area = "forest";
     let rewardCount = ctx.services.habitatService.getRewardCount(rewardArea)
 
-    if (rewardCount <= 0) return;
+    if (rewardCount <= 0) return false;
 
     await ctx.controllers.dimmer.highlight(ctx.controllers.feeder.container);
 
@@ -26,27 +26,28 @@ export class GainFoodState extends CancelableLocalState {
 
         const remainingRewardCount = rewardCount - availableFoodCount;
         if (remainingRewardCount <= 0) {
-          return;
+          return availableSlotIndexes.length > 0;
         }
 
         const { selectedFoodIndexes } = await ctx.controllers.feeder.selectFood(remainingRewardCount);
-        if (this.isCancelled) return;
+        if (this.isCancelled) return false;
 
         this.disableCancelButton(ctx);
         ctx.useCases.gainFoodUseCase.execute(selectedFoodIndexes);
         ctx.controllers.feeder.syncWithStore();
-        return;
+        return true;
       }
 
       ctx.controllers.feeder.setStrategy(new ChooseFoodStrategy(rewardCount));
 
       const { selectedFoodIndexes } = await ctx.controllers.feeder.selectFood();
-      if (this.isCancelled) return;
+      if (this.isCancelled) return false;
 
       this.disableCancelButton(ctx);
       ctx.useCases.gainFoodUseCase.execute(selectedFoodIndexes);
 
       ctx.controllers.feeder.syncWithStore();
+      return true;
     } finally {
       await ctx.controllers.dimmer.clear();
     }

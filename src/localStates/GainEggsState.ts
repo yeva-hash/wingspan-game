@@ -3,9 +3,10 @@ import { Area } from "../game/types/resourceTypes";
 import { CancelableLocalState } from "./CancelableLocalState";
 
 export class GainEggsState extends CancelableLocalState {
-  protected async runAction(ctx: FlowContext): Promise<void> {
+  protected async runAction(ctx: FlowContext): Promise<boolean> {
       const rewardArea: Area = "steppe";
       let rewardCount = ctx.services.habitatService.getRewardCount(rewardArea);
+      let placedEggs = 0;
 
       try {
           while (rewardCount > 0) {
@@ -18,13 +19,16 @@ export class GainEggsState extends CancelableLocalState {
               await ctx.controllers.dimmer.highlight(highlightTargets);
 
               const selectedSlot = await ctx.controllers.habitat.chooseBirdForEggPlacement(availableSlotsByArea);
-              if (this.isCancelled) return;
+              if (this.isCancelled) return false;
 
               ctx.services.habitatService.placeEgg(selectedSlot.area, selectedSlot.slotIndex);
               ctx.controllers.habitat.updateEggProgress(selectedSlot.area, selectedSlot.slotIndex);
 
               rewardCount -= 1;
+              placedEggs += 1;
           }
+
+          return placedEggs > 0;
       } finally {
         ctx.controllers.habitat.clearEggPlacementSelection();
         await ctx.controllers.dimmer.clear();

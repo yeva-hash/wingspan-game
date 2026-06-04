@@ -17,6 +17,9 @@ import { DimmerController } from "../game/controllers/DimmerController";
 import { GoalController } from "../game/controllers/GoalController";
 import { GoalService } from "../game/services/GoalService";
 import { GoalStore } from "../game/stores/GoalStore";
+import { RoundController } from "../game/controllers/RoundController";
+import { RoundService } from "../game/services/RoundService";
+import { RoundStore } from "../game/stores/RoundStore";
 
 export type GameControllers = {
   hand: HandController;
@@ -27,11 +30,13 @@ export type GameControllers = {
   cancelButton: CancelButtonController;
   dimmer: DimmerController;
   goal: GoalController;
+  round: RoundController;
 };
 
 export type GameStores = {
   game: GameStore;
   goal: GoalStore;
+  round: RoundStore;
 };
 
 export type FlowContext = {
@@ -48,6 +53,7 @@ export type GameServices = {
   habitatService: HabitatService;
   feederService: FeederService;
   goalService: GoalService;
+  roundService: RoundService;
 };
 
 export type GameUseCases = {

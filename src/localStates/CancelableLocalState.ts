@@ -4,7 +4,7 @@ import type { LocalState } from "./LocalState";
 export abstract class CancelableLocalState implements LocalState {
   protected isCancelled = false;
 
-  async run(ctx: FlowContext): Promise<void> {
+  async run(ctx: FlowContext): Promise<boolean> {
     this.isCancelled = false;
 
     await ctx.controllers.cancelButton.show();
@@ -13,16 +13,17 @@ export abstract class CancelableLocalState implements LocalState {
     const cancelPromise = ctx.controllers.cancelButton.waitForCancel().then(async () => {
       this.isCancelled = true;
       this.onCancel(ctx);
+      return false;
     });
 
     try {
-      await Promise.race([actionPromise, cancelPromise]);
+      return await Promise.race([actionPromise, cancelPromise]);
     } finally {
       await ctx.controllers.cancelButton.hide();
     }
   }
 
-  protected abstract runAction(ctx: FlowContext): Promise<void>;
+  protected abstract runAction(ctx: FlowContext): Promise<boolean>;
 
   protected disableCancelButton(ctx: FlowContext): void {
     ctx.controllers.cancelButton.disable();

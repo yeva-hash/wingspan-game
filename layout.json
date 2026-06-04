@@ -157,7 +157,7 @@
             {
                 "name":"goal-container",
                 "type": "container",
-                "x": 320,
+                "x": 1110,
                 "y": -10,
                 "children": [
                     {
@@ -189,6 +189,30 @@
                         "type": "text",
                         "x": 105,
                         "y": 18,
+                        "text": "",
+                        "styleName": "hand-food-quantity"
+                    }
+                ]
+            },
+            {
+                "name":"round-info-container",
+                "type": "container",
+                "x": 295,
+                "y": -30,
+                "children": [
+                    {
+                        "name":"round-text",
+                        "type": "text",
+                        "x": 0,
+                        "y": 0,
+                        "text": "",
+                        "styleName": "random-bird-text"
+                    },
+                    {
+                        "name":"actions-count-text",
+                        "type": "text",
+                        "x": 0,
+                        "y": 38,
                         "text": "",
                         "styleName": "hand-food-quantity"
                     }

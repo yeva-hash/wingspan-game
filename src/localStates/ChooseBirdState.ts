@@ -4,7 +4,7 @@ import { Area } from "../game/types/resourceTypes";
 import { CancelableLocalState } from "./CancelableLocalState";
 
 export class ChooseBirdState extends CancelableLocalState {
-  protected async runAction(ctx: FlowContext): Promise<void> {
+  protected async runAction(ctx: FlowContext): Promise<boolean> {
     const { birdOffered, hand } = ctx.controllers;
 
     //TODO
@@ -17,7 +17,7 @@ export class ChooseBirdState extends CancelableLocalState {
     try {
       await birdOffered.prepareViewForSelection();
       const birdOfferChoice = await birdOffered.chooseBirds();
-      if (this.isCancelled) return;
+      if (this.isCancelled) return false;
 
       this.disableCancelButton(ctx);
       ctx.useCases.chooseBirdUseCase.execute(birdOfferChoice.selectedBirdIds);
@@ -26,6 +26,7 @@ export class ChooseBirdState extends CancelableLocalState {
 
       // hand.setStrategy(new ReadOnlyStrategy());
       // await hand.render();
+      return true;
     } finally {
       await ctx.controllers.dimmer.clear();
     }

@@ -12,23 +12,36 @@ export class ChooseActionFlow implements FlowState {
     }
 
     const action: ActionId = await ctx.controllers.actionMenu.chooseAction();
+    let actionCompleted = false;
 
     switch (action) {
       case "playBird":
-        await new PlayingBirdState().run(ctx);
+        actionCompleted = await new PlayingBirdState().run(ctx);
         break;
       case "gainFood":
-        await new GainFoodState().run(ctx);
+        actionCompleted = await new GainFoodState().run(ctx);
         break;
       case "gainEggs":
-        await new GainEggsState().run(ctx);
+        actionCompleted = await new GainEggsState().run(ctx);
         break;
       case "chooseBird":
-        await new ChooseBirdState().run(ctx);
+        actionCompleted = await new ChooseBirdState().run(ctx);
         break;
     }
 
-    ctx.controllers.goal.renderCurrentGoal();
+    if (actionCompleted) {
+      const result = ctx.services.roundService.completeAction();
+      if (result.roundEnded && !result.gameEnded) {
+        ctx.services.goalService.setCurrentGoalByRoundIndex(ctx.services.roundService.getCurrentRoundIndex());
+      }
+
+      ctx.controllers.round.render();
+      ctx.controllers.goal.renderCurrentGoal();
+
+      if (result.gameEnded) {
+        return null;
+      }
+    }
 
     return new ChooseActionFlow();
   }
