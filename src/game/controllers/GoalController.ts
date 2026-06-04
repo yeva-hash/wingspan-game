@@ -2,7 +2,7 @@ import type { Container } from "pixi.js";
 import { GoalMetricHelper } from "../helpers/GoalMetricHelper";
 import { GoalPointHelper } from "../helpers/GoalPointHelper";
 import { GoalService } from "../services/GoalService";
-import { GoalView } from "../views/GoalView";
+import { GoalRenderOptions, GoalView } from "../views/GoalView";
 
 export class GoalController {
     constructor(
@@ -16,10 +16,10 @@ export class GoalController {
         return this._view.container;
     }
 
-    renderCurrentGoal(): void {
+    renderCurrentGoal(options: GoalRenderOptions = {}): void {
         const goal = this._goalService.getCurrentGoal();
         const metricValue = goal ? this._metricHelper.calculateMetricValue(goal) : 0;
         const points = goal ? this._pointHelper.calculatePoints(goal, metricValue) : 0;
-        this._view.render(goal, metricValue, points);
+        this._view.render(goal, metricValue, points, options);
     }
 }

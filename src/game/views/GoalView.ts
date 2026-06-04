@@ -1,6 +1,11 @@
 import * as PIXI from "pixi.js";
 import { LayoutService } from "../../layout/LayoutService";
 import type { GoalDefinition } from "../types/goalTypes";
+import { playScalePulse, setContainerPivotToCenter } from "../../utils/viewUtils";
+
+export type GoalRenderOptions = {
+    highlight?: boolean;
+};
 
 export class GoalView {
     private readonly _container: PIXI.Container;
@@ -17,7 +22,7 @@ export class GoalView {
         return this._container;
     }
 
-    render(goal: GoalDefinition | null, metricValue = 0, points = 0): void {
+    render(goal: GoalDefinition | null, metricValue = 0, points = 0, options: GoalRenderOptions = {}): void {
         if (!goal) {
             this._container.visible = false;
             return;
@@ -26,5 +31,10 @@ export class GoalView {
         this._container.visible = true;
         this._nameText.text = goal.name;
         this._scoreText.text = `Value: ${metricValue}  VP: ${points}`;
+        setContainerPivotToCenter(this._container);
+
+        if (options.highlight) {
+            playScalePulse(this._container, 1.14, 0.34);
+        }
     }
 }

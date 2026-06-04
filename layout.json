@@ -197,7 +197,7 @@
             {
                 "name":"round-info-container",
                 "type": "container",
-                "x": 295,
+                "x": 360,
                 "y": -30,
                 "children": [
                     {
@@ -211,7 +211,7 @@
                     {
                         "name":"actions-count-text",
                         "type": "text",
-                        "x": 0,
+                        "x": -17,
                         "y": 38,
                         "text": "",
                         "styleName": "hand-food-quantity"

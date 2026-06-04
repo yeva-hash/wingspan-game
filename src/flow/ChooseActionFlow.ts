@@ -31,12 +31,19 @@ export class ChooseActionFlow implements FlowState {
 
     if (actionCompleted) {
       const result = ctx.services.roundService.completeAction();
-      if (result.roundEnded && !result.gameEnded) {
+      const movedToNextRound = result.roundEnded && !result.gameEnded;
+
+      if (movedToNextRound) {
         ctx.services.goalService.setCurrentGoalByRoundIndex(ctx.services.roundService.getCurrentRoundIndex());
       }
 
-      ctx.controllers.round.render();
-      ctx.controllers.goal.renderCurrentGoal();
+      ctx.controllers.round.render({
+        highlightActions: true,
+        highlightRound: movedToNextRound,
+      });
+      ctx.controllers.goal.renderCurrentGoal({
+        highlight: movedToNextRound,
+      });
 
       if (result.gameEnded) {
         return null;
