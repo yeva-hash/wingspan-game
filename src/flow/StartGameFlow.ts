@@ -28,7 +28,7 @@ export class StartGameFlow implements FlowState {
       [foods[0], foods[1], foods[2], foods[3], foods[4], foods[1], foods[2], foods[1], foods[2],foods[1], foods[2],foods[1], foods[2],]
     );
 
-    ctx.controllers.feeder.render();
+    await ctx.controllers.feeder.render();
 
     // ctx.controllers.habitat.syncOccupiedSlots();
 

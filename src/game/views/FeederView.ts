@@ -1,12 +1,18 @@
-import { Container, Sprite } from "pixi.js";
+import { Container, Point, Sprite, Ticker } from "pixi.js";
 import { LayoutService } from "../../layout/LayoutService";
 import { FoodDefinition } from "../types/resourceTypes";
 import { TextureCache } from "../../loader/TextureCache";
 import { setButtonInteractive } from "../../utils/viewUtils";
 import { FoodTokenView } from "./food/FoodTokenView";
 import { BaseInteractiveView } from "./BaseInteractiveView";
+import { executeDelayedQueue } from "../../utils/general";
+import gsap from "gsap";
 
 export class FeederView extends BaseInteractiveView {
+    private static readonly foodDropDelay = 120;
+    private static readonly foodDropDuration = 0.45;
+    private static readonly foodDropStartGlobalY = -80;
+
     private readonly _foodTokens: Map<number, FoodTokenView | null> = new Map();
     private readonly _container: Container;
 
@@ -33,7 +39,7 @@ export class FeederView extends BaseInteractiveView {
         }
     }
 
-    fillFoodSlots(foodDefs: Map<number, FoodDefinition>): void {
+    async fillFoodSlots(foodDefs: Map<number, FoodDefinition>): Promise<void> {
         for (const [index, token] of this._foodTokens.entries()) {
             if (!token) continue;
             const parent = this._layoutService.get(`food-slot-${index}`);
@@ -41,6 +47,8 @@ export class FeederView extends BaseInteractiveView {
             token.destroy({ children: true });
         }
         this._foodTokens.clear();
+
+        const queue: Array<() => Promise<void>> = [];
 
         foodDefs.forEach((foodDef, index) => {
             const sprite = new Sprite(TextureCache.getTexture(foodDef.texture));
@@ -51,9 +59,28 @@ export class FeederView extends BaseInteractiveView {
 
             const parent = this._layoutService.get(`food-slot-${index}`);
             parent.addChild(token);
+
+            const globalSlotPosition = parent.getGlobalPosition();
+            const startPosition = parent.toLocal(new Point(globalSlotPosition.x, FeederView.foodDropStartGlobalY));
+            token.position.set(startPosition.x, startPosition.y);
+
+            queue.push(() => this.dropFoodToken(token));
         });
 
+        await executeDelayedQueue(queue, FeederView.foodDropDelay);
         this.setInteractive(false);
+    }
+
+    private async dropFoodToken(token: FoodTokenView): Promise<void> {
+        await new Promise<void>((resolve) => {
+            gsap.to(token, {
+                x: 0,
+                y: 0,
+                duration: FeederView.foodDropDuration,
+                ease: "bounce.out",
+                onComplete: () => resolve(),
+            });
+        });
     }
 
     syncFoodSlots(foodDefs: Map<number, FoodDefinition | null>): void {

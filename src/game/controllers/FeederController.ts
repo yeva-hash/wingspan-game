@@ -24,9 +24,9 @@ export class FeederController {
         this.syncView();
     }
 
-    render(): void {
-        this._view.fillFoodSlots(this._services.getRandomFoodDefs());
-        this.syncWithStore();
+    async render(): Promise<void> {
+        await this._view.fillFoodSlots(this._services.getRandomFoodDefs());
+        await this.syncWithStore();
     }
 
     async cancelSelection(): Promise<void> {
@@ -69,9 +69,9 @@ export class FeederController {
         }
     }
 
-    syncWithStore(): void {
+    async syncWithStore(): Promise<void> {
         if (this._services.isEmpty()) {
-            this._view.fillFoodSlots(this._services.getRandomFoodDefs());
+            await this._view.fillFoodSlots(this._services.getRandomFoodDefs());
             return;
         }
 

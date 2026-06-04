@@ -22,7 +22,7 @@ export class GainFoodState extends CancelableLocalState {
           ctx.useCases.gainFoodUseCase.execute(availableSlotIndexes);
         }
 
-        ctx.controllers.feeder.syncWithStore();
+        await ctx.controllers.feeder.syncWithStore();
 
         const remainingRewardCount = rewardCount - availableFoodCount;
         if (remainingRewardCount <= 0) {
@@ -34,7 +34,7 @@ export class GainFoodState extends CancelableLocalState {
 
         this.disableCancelButton(ctx);
         ctx.useCases.gainFoodUseCase.execute(selectedFoodIndexes);
-        ctx.controllers.feeder.syncWithStore();
+        await ctx.controllers.feeder.syncWithStore();
         return true;
       }
 
@@ -46,7 +46,7 @@ export class GainFoodState extends CancelableLocalState {
       this.disableCancelButton(ctx);
       ctx.useCases.gainFoodUseCase.execute(selectedFoodIndexes);
 
-      ctx.controllers.feeder.syncWithStore();
+      await ctx.controllers.feeder.syncWithStore();
       return true;
     } finally {
       await ctx.controllers.dimmer.clear();
