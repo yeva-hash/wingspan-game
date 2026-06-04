@@ -1,0 +1,241 @@
+{
+  "roundGoalCount": 4,
+  "goals": [
+    {
+      "id": "birds_in_forest",
+      "name": "Birds in Forest",
+      "description": "Have the most played birds in the forest habitat.",
+      "imageKey": "birds_in_forest",
+      "metric": "playedBirdsInArea",
+      "params": {
+        "area": "forest"
+      },
+      "scoring": {
+        "type": "perUnit",
+        "pointsPerUnit": 2,
+        "maxPoints": 6
+      }
+    },
+    {
+      "id": "birds_in_steppe",
+      "name": "Birds in Steppe",
+      "description": "Have the most played birds in the steppe habitat.",
+      "imageKey": "birds_in_steppe",
+      "metric": "playedBirdsInArea",
+      "params": {
+        "area": "steppe"
+      },
+      "scoring": {
+        "type": "perUnit",
+        "pointsPerUnit": 2,
+        "maxPoints": 6
+      }
+    },
+    {
+      "id": "birds_in_swamp",
+      "name": "Birds in Swamp",
+      "description": "Have the most played birds in the swamp habitat.",
+      "imageKey": "birds_in_swamp",
+      "metric": "playedBirdsInArea",
+      "params": {
+        "area": "swamp"
+      },
+      "scoring": {
+        "type": "perUnit",
+        "pointsPerUnit": 2,
+        "maxPoints": 6
+      }
+    },
+    {
+      "id": "eggs_in_forest",
+      "name": "Eggs in Forest",
+      "description": "Have the most eggs on birds in the forest habitat.",
+      "imageKey": "eggs_in_forest",
+      "metric": "eggsInArea",
+      "params": {
+        "area": "forest"
+      },
+      "scoring": {
+        "type": "perUnit",
+        "pointsPerUnit": 1,
+        "maxPoints": 6
+      }
+    },
+    {
+      "id": "eggs_in_steppe",
+      "name": "Eggs in Steppe",
+      "description": "Have the most eggs on birds in the steppe habitat.",
+      "imageKey": "eggs_in_steppe",
+      "metric": "eggsInArea",
+      "params": {
+        "area": "steppe"
+      },
+      "scoring": {
+        "type": "perUnit",
+        "pointsPerUnit": 1,
+        "maxPoints": 6
+      }
+    },
+    {
+      "id": "eggs_in_swamp",
+      "name": "Eggs in Swamp",
+      "description": "Have the most eggs on birds in the swamp habitat.",
+      "imageKey": "eggs_in_swamp",
+      "metric": "eggsInArea",
+      "params": {
+        "area": "swamp"
+      },
+      "scoring": {
+        "type": "perUnit",
+        "pointsPerUnit": 1,
+        "maxPoints": 6
+      }
+    },
+    {
+      "id": "birds_with_seed_cost",
+      "name": "Seed Eaters",
+      "description": "Have the most played birds with seed in their food cost.",
+      "imageKey": "birds_with_seed_cost",
+      "metric": "playedBirdsWithFoodCost",
+      "params": {
+        "food": "seed"
+      },
+      "scoring": {
+        "type": "perUnit",
+        "pointsPerUnit": 2,
+        "maxPoints": 6
+      }
+    },
+    {
+      "id": "birds_with_worm_cost",
+      "name": "Worm Eaters",
+      "description": "Have the most played birds with worm in their food cost.",
+      "imageKey": "birds_with_worm_cost",
+      "metric": "playedBirdsWithFoodCost",
+      "params": {
+        "food": "worm"
+      },
+      "scoring": {
+        "type": "perUnit",
+        "pointsPerUnit": 2,
+        "maxPoints": 6
+      }
+    },
+    {
+      "id": "birds_with_berry_cost",
+      "name": "Berry Eaters",
+      "description": "Have the most played birds with berry in their food cost.",
+      "imageKey": "birds_with_berry_cost",
+      "metric": "playedBirdsWithFoodCost",
+      "params": {
+        "food": "berry"
+      },
+      "scoring": {
+        "type": "perUnit",
+        "pointsPerUnit": 2,
+        "maxPoints": 6
+      }
+    },
+    {
+      "id": "birds_with_fish_cost",
+      "name": "Fish Eaters",
+      "description": "Have the most played birds with fish in their food cost.",
+      "imageKey": "birds_with_fish_cost",
+      "metric": "playedBirdsWithFoodCost",
+      "params": {
+        "food": "fish"
+      },
+      "scoring": {
+        "type": "perUnit",
+        "pointsPerUnit": 2,
+        "maxPoints": 6
+      }
+    },
+    {
+      "id": "birds_with_mouse_cost",
+      "name": "Mouse Hunters",
+      "description": "Have the most played birds with mouse in their food cost.",
+      "imageKey": "birds_with_mouse_cost",
+      "metric": "playedBirdsWithFoodCost",
+      "params": {
+        "food": "mouse"
+      },
+      "scoring": {
+        "type": "perUnit",
+        "pointsPerUnit": 2,
+        "maxPoints": 6
+      }
+    },
+    {
+      "id": "birds_with_many_eggs",
+      "name": "Full Nests",
+      "description": "Have the most played birds that can hold at least 4 eggs.",
+      "imageKey": "birds_with_many_eggs",
+      "metric": "playedBirdsWithMinEggCapacity",
+      "params": {
+        "minEggCapacity": 4
+      },
+      "scoring": {
+        "type": "perUnit",
+        "pointsPerUnit": 2,
+        "maxPoints": 6
+      }
+    },
+    {
+      "id": "filled_habitat_slots",
+      "name": "Filled Habitat Slots",
+      "description": "Have the most occupied habitat slots across all habitats.",
+      "imageKey": "filled_habitat_slots",
+      "metric": "occupiedHabitatSlots",
+      "params": {},
+      "scoring": {
+        "type": "perUnit",
+        "pointsPerUnit": 1,
+        "maxPoints": 9
+      }
+    },
+    {
+      "id": "different_food_costs",
+      "name": "Different Food Costs",
+      "description": "Have the most different food types shown in played birds' costs.",
+      "imageKey": "different_food_costs",
+      "metric": "uniqueFoodCostsOnPlayedBirds",
+      "params": {},
+      "scoring": {
+        "type": "perUnit",
+        "pointsPerUnit": 2,
+        "maxPoints": 8
+      }
+    },
+    {
+      "id": "birds_in_two_habitats",
+      "name": "Two-Habitat Birds",
+      "description": "Have the most played birds that are allowed in at least 2 habitats.",
+      "imageKey": "birds_in_two_habitats",
+      "metric": "playedBirdsWithMinAllowedAreas",
+      "params": {
+        "minAllowedAreas": 2
+      },
+      "scoring": {
+        "type": "perUnit",
+        "pointsPerUnit": 2,
+        "maxPoints": 6
+      }
+    },
+    {
+      "id": "birds_in_three_habitats",
+      "name": "Three-Habitat Birds",
+      "description": "Have the most played birds that are allowed in all 3 habitats.",
+      "imageKey": "birds_in_three_habitats",
+      "metric": "playedBirdsWithMinAllowedAreas",
+      "params": {
+        "minAllowedAreas": 3
+      },
+      "scoring": {
+        "type": "perUnit",
+        "pointsPerUnit": 2,
+        "maxPoints": 6
+      }
+    }
+  ]
+}

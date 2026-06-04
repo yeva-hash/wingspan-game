@@ -14,9 +14,11 @@ export class StartGameFlow implements FlowState {
     ctx.services.birdSupplyService.initializeOffer();
 
     ctx.services.feederService.resetForNewGame();
+    ctx.services.goalService.resetForNewGame();
     
     ctx.controllers.birdOffered.render();
     ctx.controllers.hand.renderAreas(ctx.stores.game.getAreas());
+    ctx.controllers.goal.renderCurrentGoal();
 
     //TODO use case?
     ctx.services.playerResourceService.setInitialDeal(

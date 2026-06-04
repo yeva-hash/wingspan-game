@@ -28,7 +28,8 @@ export class ChooseActionFlow implements FlowState {
         break;
     }
 
+    ctx.controllers.goal.renderCurrentGoal();
+
     return new ChooseActionFlow();
   }
 }
-

@@ -14,6 +14,11 @@ import { GainFoodUseCase } from "../game/useCases/GainFoodUseCase";
 import { PlayBirdUseCase } from "../game/useCases/PlayBirdUseCase";
 import { CancelButtonController } from "../game/controllers/CancelButtonController";
 import { DimmerController } from "../game/controllers/DimmerController";
+import { GoalController } from "../game/controllers/GoalController";
+import { GoalScoringService } from "../game/services/GoalScoringService";
+import { GoalService } from "../game/services/GoalService";
+import { GoalStore } from "../game/stores/GoalStore";
+import { GoalPointService } from "../game/services/GoalPointService";
 
 export type GameControllers = {
   hand: HandController;
@@ -23,10 +28,12 @@ export type GameControllers = {
   feeder: FeederController;
   cancelButton: CancelButtonController;
   dimmer: DimmerController;
+  goal: GoalController;
 };
 
 export type GameStores = {
   game: GameStore;
+  goal: GoalStore;
 };
 
 export type FlowContext = {
@@ -42,6 +49,9 @@ export type GameServices = {
   playerResourceService: PlayerResourceService,
   habitatService: HabitatService;
   feederService: FeederService;
+  goalService: GoalService;
+  goalScoringService: GoalScoringService;
+  goalPointService: GoalPointService;
 };
 
 export type GameUseCases = {

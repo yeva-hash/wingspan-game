@@ -155,6 +155,46 @@
                 "texture": "assets/sprites/background.png"
             },
             {
+                "name":"goal-container",
+                "type": "container",
+                "x": 320,
+                "y": -10,
+                "children": [
+                    {
+                        "name":"goal-image-bg",
+                        "type": "sprite",
+                        "x": 50,
+                        "y": 15,
+                        "anchor": {
+                            "x": 0.5,
+                            "y": 0.5
+                        },
+                        "texture": "assets/sprites/bird-back-side_small.png",
+                        "scale": {
+                            "x": 0.65,
+                            "y": 0.65
+                        },
+                        "alpha": 0.85
+                    },
+                    {
+                        "name":"goal-name-text",
+                        "type": "text",
+                        "x": 105,
+                        "y": -18,
+                        "text": "",
+                        "styleName": "random-bird-text"
+                    },
+                    {
+                        "name":"goal-score-text",
+                        "type": "text",
+                        "x": 105,
+                        "y": 18,
+                        "text": "",
+                        "styleName": "hand-food-quantity"
+                    }
+                ]
+            },
+            {
                 "name":"bird-offer-container",
                 "type": "container",
                 "x": 1470,

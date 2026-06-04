@@ -10,9 +10,11 @@ import { GameApp } from "../app/GameApp";
 import { GameStore } from "../game/stores/GameStore";
 import birdsJson from "../../data/birds.json";
 import foodsJson from "../../data/foods.json";
+import goalsJson from "../../data/goals.json";
 import { BirdOfferView } from "../game/views/BirdOfferView";
 import { BirdOfferedController } from "../game/controllers/BirdOfferedController";
 import { Area, BirdDefinition, FoodDefinition } from "../game/types/resourceTypes";
+import type { GoalsJson } from "../game/types/goalTypes";
 import { BirdSupplyStore } from "../game/stores/BirdSupplyStore";
 import { BirdCatalog } from "../catalogs/BirdCatalog";
 import { ChooseBirdUseCase } from "../game/useCases/ChooseBirdUseCase";
@@ -33,9 +35,17 @@ import { PlayBirdUseCase } from "../game/useCases/PlayBirdUseCase";
 import { CancelButtonView } from "../game/views/CancelButtonView";
 import { CancelButtonController } from "../game/controllers/CancelButtonController";
 import { DimmerController } from "../game/controllers/DimmerController";
+import { GoalCatalog } from "../catalogs/GoalCatalog";
+import { GoalStore } from "../game/stores/GoalStore";
+import { GoalService } from "../game/services/GoalService";
+import { GoalScoringService } from "../game/services/GoalScoringService";
+import { GoalView } from "../game/views/GoalView";
+import { GoalController } from "../game/controllers/GoalController";
+import { GoalPointService } from "../game/services/GoalPointService";
 
 const allBirdsFromJson = (birdsJson as { birds: BirdDefinition[] }).birds;
 const allFoodsFromJson = (foodsJson as { foods: FoodDefinition[] }).foods;
+const goalConfig = goalsJson as GoalsJson;
 
 export class GameScene {
   private isRunning = false;
@@ -68,18 +78,23 @@ export class GameScene {
 
     const birdCatalog = new BirdCatalog(allBirdsFromJson);
     const foodCatalog = new FoodCatalog(allFoodsFromJson);
+    const goalCatalog = new GoalCatalog(goalConfig.goals);
 
     const gameStore = new GameStore(["forest", "steppe", "swamp"]);
     const playerResourcesStore = new PlayerResourceStore();
     const birdSupplyStore = new BirdSupplyStore();
     const habitatStore = new HabitatStore();
     const feederStore = new FeederStore();
+    const goalStore = new GoalStore();
 
     const playerResourceService = new PlayerResourceService(birdCatalog, playerResourcesStore);
     const birdSupplyService = new BirdSupplyService(birdCatalog, birdSupplyStore);
     const birdPlayRuleService = new BirdPlayRuleService(playerResourceService);
     const habitatService = new HabitatService(habitatStore, birdCatalog);
     const feederService = new FeederService(foodCatalog, feederStore);
+    const goalService = new GoalService(goalCatalog, goalStore, goalConfig.roundGoalCount);
+    const goalScoringService = new GoalScoringService(habitatService);
+    const goalPointService = new GoalPointService();
     
     const chooseBirdUseCase = new ChooseBirdUseCase(birdSupplyService, playerResourceService);
     const gainFoodUseCase = new GainFoodUseCase(feederService, playerResourceService, foodCatalog);
@@ -97,6 +112,7 @@ export class GameScene {
     ]);
     const feederView = new FeederView(layoutService);
     const cancelButtonView = new CancelButtonView(layoutService);
+    const goalView = new GoalView(layoutService);
 
     const habitatController = new HabitatController(habitatService, habitatAreaViews);
     const handController = new HandController(playerResourceService, birdPlayRuleService, handView);
@@ -105,10 +121,11 @@ export class GameScene {
     const feederController = new FeederController(feederService, feederView);
     const cancelButtonController = new CancelButtonController(cancelButtonView);
     const dimmerController = new DimmerController(layoutService);
+    const goalController = new GoalController(goalService, goalScoringService, goalPointService, goalView);
 
     return {
       gameApp: this.gameApp,
-      stores: { game: gameStore },
+      stores: { game: gameStore, goal: goalStore },
       controllers: {
         hand: handController,
         actionMenu: actionMenuController,
@@ -117,12 +134,16 @@ export class GameScene {
         feeder: feederController,
         cancelButton: cancelButtonController,
         dimmer: dimmerController,
+        goal: goalController,
       },
       services: {
         birdSupplyService,
         playerResourceService,
         habitatService,
-        feederService
+        feederService,
+        goalService,
+        goalScoringService,
+        goalPointService
       },
       useCases: {
         chooseBirdUseCase,
