@@ -94,8 +94,8 @@ export class GameScene {
 
     const playerResourceService = new PlayerResourceService(birdCatalog, playerResourcesStore);
     const birdSupplyService = new BirdSupplyService(birdCatalog, birdSupplyStore);
-    const birdPlayRuleService = new BirdPlayRuleService(playerResourceService);
     const habitatService = new HabitatService(habitatStore, birdCatalog);
+    const birdPlayRuleService = new BirdPlayRuleService(playerResourceService, habitatService);
     const feederService = new FeederService(foodCatalog, feederStore);
     const goalService = new GoalService(goalCatalog, goalStore, goalConfig.roundGoalCount);
     const roundService = new RoundService(roundStore);
@@ -168,3 +168,13 @@ export class GameScene {
 // Controllers - берут данные и Services и управляют View
 // UseCases - изменяют данные в Store и (посылают события на View(?))
 // View - отображают данные и сообщают о событиях
+
+
+
+//TODO
+
+// удаление яйца при розыграше птицы
+// показ всех целей(с помощью маски скрывать)
+
+// счетчик очков
+// победная плажка

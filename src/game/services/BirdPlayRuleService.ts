@@ -1,9 +1,11 @@
 import type { Area, BirdDefinition } from "../types/resourceTypes";
+import { HabitatService } from "./HabitatService";
 import { PlayerResourceReader } from "../types/storeReaders";
 
 export class BirdPlayRuleService {
   constructor(
     private readonly _resources: PlayerResourceReader,
+    private readonly _habitatService: HabitatService,
   ) {}
 
   canPayBirdCost(bird: BirdDefinition | null): boolean {
@@ -40,6 +42,29 @@ export class BirdPlayRuleService {
     return `Not enough food: ${missingFoodIds.join(", ")}`;
   }
 
+  canPayAreaEggCost(area: Area | null): boolean {
+    if (!area) {
+      return false;
+    }
+
+    return this._habitatService.getTotalEggCount() >= this._habitatService.getBirdPlayEggCost(area);
+  }
+
+  getMissingEggMessage(area: Area | null): string {
+    if (!area) {
+      return "";
+    }
+
+    const eggCost = this._habitatService.getBirdPlayEggCost(area);
+    const missingEggs = eggCost - this._habitatService.getTotalEggCount();
+
+    if (missingEggs <= 0) {
+      return "";
+    }
+
+    return `Not enough eggs: ${missingEggs}`;
+  }
+
   getAllowedAreas(bird: BirdDefinition | null): readonly Area[] {
     if (!bird) {
       return [];
@@ -53,6 +78,6 @@ export class BirdPlayRuleService {
       return false;
     }
 
-    return bird.allowedAreas.includes(area) && this.canPayBirdCost(bird);
+    return bird.allowedAreas.includes(area) && this.canPayBirdCost(bird) && this.canPayAreaEggCost(area);
   }
 }

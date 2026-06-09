@@ -50,6 +50,36 @@ export class HabitatService {
         return availableSlotsByArea;
     }
 
+    getEggPaymentSlotsByArea(): HabitatBirdSlotMap {
+        const availableSlotsByArea: HabitatBirdSlotMap = new Map();
+
+        for (const areaStore of this.getAreas()) {
+            const slotIndexes = this.getOccupiedSlotIndexes(areaStore.area).filter((slotIndex) => {
+                const bird = this.getSlot(areaStore.area, slotIndex).bird;
+                return !!bird?.canRemoveEgg;
+            });
+
+            if (slotIndexes.length > 0) {
+                availableSlotsByArea.set(areaStore.area, slotIndexes);
+            }
+        }
+
+        return availableSlotsByArea;
+    }
+
+    getBirdPlayEggCost(area: Area): number {
+        const slot = this.getFirstFreeSlot(area);
+        return slot ? slot.index - 1 : 0;
+    }
+
+    getTotalEggCount(): number {
+        return this.getAreas().reduce((sum, areaStore) => {
+            return sum + areaStore.getSlots().reduce((areaSum, slot) => {
+                return areaSum + (slot.bird?.eggCount ?? 0);
+            }, 0);
+        }, 0);
+    }
+
     getRewardCount(area: Area): number {
         return this.getFirstFreeSlot(area)?.rewardCount ?? 0;
     }
@@ -83,6 +113,16 @@ export class HabitatService {
         }
 
         bird.placeEgg();
+        return bird;
+    }
+
+    removeEgg(area: Area, slotIndex: number): PlayedBird {
+        const bird = this.getSlot(area, slotIndex).bird;
+        if (!bird) {
+            throw new Error(`No bird found in ${area} slot ${slotIndex}`);
+        }
+
+        bird.removeEgg();
         return bird;
     }
 

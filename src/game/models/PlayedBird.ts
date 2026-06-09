@@ -26,6 +26,10 @@ export class PlayedBird {
         return this._eggCount < this.maxEggCount;
     }
 
+    get canRemoveEgg(): boolean {
+        return this._eggCount > 0;
+    }
+
     placeEgg(count = 1): void {
         if (count <= 0) {
             throw new Error("Egg count to place must be positive");
@@ -36,5 +40,17 @@ export class PlayedBird {
         }
 
         this._eggCount += count;
+    }
+
+    removeEgg(count = 1): void {
+        if (count <= 0) {
+            throw new Error("Egg count to remove must be positive");
+        }
+
+        if (this._eggCount - count < 0) {
+            throw new Error(`Bird ${this.id} does not have enough eggs`);
+        }
+
+        this._eggCount -= count;
     }
 }

@@ -66,7 +66,7 @@ export class HandController {
     this.view.setConfirmEnabled(
         this.strategy.canConfirm() && this.rules.canPlayBirdInArea(bird, area)
     );
-    this.view.setMessage(this.rules.getMissingFoodMessage(bird));
+    this.view.setMessage(this.rules.getMissingFoodMessage(bird) || this.rules.getMissingEggMessage(area));
   }
 
   private getSelectedBird(): BirdDefinition | null {
