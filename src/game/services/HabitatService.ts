@@ -69,7 +69,7 @@ export class HabitatService {
 
     getBirdPlayEggCost(area: Area): number {
         const slot = this.getFirstFreeSlot(area);
-        return slot ? slot.index - 1 : 0;
+        return slot && slot.index > 1 ? 1 : 0;
     }
 
     getTotalEggCount(): number {
